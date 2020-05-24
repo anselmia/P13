@@ -1,0 +1,1 @@
+METEOSTAT_API_KEY = "jw9szQox"

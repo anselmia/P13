@@ -1,0 +1,50 @@
+{% extends 'layouts/default.html' %}
+{% load static %}
+
+{% block body %}
+<link href="{% static 'css/login.css' %}" rel="stylesheet">
+
+<body>
+    <div class="container-fluid align-items-center justify-content-center login">
+        <div class="justify-content-center innerlogin">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto mt-5">
+                <div class="card card-signin my-5">
+                    <div class="card-body mt-5">
+                        <h5 class="card-title text-center">Profile Utilisateur</h5>
+                        <br>
+                        {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                                {% endfor %}
+                        </ul>
+                        {% endif %}
+                        <br>
+                        <form class="form-signin" method="POST" action="{% url 'user:profile' %}">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                            {% if user.is_authenticated %}
+                            <div class="form-label-group">
+                                {{ form.username }}
+                                <label for="inputUsername">{{ form.username.label_tag }}</label>
+                                {{ form.username.errors }}
+                            </div>
+                            <div class="form-label-group">
+                                {{ form.email }}
+                                <label for="inputEmail">{{ form.email.label_tag }}</label>
+                                {{ form.email.errors }}
+                            </div>
+                            <br>
+                            <button name="confirm_change"
+                                class="disabled btn btn-lg btn-primary btn-block text-uppercase" type="submit"
+                                disabled>Valider</button>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+{% endblock body %}

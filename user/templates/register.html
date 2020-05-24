@@ -1,0 +1,59 @@
+{% extends 'layouts/default.html' %}
+{% load static %}
+
+{% block body %}
+
+<body>
+    <div class="container-fluid align-items-center justify-content-center login" id="register-user">
+        <div class="justify-content-center innerlogin">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto mt-5">
+                <div class="card card-signin my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">S'enregistrer</h5>
+                        <br>
+                        <form class="form-signin" method="POST" action="{% url 'user:register' %}">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                            {% if user.is_authenticated %}
+                            Vous êtes connecté, {{ user.username }} !
+                            {% else %}
+                            <div class="form-label-group">
+                                {{ form.username}}
+                                <label>{{ form.username.label_tag}}</label>
+                                {{ form.username.errors}}
+                            </div>
+                            <div class="form-label-group">
+                                {{ form.email }}
+                                <label>{{ form.email.label_tag }}</label>
+                                {{ form.email.errors }}
+                            </div>
+                            <div class="form-label-group">
+                                {{ form.password1 }}
+                                <label>{{ form.password1.label_tag }}</label>
+                                {{ form.password1.errors }}
+                            </div>
+                            <div class="form-label-group">
+                                {{ form.password2 }}
+                                <label>{{ form.password2.label_tag }}</label>
+                                {{ form.password2.errors }}
+                            </div>
+                            <label>{{ form.robot }} Je ne suis pas un robot</label>
+                            {{ form.robot.errors }}
+                            <br>
+                            <button id='submit' class="btn btn-lg btn-primary btn-block text-uppercase"
+                                type="submit">S'enregitrer</button>
+                            <br>
+                            <div>
+                                <p>Déjà un compte ? <a href="{% url 'user:login' %}" title="se connecter"><i
+                                            class="fa fa-user" style="font-size:32px;color:orange"></i></a></p>
+                            </div>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+{% endblock body %}

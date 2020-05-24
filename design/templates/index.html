@@ -1,0 +1,128 @@
+{% extends 'layouts/default.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block body %}
+<div id="smartwizard" class="design">
+
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link" href="#step-1">
+                <strong>Step 1</strong> <br>Données du projet
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#step-2">
+                <strong>Step 2</strong> <br>This is step description
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#step-3">
+                <strong>Step 3</strong> <br>This is step description
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#step-4">
+                <strong>Step 4</strong> <br>This is step description
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
+            <h3>Informations du projet</h3>
+            <br>
+            <br>
+            <form class="form-signin" method="POST" action="{% url 'design:index' %}">
+                {{ form_project.non_field_errors }}
+                <div>
+                    <label for="inputEmail">{{ form_project.name.label_tag }}</label>
+                </div>
+                <div>
+                    {{ form_project.name }}
+                </div>
+                <div>
+                    {{ form_project.name.errors }}
+                </div>
+                <br>
+                <div>
+                    <label for="inputPassword">{{ form_project.building_type.label_tag }}</label>
+                </div>
+                <div>
+                    {{ form_project.building_type }}
+                </div>
+                <div>
+                    {{ form_project.building_type.errors }}
+                </div>
+                <br>
+                <div>
+                    <label for="inputPassword">{{ form_project.city_id.label_tag }}</label>
+                </div>
+                <div>
+                    {{ form_project.city_id }}
+                    &nbsp;
+                    <a href="#" id="add_city_button" class="add_button">Ajouter</a>
+                </div>
+                <div>
+                    {{ form_project.city_id.errors }}
+                </div>
+                <div id="add_city" class="container">
+                    <div>Ville à Rechercher :</div>
+                    <div class="row">
+                        <div class="container_33">
+                            <input type=" text" name="city_to_search" id="city_to_find">
+                        </div>
+                        <a href="#" class="search_button meteo_search">Rechercher</a>
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <label for="inputPassword">{{ form_project.panel_id.label_tag }}</label>
+                </div>
+                <div>
+                    {{ form_project.panel_id }}
+                    &nbsp;
+                    <a href="#" class="add_button">Ajouter</a>
+                </div>
+                <div>
+                    {{ form_project.panel_id.errors }}
+                </div>
+                <div id="add_panel"></div>
+                <br>
+            </form>
+        </div>
+        <div id="step-2" class="tab-pane" role="tabpanel" aria-labelledby="step-2">
+            <h3>Step 2 Content</h3>
+            <div>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap
+                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
+                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
+                software like Aldus PageMaker including versions of Lorem Ipsum. </div>
+        </div>
+        <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+            industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+            scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
+            electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of
+            Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like
+            Aldus PageMaker including versions of Lorem Ipsum.
+        </div>
+        <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
+            <h3>Step 4 Content</h3>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+            industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+            scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
+            electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of
+            Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like
+            Aldus PageMaker including versions of Lorem Ipsum.
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+            industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+            scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
+            electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of
+            Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like
+            Aldus PageMaker including versions of Lorem Ipsum.
+        </div>
+    </div>
+</div>
+<br /> &nbsp;
+{% endblock %}

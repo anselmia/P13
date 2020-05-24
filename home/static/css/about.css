@@ -1,0 +1,117 @@
+@media only screen and (min-width: 540px) {
+
+    .b-imagegrid .grid-2 .b-imagegrid__item,
+    .b-imagegrid .grid-3 .b-imagegrid__item,
+    .b-imagegrid .grid-4 .b-imagegrid__item {
+        width: 50%;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .b-imagegrid .grid-2 .b-imagegrid__item {
+        width: 50%;
+        padding: 0 20px 20px;
+    }
+}
+
+.b-imagegrid__item {
+    width: 100%;
+    flex: 0 0 auto;
+    vertical-align: top;
+    position: relative;
+    box-sizing: border-box;
+    margin-bottom: 1.5em;
+    padding: 0 10px 10px;
+}
+
+#de-la-ratatouille-aux-croissants ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+
+.foto {
+    margin: 1.5rem;
+    padding: 5px;
+}
+
+.fotorama {
+    border-radius: 40px;
+}
+
+.bg-primary {
+    background-color: rgba(222, 148, 64, 0.8) !important;
+}
+
+.about {
+    padding: 8rem;
+    border-radius: 40px;
+}
+
+.about-title {
+    color: var(--Caramel_mou);
+    opacity: 0.8;
+}
+
+#about {
+    position: relative;
+    background: url(../images/index/about.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-size: cover;
+    min-height: 100vh;
+}
+
+#about .ampoule {
+    width: 11rem;
+    border-radius: 40px;
+}
+
+@media (max-width: 1300px) {
+    #about .ampoule {
+        width: 15rem;
+    }
+}
+
+@media (max-width: 940px) {
+    #about .ampoule {
+        width: 10rem;
+    }
+}
+
+@media (max-width: 650px) {
+    #about .ampoule {
+        width: 10rem;
+    }
+}
+
+@media (max-width: 576px) {
+    #about .ampoule {
+        width: 8rem;
+    }
+}
+
+.product {
+    background-color: rgba(222, 148, 64, 0.8) !important;
+    border: 4px solid rgba(196, 85, 37, 1);
+    border-radius: 40px;
+    padding: 30px;
+    margin-top: 6rem;
+}
+
+.product h3 {
+    font-size: 2rem;
+    font-weight: 500;
+    color: rgba(196, 85, 37, 0.6);
+}
+
+@media (max-width: 992px) {
+    .product h3 {
+        font-size: 1.5rem;
+    }
+}

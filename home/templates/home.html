@@ -1,0 +1,133 @@
+{% extends 'layouts/default.html' %}
+{% load static %}
+{% load filter %}
+{% block body %}
+{% load widget_tweaks %}
+
+<header class="masthead p-0">
+    <div class="row mx-auto align-items-center justify-content-center text-center ">
+        <div class="col-lg-10 align-self-end">
+            <h1 class="text-uppercase font-weight-bold maintitle">Designez votre installation photovoltaïque</h1>
+            <br>
+            <h2 class="text-uppercase font-weight-bold maintitle">Définissez le projet adapté à votre besoin pour une
+                autonomie énergétique ou un projet économique photovoltaïque !</h2>
+            <br>
+            <br>
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }} font-weight-bold" {% endif %}>{{ message }}</li>
+                    {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-8 align-self-baseline">
+            <a class="btn btn-primary btn-design js-scroll-trigger mt-4" href="{% url 'design:index' %}"
+                title="Accueil Design">Concevez votre Système</a>
+            <br>
+            <br>
+            <a class="btn btn-primary btn-xl js-scroll-trigger mt-4" href="#about" title="A propos">Qui sommes nous
+                ?</a>
+        </div>
+    </div>
+</header>
+
+<!-- About section-->
+<section class="page-section" id="about">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-10 col-sm-10 col-md-8 col-lg-8 text-center about">
+                <div class="page-content">
+                    <h1 class="">Notre identité</h1>
+                    <div class="sections">
+                        <br>
+                        <img class="ampoule" src="{% static 'images/index/about-small.png' %}" alt="Photo énegie libre">
+                        <br>
+                        <br>
+                        <br>
+                        <section id="de-la-ratatouille-aux-croissants" data-id="1331329">
+                            <div class="mod block mod-block-section section-title b-section js-b-section js-cm-blockmanager__section"
+                                data-id="1331329" data-ready="true">
+                                <h2 data-server="true" class="">Du photon à l'électron ...</h2>
+                            </div>
+                            <br><br><br>
+                            <div class="mod block mod-block-text b-text js-cm-blockmanager__block" data-block="3098382"
+                                data-help="https://docs.frontify.com/d/2MwJ9kHF57Sc/frontify-style-guide#/product/smart-blocks/rich-text-block"
+                                data-feedback="https://frontify.typeform.com/to/Dj3Utn?block=Rich%20Text%20Block"
+                                data-ready="true">
+                                <div class="js-b-text__text b-text__text co-editor co-editor--default">
+                                    <p>
+                                        SolarProject est le fruit d'un projet réalisé dans le cadre de la formation
+                                        "développeur d'applications python" chez OpenClassroom&nbsp;
+                                        Notre moteur de conception de projet photovoltaïque vous permettra de designer
+                                        votre projet en partant de la puissance photovolta¨que admissible sur votre
+                                        toiture, jusqu'au calcul de production de votre système. Il vous permettra de
+                                        comparer différentes configuration afin d'optimiser votre installation.
+                                        <br><br><br>
+                                        <b>Arnaud</b> : "<i>Ingénieur industriel de formation j'ai travaillé durant 3
+                                            ans dans le domaine du photovoltaïque et accompagné de nombreux clients dans
+                                            la réalisation de leur projet en tant que résponsable de bureau d'étude.
+                                            Aujourd'hui en quête de renouvellement, je me lance dans le monde virtuel à
+                                            travers de cette formation et vous propose de mettre à profit mon expérience
+                                            pour partager avec vous mes connaissances et vous accompagner dans votre
+                                            projet</i>"
+                                        <br><br>
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="h-100 align-items-center justify-content-center text-center foto portfolio"
+                        id="portfolio">
+                        <div class="align-self-end mt-3">
+                            <div class="fotorama" data-width="100%">
+                                <img src="{% static 'images/portfolio/port-folio2.jpg' %}"
+                                    alt="Photo énergie solaire 2">
+                                <img src="{% static 'images/portfolio/port-folio1.jpg' %}"
+                                    alt="Photo énergie solaire 1">
+                                <img src="{% static 'images/portfolio/port-folio3.jpg' %}"
+                                    alt="Photo énergie solaire 3">
+                                <img src="{% static 'images/portfolio/port-folio4.jpg' %}"
+                                    alt="Photo énergie solaire 4">
+                                <img src="{% static 'images/portfolio/port-folio5.jpg' %}"
+                                    alt="Photo énergie solaire 5">
+                                <img src="{% static 'images/portfolio/port-folio6.jpg' %}"
+                                    alt="Photo énergie solaire 6">
+                                <img src="{% static 'images/portfolio/port-folio7.jpg' %}"
+                                    alt="Photo énergie solaire 7">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact section-->
+<section class="page-section" id="contact">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-10 col-sm-10 col-md-8 col-lg-8 text-center about">
+                <div class="page-content">
+                    <h2 class="mt-0">Nous somme là pour vous servir !</h2>
+                    <hr class="divider my-4" />
+                    <p class="mb-5">Besoins d'informations ou de nous faire part de vos idées ? Contactez nous !</p>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 ml-auto text-center mb-5 mb-lg-0">
+                        <i class="fas fa-phone fa-3x mb-3 text-muted"></i>
+                        <div>+33 0405060708</div>
+                    </div>
+                    <div class="col-lg-4 mr-auto text-center">
+                        <i class="fas fa-envelope fa-3x mb-3 text-muted"></i>
+                        <a class="d-block" href="mailto:aai@bienmanger.fr" title="email">aai@bienmanger.fr</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

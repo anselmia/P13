@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
-#
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -36,12 +34,14 @@ INSTALLED_APPS = [
     "design.apps.DesignConfig",
     "user.apps.UserConfig",
     "project.apps.ProjectConfig",
+    "home.apps.HomeConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # "django.contrib.formtools",
 ]
 
 MIDDLEWARE = [
@@ -139,6 +139,11 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    "/design/static/",
+]
+
 INTERNAL_IPS = ["127.0.0.1"]
 
 if os.environ.get("ENV") == "PRODUCTION":  # pragma: no cover
@@ -150,7 +155,7 @@ if os.environ.get("ENV") == "PRODUCTION":  # pragma: no cover
     # Static files settings
     PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-    STATIC_ROOT = os.path.join(PROJECT_ROOT, "staticfiles")
+    STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")
 
     # Extra places for collectstatic to find static files.
     STATICFILES_DIRS = (os.path.join(PROJECT_ROOT, "static"),)
@@ -159,5 +164,7 @@ if os.environ.get("ENV") == "PRODUCTION":  # pragma: no cover
 
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES["default"].update(db_from_env)
+    METEOSTAT_API_KEY = os.environ["METEOSTAT_API_KEY"]
 else:
     DEBUG = True
+    from SolarProject.local_settings import METEOSTAT_API_KEY

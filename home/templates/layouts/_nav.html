@@ -1,0 +1,33 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+    <div class="container-fluid">
+        <a class="media-logo" href="{% url 'home:index' %}">
+            <img class="main_logo" src="{% static 'images/index/about-small.png' %}" style="border:0;" alt="Pur Beurre"
+                width="70" height="50">
+        </a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+            data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto my-2 my-lg-0">
+                <li class="nav-item text-center "><a class="nav-link js-scroll-trigger" title="home"
+                        href="{% url 'home:index' %}" id="home"><i class="fas fa-home"></i><br>Acceuil</a></li>
+                {% if user.is_authenticated %}
+                <li class="nav-item text-center"><a class="nav-link js-scroll-trigger" title="Profile"
+                        href="{% url 'user:profile' %}" id="profile"><i class="fa fa-user" aria-hidden="true"></i><br>
+                        {{user.username}}</a></li>
+                <li class="nav-item text-center"><a class="nav-link js-scroll-trigger" title="Se déconnecter"
+                        href="{% url 'user:logout' %}" id="logout"><i class="fa fa-sign-out fa-lg"
+                            aria-hidden="true"></i><br>Se déconnecter</a></li>
+                {% else %}
+                <li class="nav-item text-center"><a class="nav-link js-scroll-trigger" title="Se connecter"
+                        href="{% url 'user:login' %}" id="login"><i class="fa fa-user" aria-hidden="true"></i><br>
+                        Se connecter</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

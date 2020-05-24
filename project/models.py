@@ -50,10 +50,17 @@ class Project(models.Model):
 
     name = models.CharField(max_length=100, unique=True, verbose_name="Nom")
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    building_type = models.IntegerField(blank=True, null=False)
-    city_id = models.ForeignKey(City, related_name="project", on_delete=models.CASCADE)
+    building_type = models.IntegerField(
+        blank=True, null=False, verbose_name="Type de bâtiment"
+    )
+    city_id = models.ForeignKey(
+        City, related_name="ville", on_delete=models.CASCADE, verbose_name=u"Ville",
+    )
     panel_id = models.ForeignKey(
-        Panel, related_name="panneau", on_delete=models.CASCADE
+        Panel,
+        related_name="panneau",
+        on_delete=models.CASCADE,
+        verbose_name=u"Type de panneau",
     )
 
     class Meta:
