@@ -259,7 +259,9 @@ class Element(models.Model):
 class Implantation(models.Model):
     """ Implementation """
 
-    roof_id = models.ForeignKey(Roof, related_name="project", on_delete=models.CASCADE)
+    roof_id = models.ForeignKey(
+        Roof, related_name="roof_in_implantation", on_delete=models.CASCADE
+    )
 
     panel_orientation = models.ForeignKey(
         Orientation, related_name="panel_orientation", on_delete=models.CASCADE
@@ -311,3 +313,45 @@ class Implantation(models.Model):
 
     def __str__(self):
         return self.roof_id.project_id.name
+
+
+class Config(models.Model):
+    """ Congiguration panel / inverter """
+
+    project_id = models.ForeignKey(
+        Project, related_name="project_in_config", on_delete=models.CASCADE
+    )
+
+    inverter_id = models.ForeignKey(
+        Inverter,
+        related_name="inverter",
+        on_delete=models.CASCADE,
+        verbose_name="Onduleur",
+    )
+    inverter_quantity = models.IntegerField(
+        blank=True, null=False, verbose_name="Nombre d'onduleurs"
+    )
+
+    class Meta:
+        verbose_name = "Configuration"
+        verbose_name_plural = "Configurations"
+
+    def __str__(self):
+        return self.project_id.name
+
+
+class MPP(models.Model):
+    """ Congiguration panel / inverter """
+
+    config_id = models.ForeignKey(
+        Project, related_name="config", on_delete=models.CASCADE
+    )
+    serial = models.IntegerField(blank=True, null=False, verbose_name="En série")
+    parallel = models.IntegerField(blank=True, null=False, verbose_name="En parallèle")
+
+    class Meta:
+        verbose_name = "MPP"
+        verbose_name_plural = "MPPs"
+
+    def __str__(self):
+        return self.config_id.project_id.name

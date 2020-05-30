@@ -98,6 +98,15 @@ class Implantation_calculation:
         implantation.Set_nb_pan_in_triangle_length(self.roof, self.data_implantation)
         implantation.reset_pan_in_col(self.roof, self.data_implantation)
 
+        if implantation.nb_pan_lentgh_left_triangle == 0:
+            implantation.panel_left_triangle = [
+                0 for x in implantation.panel_left_triangle
+            ]
+        if implantation.nb_pan_lentgh_right_triangle == 0:
+            implantation.panel_right_triangle = [
+                0 for x in implantation.panel_right_triangle
+            ]
+
         # region Reste
         if self.roof.roof_type_id_id == 1:
             implantation.set_rest()
@@ -164,13 +173,33 @@ class Implantation_calculation:
                 i + 1
             ]
 
-        implantation.nbpantot = (
+        implantation.total_pan = (
             implantation.nb_panel_length * implantation.nb_panel_width
             + implantation.nb_pan_left_triangle
             + implantation.nb_pan_right_triangle
         )
 
         implantation.plot_data(self.roof, self.data_implantation)
+
+        # Set Infos
+        if implantation.height < 0:
+            implantation.height = 0
+        if implantation.total_pan < 0:
+            implantation.total_pan = 0
+            implantation.nb_panel_length = 0
+            implantation.nb_panel_width = 0
+
+        if self.roof.roof_type_id_id == 1:
+            implantation.surface = self.roof.bottom_length * self.roof.width
+            implantation.height = implantation.width
+        elif self.roof.roof_type_id_id == 2:
+            implantation.surface = self.roof.top_length * self.roof.height + (
+                (self.roof.bottom_length - self.roof.top_length) * self.roof.height
+            )
+        else:
+            implantation.surface = (self.roof.bottom_length * self.roof.height) / 2
+
+        implantation.power = (implantation.total_pan * self.panel.power) / 1000
 
         return implantation.toJSON()
 
@@ -193,11 +222,6 @@ class Roof_implantation_Calculation:
         self.abergement_left = implantation.abergement_left
         self.abergement_right = implantation.abergement_right
         self.height = roof.height
-        # self.top_length = (
-        #     roof.top_length
-        #     - implantation.abergement_left
-        #     - implantation.abergement_right
-        # )
         self.width = roof.width
         self.bottom_length = roof.bottom_length
         self.side_angle = 0
@@ -238,7 +262,6 @@ class Roof_implantation_Calculation:
                 )
                 / math.tan(self.side_angle)
             ) + self.abergement_right
-
         self.horizontal_pose = 0
         self.vertical_pose = 0
         self.panel_left_triangle = []
@@ -249,6 +272,10 @@ class Roof_implantation_Calculation:
         self.nb_pan_right_triangle = 0
         self.abergement = []
         self.panel = []
+        # Infos
+        self.surface = 0
+        self.power = 0
+        self.total_pan = 0
 
     def modif_width(self, implantation):
         if ((self.width - (self.nb_panel_width * self.panel_width)) / 2) < (
@@ -1607,7 +1634,11 @@ class Roof_implantation_Calculation:
         C = 0
         D = 0
         pan_num = 0
-        j = []
+        j = [0] * (
+            self.nb_panel_length
+            + self.nb_pan_lentgh_right_triangle
+            + self.nb_pan_lentgh_left_triangle
+        )
         abergement_length = 0
         abergement_height = 0
 
@@ -1719,7 +1750,7 @@ class Roof_implantation_Calculation:
                 N += 1
         # endregion
 
-        region toit 2 & 3
+        # region toit 2 & 3
         if roof.roof_type_id_id == 2 or roof.roof_type_id_id == 3:
             for i in range(
                 0,
@@ -1738,39 +1769,90 @@ class Roof_implantation_Calculation:
 
                 for i1 in range(0, j[i]):
                     if i1 == 0:
-                        aberbasx.Add(
-                            self.centering
-                            + N * (self.panel_length + self.horizontal_pose)
+                        x = self.centering + N * (
+                            self.panel_length + self.horizontal_pose
                         )
-                        aberbasy.Add(self.bottom_rest)
                         if i == 0:
-                            abergauchex.Add(self.centering - self.abergement_left)
-                            abergauchey.Add(self.bottom_rest + self.panel_width)
+                            x -= implantation.abergement_left
+                        y = roof.height - self.bottom_rest
+                        abergement_length = self.panel_length + self.horizontal_pose
+                        if i == 0:
+                            abergement_length += implantation.abergement_left
+                        elif (
+                            i
+                            == self.nb_panel_length
+                            + self.nb_pan_lentgh_right_triangle
+                            + self.nb_pan_lentgh_left_triangle
+                            - 1
+                        ):
+                            abergement_length += implantation.abergement_right
+                        self.abergement.append(
+                            [
+                                x,
+                                y,
+                                self.panel_length
+                                + self.horizontal_pose
+                                + self.abergement_left,
+                                implantation.abergement_bottom,
+                            ]
+                        )
+                        if i == 0:
+                            x = self.centering - self.abergement_left
+                            y = (
+                                roof.height
+                                - self.bottom_rest
+                                - self.panel_width
+                                - self.vertical_pose
+                            )
+                            self.abergement.append(
+                                [
+                                    x,
+                                    y,
+                                    self.abergement_left,
+                                    self.panel_width + self.vertical_pose,
+                                ]
+                            )
                             C += 1
 
                         A += 1
 
                     if i > 0 and i < self.nb_pan_lentgh_left_triangle:
                         if i1 >= j[i - 1]:
-                            abergauchex.Add(
+                            x = (
                                 self.centering
                                 + N * (self.panel_length + self.horizontal_pose)
                                 - self.abergement_left
                             )
-                            abergauchey.Add(
+                            y = roof.height - (
                                 self.panel_width
                                 + self.bottom_rest
                                 + M * (self.panel_width + self.vertical_pose)
+                            )
+                            self.abergement.append(
+                                [
+                                    x,
+                                    y,
+                                    self.abergement_left,
+                                    self.panel_width + self.vertical_pose,
+                                ]
                             )
                             C += 1
 
                     if i == 0:
                         if i1 > 0:
-                            abergauchex.Add(self.centering - self.abergement_left)
-                            abergauchey.Add(
+                            x = self.centering - self.abergement_left
+                            y = roof.height - (
                                 self.panel_width
                                 + self.bottom_rest
                                 + M * (self.panel_width + self.vertical_pose)
+                            )
+                            self.abergement.append(
+                                [
+                                    x,
+                                    y,
+                                    self.abergement_left,
+                                    self.panel_width + self.vertical_pose,
+                                ]
                             )
                             C += 1
 
@@ -1779,42 +1861,70 @@ class Roof_implantation_Calculation:
                         and self.nb_pan_lentgh_left_triangle != 0
                     ):
                         if i1 >= j[self.nb_pan_lentgh_left_triangle - 1]:
-                            abergauchex.Add(
+                            x = (
                                 self.centering
                                 + N * (self.panel_length + self.horizontal_pose)
                                 - self.abergement_left
                             )
-                            abergauchey.Add(
+                            y = roof.height - (
                                 self.panel_width
                                 + self.bottom_rest
                                 + M * (self.panel_width + self.vertical_pose)
+                            )
+                            self.abergement.append(
+                                [
+                                    x,
+                                    y,
+                                    self.abergement_left,
+                                    self.panel_width + self.vertical_pose,
+                                ]
                             )
                             C += 1
 
                     if i1 == (j[i] - 1):
                         if i >= self.nb_pan_lentgh_left_triangle + self.nb_panel_length:
-                            aberhautx.Add(
+                            x = (
                                 self.centering
                                 + (N - 1) * (self.panel_length + self.horizontal_pose)
                                 + self.panel_length
                             )
-                            aberhauty.Add(
+                            y = roof.height - (
                                 self.panel_width
                                 + self.bottom_rest
                                 + M * (self.panel_width + self.vertical_pose)
-                                + self.abergement_top
+                                + implantation.abergement_top
+                            )
+                            self.abergement.append(
+                                [
+                                    x,
+                                    y,
+                                    self.panel_length
+                                    + self.horizontal_pose
+                                    + implantation.abergement_right,
+                                    implantation.abergement_top,
+                                ]
                             )
                         else:
-                            aberhautx.Add(
+                            x = (
                                 self.centering
                                 - self.abergement_left
                                 + N * (self.panel_length + self.horizontal_pose)
                             )
-                            aberhauty.Add(
+                            y = roof.height - (
                                 self.panel_width
                                 + self.bottom_rest
                                 + M * (self.panel_width + self.vertical_pose)
-                                + self.abergement_top
+                                + implantation.abergement_top
+                            )
+                            self.abergement.append(
+                                [
+                                    x,
+                                    y,
+                                    self.panel_length
+                                    + self.horizontal_pose
+                                    + implantation.abergement_left,
+                                    implantation.abergement_top,
+                                ]
                             )
 
                         B += 1
@@ -1836,40 +1946,42 @@ class Roof_implantation_Calculation:
                                 + self.nb_panel_length
                                 - 1
                             ):
-                                aberdroitx.Add(
+                                x = (
                                     self.centering
                                     + N * (self.panel_length + self.horizontal_pose)
                                     + self.panel_length
                                 )
-                                aberdroity.Add(
+                                y = roof.height - (
                                     self.panel_width
                                     + self.bottom_rest
                                     + M * (self.panel_width + self.vertical_pose)
                                 )
+                                self.abergement.append(
+                                    [
+                                        x,
+                                        y,
+                                        self.abergement_right,
+                                        self.panel_width + self.vertical_pose,
+                                    ]
+                                )
                                 D += 1
 
-                    self.panel
-                    NewPan["Coordg"] = self.centering + N * (
-                        self.panel_length + self.horizontal_pose
-                    )
-                    NewPan["Coordd"] = (
-                        self.centering
-                        + N * (self.panel_length + self.horizontal_pose)
-                        + self.panel_length
-                    )
-                    NewPan["Coordh"] = (
-                        self.panel_width
-                        + self.bottom_rest
-                        + M * (self.panel_width + self.vertical_pose)
-                        + self.panel_width
-                    )
-                    NewPan["Coordb"] = (
-                        self.panel_width
-                        + self.bottom_rest
-                        + M * (self.panel_width + self.vertical_pose)
+                    self.panel.append(
+                        [
+                            self.centering
+                            + N * (self.panel_length + self.horizontal_pose),
+                            roof.height
+                            - (
+                                self.panel_width
+                                + self.bottom_rest
+                                + M * (self.panel_width + self.vertical_pose)
+                            ),
+                            self.panel_length,
+                            self.panel_width,
+                        ]
                     )
 
-                    M = M + 1
+                    M += 1
                 M = 0
-                N = N + 1
-        endregion
+                N += 1
+        # endregion

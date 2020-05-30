@@ -164,6 +164,8 @@
 .tab-content h3 {
     margin: auto;
     width: fit-content;
+    text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+    font-size: 2.5em;
 }
 
 .tab-content {
@@ -185,10 +187,10 @@ form .row .row {
 }
 
 .draw-border {
-    height: 100%;
-    width: 100%;
-    border: 3px ridge rgba(0, 0, 0, 0.22);
-    border-radius: 5px;
+    padding: 6px;
+    border: 1px ridge rgba(0, 0, 0, 0.22);
+    border-radius: 2px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
 }
 
 div input,
@@ -212,4 +214,13 @@ div select {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.size_auto {
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.block {
+    display: block;
 }

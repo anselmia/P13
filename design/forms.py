@@ -14,6 +14,7 @@ from .models import (
 )
 from user.models import User
 from django.forms import ModelForm
+import math
 
 
 class ProjectForm(ModelForm):
@@ -213,6 +214,27 @@ class RoofForm(ModelForm):
                     self._errors["width"] = self.error_class(
                         ["Veuillez vérifier la valeur"]
                     )
+                if roof_type.id == 3:
+                    if not (
+                        bottom_length is None
+                        or bottom_length == ""
+                        or bottom_length <= 0
+                        or width is None
+                        or width == ""
+                        or width <= 0
+                    ):
+                        try:
+                            height = math.sqrt(
+                                (width * width)
+                                - ((bottom_length / 2) * (bottom_length / 2))
+                            )
+                        except:
+                            self._errors["bottom_length"] = self.error_class(
+                                ["Veuillez vérifier la valeur"]
+                            )
+                            self._errors["width"] = self.error_class(
+                                ["Veuillez vérifier la valeur"]
+                            )
             elif roof_type.id == 2:
                 if bottom_length is None or bottom_length == "" or bottom_length <= 0:
                     self._errors["bottom_length"] = self.error_class(
@@ -227,6 +249,21 @@ class RoofForm(ModelForm):
                         ["Veuillez vérifier la valeur"]
                     )
 
+                if not (
+                    bottom_length is None
+                    or bottom_length == ""
+                    or bottom_length <= 0
+                    or top_length is None
+                    or top_length == ""
+                    or top_length <= 0
+                ):
+                    if bottom_length < top_length:
+                        self._errors["bottom_length"] = self.error_class(
+                            ["Veuillez vérifier la valeur"]
+                        )
+                        self._errors["top_length"] = self.error_class(
+                            ["Veuillez vérifier la valeur"]
+                        )
         # return any errors if found
         return self.cleaned_data
 

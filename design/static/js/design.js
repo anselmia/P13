@@ -74,10 +74,17 @@
       e.preventDefault();
       check_step_fail(stepIndex, stepDirection, function (resp) {
         if (resp["success"]) {
+          // Clear Step 3
+          if (stepIndex == 1) {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            $('.infos_implantation').hide();
+          }
           $('#smartwizard').smartWizard("next");
         } else {
           isLastStepChecked = false;
         }
+
+        // Update errors in forms
         check_forms_errors(resp);
 
       });
@@ -91,9 +98,9 @@
     }
   });
 
-  $('#smartwizard').on('showstep', function (e, anchorObject, stepIndex, stepDirection, stepPosition) {
+  $('#smartwizard').on('showStep', function (e, anchorObject, stepIndex, stepDirection, stepPosition) {
     $('.tab-content').css('height', 'auto')
-    $('*[id*=step' + stepIndex + ']').each(function () {
+    $('*[id*=step').each(function () {
       $(this).css('width', '100%');
     });
   });
@@ -101,8 +108,8 @@
   function check_forms_errors(resp) {
 
     if ($(".form_validation_errors").length) {
-      $(".form_validation_errors").prev().removeClass("form-control is-invalid");
-      $(".form_validation_errors").empty();
+      $(".is-invalid").removeClass("form-control is-invalid");
+      $(".form_errors").empty();
     }
 
     if (resp != null && resp.errors) {
@@ -112,7 +119,8 @@
           // object message error django
           var $input = $("[name='" + name + "']");
           $input.addClass("form-control is-invalid");
-          $input.after("<p class ='form_validation_errors'>" + errors[name][i] + "</p>");
+          var next = $input.closest('.row').next();
+          next.append("<p class ='form_validation_errors'>" + errors[name][i] + "</p>");
         }
       }
     }
@@ -355,6 +363,7 @@
   });
 
   $('.draw').on('click', function (event) {
+    $('.infos_implantation').hide();
     calculate_implantation();
   });
 
@@ -432,6 +441,7 @@
                     var datas = JSON.parse(resp["implantation_values"]);
                     draw(datas)
                   }
+                  check_forms_errors(resp);
                 })
               } else {
                 check_forms_errors(resp);
@@ -444,34 +454,44 @@
     })
   }
 
-
-
   function draw(datas) {
-    canvas.width = $('.draw-border').width();
+    canvas.width = $('#myCanvas').parent().width();
     canvas.height = canvas.width;
+    context.clearRect(0, 0, canvas.width, canvas.height);
 
-    scale_value();
-    draw_roof();
+    scale_value(datas);
+    draw_roof(datas);
     draw_panel(datas);
+    set_infos(datas);
   }
 
-  function scale_value() {
+  function scale_value(datas) {
     var canva_width = canvas.width;
     var canva_height = canvas.height;
-    if (original_datas["bottom_length"] > original_datas["width"])
+    if (original_datas["bottom_length"] > original_datas["width"]) {
       scale = canva_width / original_datas["bottom_length"];
-    else
+      if (original_datas["roof_type"] == 1)
+        canvas.height = 50 + canva_width * (original_datas["width"] / original_datas["bottom_length"]);
+      else if (original_datas["roof_type"] == 2)
+        canvas.height = 50 + canva_width * (original_datas["height"] / original_datas["bottom_length"]);
+      else
+        canvas.height = 50 + canva_width * (datas["height"] / original_datas["bottom_length"]);
+    } else {
       scale = canva_height / original_datas["width"];
+      canvas.width = canva_height * (original_datas["bottom_length"] / original_datas["width"]);
+    }
+
+    var context = canvas.getContext('2d');
   }
 
-  function draw_roof() {
+  function draw_roof(datas) {
     if (original_datas["roof_type"] == 1) {
       context.beginPath();
       context.rect(0, 0, original_datas["bottom_length"] * scale, original_datas["width"] * scale);
     } else if (original_datas["roof_type"] == 2) {
       context.beginPath();
       context.moveTo(0, original_datas["height"] * scale);
-      context.lineTo(original_datas["bottom_length"] * scale, z * scale);
+      context.lineTo(original_datas["bottom_length"] * scale, original_datas["height"] * scale);
       context.lineTo((((original_datas["bottom_length"] - original_datas["top_length"]) / 2) + original_datas["top_length"]) * scale, 0);
       context.lineTo(((original_datas["bottom_length"] - original_datas["top_length"]) / 2) * scale, 0);
       context.closePath();
@@ -481,8 +501,8 @@
       context.stroke();
     } else {
       context.beginPath();
-      context.moveTo(0, original_datas["height"] * scale);
-      context.lineTo(original_datas["bottom_length"] * scale, original_datas["height"] * scale);
+      context.moveTo(0, datas["height"] * scale);
+      context.lineTo(original_datas["bottom_length"] * scale, datas["height"] * scale);
       context.lineTo((original_datas["bottom_length"] * scale) / 2, 0);
       context.closePath();
     }
@@ -516,6 +536,38 @@
       context.lineWidth = 1;
       context.stroke();
     }
+  }
+
+  function set_infos(datas) {
+    $('.bottom_length_value').text(original_datas["bottom_length"].toFixed(2));
+    $('.height_value').text(datas["height"].toFixed(2));
+    $('.top_length_value').text(original_datas["top_length"].toFixed(2));
+    $('.surface_value').text(datas["surface"].toFixed(2));
+    $('.top_rest_value').text(datas["top_rest"].toFixed(2));
+    $('.bottom_rest_value').text(datas["bottom_rest"].toFixed(2));
+    $('.left_rest_value').text(datas["left_rest"].toFixed(2));
+    $('.right_rest_value').text(datas["right_rest"].toFixed(2));
+    $('.tot_pan_value').text(datas["total_pan"]);
+    $('.tot_pan_width_value').text(datas["nb_panel_width"]);
+    $('.tot_pan_length_value').text(datas["nb_panel_length"]);
+    $('.tot_pan_left_triangle_value').text(datas["nb_pan_left_triangle"]);
+    $('.tot_pan_right_triangle_value').text(datas["nb_pan_right_triangle"]);
+    $('.panel_length_value').text(datas["panel_length"].toFixed(2));
+    $('.panel_width_value').text(datas["panel_width"].toFixed(2));
+    $('.power_value').text(datas["power"].toFixed(2));
+
+    $('.rectangle').hide();
+    $('.trapeze').hide();
+    $('.triangle').hide();
+
+    if (original_datas["roof_type"] == 1)
+      $('.rectangle').show();
+    else if (original_datas["roof_type"] == 2)
+      $('.trapeze').show();
+    else
+      $('.triangle').show();
+
+    $('.infos_implantation').show();
   }
 
   //###################################################################
