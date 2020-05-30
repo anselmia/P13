@@ -165,6 +165,14 @@ if os.environ.get("ENV") == "PRODUCTION":  # pragma: no cover
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES["default"].update(db_from_env)
     METEOSTAT_API_KEY = os.environ["METEOSTAT_API_KEY"]
+    NREL_API_KEY = os.environ["NREL_API_KEY"]
+    GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
+    OPEN_CAGE_DATA_API_KEY = os.environ["OPEN_CAGE_DATA_API_KEY"]
 else:
     DEBUG = True
-    from SolarProject.local_settings import METEOSTAT_API_KEY
+    from SolarProject.local_settings import (
+        METEOSTAT_API_KEY,
+        NREL_API_KEY,
+        GOOGLE_API_KEY,
+        OPEN_CAGE_DATA_API_KEY,
+    )

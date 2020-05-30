@@ -5,23 +5,43 @@
 .container_33 {
     width: 33%;
     height: auto;
+    min-height: 2rem;
+}
+
+.container_70 {
+    width: 70%;
+    height: auto;
+    min-height: 2rem;
+}
+
+.container_100 {
+    width: 100%;
+    height: auto;
+    min-height: 2rem;
+}
+
+.round_select {
+    border-radius: 5px;
+    min-height: auto;
+    min-width: auto;
 }
 
 .add_button {
     box-shadow: 0px 0px 0px 0px #3dc21b;
     background: linear-gradient(to bottom, #44c767 5%, #5cbf2a 100%);
     background-color: #44c767;
-    border-radius: 42px;
+    border-radius: 50px;
     border: 1px solid #18ab29;
     display: inline-block;
     cursor: pointer;
     color: #ffffff;
     font-family: Arial;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bold;
     text-decoration: none;
     text-shadow: 0px 1px 0px #2f6627;
-    width: 7%;
+    width: auto;
+    padding: 5px 15px;
     height: auto;
     text-align: center;
 }
@@ -38,14 +58,16 @@
 
 .search_button {
     background-color: #e6e7eb;
-    border-radius: 28px;
+    border-radius: 50px;
     border: 1px solid #7fb4e3;
     display: inline-block;
     cursor: pointer;
     color: #000000;
     font-family: Arial;
     font-size: 14px;
-    padding: 8px 28px;
+    padding: 5px 15px;
+    width: auto;
+    height: auto;
     text-decoration: none;
     text-shadow: 0px 1px 0px #2f6627;
 }
@@ -59,7 +81,135 @@
     top: 1px;
 }
 
+.valid_button {
+    background-color: #45c78d;
+    border-radius: 50px;
+    border: 1px solid #18ab29;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 15px;
+    padding: 8px 28px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #2f6627;
+    width: 7%;
+}
+
+.valid_button:hover {
+    background-color: #5cbf2a;
+}
+
+.valid_button:active {
+    position: relative;
+    top: 1px;
+}
+
+.cancel_button {
+    box-shadow: 0px 0px 0px 0px #3dc21b;
+    background: linear-gradient(to bottom, #f35858 5%, #901010 100%);
+    background-color: #ff2929;
+    border-radius: 50px;
+    border: 1px solid #ff2929;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #2f6627;
+    width: auto;
+    padding: 5px 15px;
+    height: auto;
+    text-align: center;
+}
+
+.cancel_button:hover {
+    background: linear-gradient(to bottom, #a01919 5%, #800404 100%);
+    background-color: #a50f28;
+}
+
+.cancel_button:active {
+    position: relative;
+    top: 1px;
+}
+
 #add_city,
 #add_panel {
+    border-radius: 10px;
+    border: 1px solid rgb(0, 0, 0);
+    padding: 5px;
+    width: auto;
+    height: auto;
+}
+
+.localisation {
     display: none;
+}
+
+.localisation_values,
+.panel_values {
+    display: inline-block;
+    vertical-align: middle;
+    justify-content: center;
+    width: 100%;
+}
+
+#city_to_find,
+#panel_to_find {
+    width: 100%;
+}
+
+.tab-content h3 {
+    margin: auto;
+    width: fit-content;
+}
+
+.tab-content {
+    height: 100% !important;
+    width: 100%;
+}
+
+.roof_decoration {
+    width: auto;
+    height: auto;
+    vertical-align: middle;
+    justify-content: center;
+    display: flex;
+}
+
+form .row,
+form .row .row {
+    margin: 0px !important;
+}
+
+.draw-border {
+    height: 100%;
+    width: 100%;
+    border: 3px ridge rgba(0, 0, 0, 0.22);
+    border-radius: 5px;
+}
+
+div input,
+div select {
+    width: 100%;
+}
+
+#myCanvas {
+    width: 100%;
+}
+
+.vertical_center {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%) perspective(1px);
+}
+
+.cn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

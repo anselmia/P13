@@ -2,127 +2,762 @@
 {% load static %}
 {% load widget_tweaks %}
 {% block body %}
-<div id="smartwizard" class="design">
 
-    <ul class="nav">
-        <li class="nav-item">
-            <a class="nav-link" href="#step-1">
-                <strong>Step 1</strong> <br>Données du projet
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#step-2">
-                <strong>Step 2</strong> <br>This is step description
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#step-3">
-                <strong>Step 3</strong> <br>This is step description
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#step-4">
-                <strong>Step 4</strong> <br>This is step description
-            </a>
-        </li>
-    </ul>
-
-    <div class="tab-content">
-        <div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
-            <h3>Informations du projet</h3>
-            <br>
-            <br>
-            <form class="form-signin" method="POST" action="{% url 'design:index' %}">
-                {{ form_project.non_field_errors }}
-                <div>
-                    <label for="inputEmail">{{ form_project.name.label_tag }}</label>
-                </div>
-                <div>
-                    {{ form_project.name }}
-                </div>
-                <div>
-                    {{ form_project.name.errors }}
+<div class="container">
+    <div id="smartwizard" class="design col-lg-10 mx-auto">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#step-1">
+                    <strong>Step 1</strong> <br>Données du projet
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#step-2">
+                    <strong>Step 2</strong> <br>Toiture
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#step-3">
+                    <strong>Step 3</strong> <br>This is step description
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#step-4">
+                    <strong>Step 4</strong> <br>This is step description
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
+                <br>
+                <div class="mx-auto">
+                    <h3>
+                        <p><b><i><u>Informations du projet</u></i></b></p>
+                    </h3>
                 </div>
                 <br>
-                <div>
-                    <label for="inputPassword">{{ form_project.building_type.label_tag }}</label>
-                </div>
-                <div>
-                    {{ form_project.building_type }}
-                </div>
-                <div>
-                    {{ form_project.building_type.errors }}
-                </div>
-                <br>
-                <div>
-                    <label for="inputPassword">{{ form_project.city_id.label_tag }}</label>
-                </div>
-                <div>
-                    {{ form_project.city_id }}
-                    &nbsp;
-                    <a href="#" id="add_city_button" class="add_button">Ajouter</a>
-                </div>
-                <div>
-                    {{ form_project.city_id.errors }}
-                </div>
-                <div id="add_city" class="container">
-                    <div>Ville à Rechercher :</div>
-                    <div class="row">
-                        <div class="container_33">
-                            <input type=" text" name="city_to_search" id="city_to_find">
+                <div class="col-12">
+                    <form class="form_project" method="POST" action="{% url 'design:index' %}">
+                        {% csrf_token %}
+                        {{ form_project.non_field_errors }}
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="" class="vertical_center">{{ form_project.name.label_tag }}</label>
+                            </div>
+                            <div class="col-6">
+                                {{ form_project.name }}
+                            </div>
                         </div>
-                        <a href="#" class="search_button meteo_search">Rechercher</a>
+                        <br>
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="" class="vertical_center">{{ form_project.building_type.label_tag }}</label>
+                            </div>
+                            <div class="col-6">
+                                {{ form_project.building_type }}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="" class="vertical_center">{{ form_project.city_id.label_tag }}</label>
+                            </div>
+                            <div class="col-6">{{ form_project.city_id }}</div>
+                            <div class="col-2">
+                                <button id="add_city_button" type="button" class="btn btn-primary vertical_center"
+                                    data-toggle="modal" data-target="#CityModal">
+                                    Ajouter
+                                </button>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="" class="vertical_center">{{ form_project.panel_id.label_tag }}</label>
+                            </div>
+                            <div class="col-6">{{ form_project.panel_id }}</div>
+                            <div class="col-2">
+                                <button type="button" class="btn btn-primary vertical_center" data-toggle="modal"
+                                    data-target="#PanelModal">
+                                    Ajouter
+                                </button>
+                            </div>
+                        </div>
+                        <br>
+                    </form>
+                </div>
+            </div>
+            <div id="step-2" class="tab-pane" role="tabpanel" aria-labelledby="step-2">
+                <br>
+                <div class="mx-auto">
+                    <h3>
+                        <p><b><i><u>Définition de la toîture</u></i></b>
+                    </h3>
+                </div>
+                <br>
+                <div class="col-12">
+                    <form class="form_roof" method="POST" action="{% url 'design:save_roof' %}">
+                        {% csrf_token %}
+                        {{ form_roof.non_field_errors }}
+                        <div class="row">
+                            <div class="col-9 px-0">
+                                <div class="row w-100">
+                                    <div class="col-5">
+                                        <label for="roofingtype"
+                                            class="vertical_center">{{ form_roof.roofing_type.label_tag }}</label>
+                                    </div>
+                                    <div class="col-5">
+                                        {{ form_roof.roofing_type }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-9 px-0">
+                                <div class="row w-100">
+                                    <div class="col-5">
+                                        <label for="roofingtype"
+                                            class="vertical_center">{{ form_roof.roof_type.label_tag }}</label>
+                                    </div>
+                                    <div class="col-5">
+                                        {{ form_roof.roof_type }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-9 px-0">
+                                <div class="row w-100">
+                                    <div class="col-5">
+                                        <label id="id_width"
+                                            class="vertical_center">{{ form_roof.width.label_tag }}</label>
+                                    </div>
+                                    <div class="col-5">
+                                        {{ form_roof.width }}
+                                    </div>
+                                    <div class="col-2 px-0">
+                                        <div id="id_width" class="row w-100">
+                                            <p class="cn">m</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row w-100">
+                                    <div class="col-5">
+                                        <label id="id_bottom_length"
+                                            class="vertical_center">{{ form_roof.bottom_length.label_tag }}</label>
+                                    </div>
+                                    <div class="col-5">
+                                        {{ form_roof.bottom_length }}
+                                    </div>
+                                    <div class="col-2 px-0">
+                                        <div id="id_bottom_length" class="row w-100">
+                                            <p class="cn">m</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row w-100">
+                                    <div class="col-5">
+                                        <label id="id_top_length"
+                                            class="vertical_center">{{ form_roof.top_length.label_tag }}</label>
+                                    </div>
+                                    <div class="col-5">
+                                        {{ form_roof.top_length }}
+                                    </div>
+                                    <div class="col-2 px-0">
+                                        <div id="id_top_length" class="row w-100">
+                                            <p class="cn">m</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row w-100">
+                                    <div class="col-5 ">
+                                        <label class="vertical_center"
+                                            id="id_height">{{ form_roof.height.label_tag }}</label>
+                                    </div>
+                                    <div class="col-5 ">
+                                        {{ form_roof.height }}
+                                    </div>
+                                    <div class="col-2 px-0 ">
+                                        <div id="id_height" class="row w-100">
+                                            <p class="cn">m</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3 m-0 px-0 aria-hidden roof roof_decoration">
+                                <img class="roof-img align-items-center justify-content-center text-center"
+                                    src="{% get_static_prefix %}images/roof_rectangle.png" alt="type de toît">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-9 px-0">
+                                <div class="row w-100 vertical_center">
+                                    <div class="col-5">
+                                        <label for="orientation"
+                                            class="vertical_center">{{ form_roof.orientation.label_tag }}</label>
+                                    </div>
+                                    <div class="col-5">
+                                        {{ form_roof.orientation }}
+                                    </div>
+                                    <div class="col-2 row w-100 px-0">
+                                        <p class="vertical_center">°</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3 aria-hidden roof_decoration">
+                                <img class="align-items-center justify-content-center text-center"
+                                    src="{% get_static_prefix %}images/orientation.png" alt="type de toît">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-9 px-0">
+                                <div class="row w-100 vertical_center">
+                                    <div class="col-5">
+                                        <label for="tilt" class="vertical_center">{{ form_roof.tilt.label_tag }}</label>
+                                    </div>
+                                    <div class="col-5">
+                                        {{ form_roof.tilt }}
+                                    </div>
+                                    <div class="col-2 row w-100 px-0">
+                                        <p class="vertical_center">°</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3 aria-hidden roof_decoration">
+                                <img class="align-items-center justify-content-center text-center"
+                                    src="{% get_static_prefix %}images/inclinaison.png" alt="type de toît">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
+                <br>
+                <div class="mx-auto">
+                    <h3>
+                        <p><b><i><u>Implantation des panneaux</u></i></b></p>
+                    </h3>
+                </div>
+                <br>
+                <div class="row container">
+                    <div class="col-4">
+                        <button type="button" class="btn btn-secondary draw">Dessiner</button>
+                        <br>
+                        <form class="form_implantation" method="POST" action="">
+                            {% csrf_token %}
+                            {{ form_impantation.non_field_errors }}
+                            <div class="row">
+                                <div class="col-5 p-1">
+                                    <label for="panel_orientation"
+                                        class="vertical_center">{{ form_implantation.panel_orientation.label_tag }}</label>
+                                </div>
+                                <div class="col-6 p-1 cn">
+                                    {{ form_implantation.panel_orientation }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 p-1">
+                                    <label for="panel_implantation"
+                                        class="vertical_center">{{ form_implantation.panel_implantation.label_tag }}</label>
+                                </div>
+                                <div class="col-6 p-1 cn">
+                                    {{ form_implantation.panel_implantation }}
+                                </div>
+                            </div>
+                            <div class="row vertical_overlapping">
+                                <div class="col-5 p-1">
+                                    <label for="vertical_overlapping"
+                                        class="vertical_center">{{ form_implantation.vertical_overlapping.label_tag }}</label>
+                                </div>
+                                <div class="col-6 p-1 cn">
+                                    {{ form_implantation.vertical_overlapping }}
+                                </div>
+                                <div class="col-1 w-100 px-0">
+                                    <p class="vertical_center">m</p>
+                                </div>
+                            </div>
+                            <div class="row horizontal_overlapping">
+                                <div class="col-5 p-1">
+                                    <label for="horizontal_overlapping"
+                                        class="vertical_center">{{ form_implantation.horizontal_overlapping.label_tag }}</label>
+                                </div>
+                                <div class="col-6 p-1 cn">
+                                    {{ form_implantation.horizontal_overlapping }}
+                                </div>
+                                <div class="col-1 w-100 px-0">
+                                    <p class="vertical_center">m</p>
+                                </div>
+                            </div>
+                            <div class="row vertical_spacing">
+                                <div class="col-5 p-1">
+                                    <label for="vertical_spacing"
+                                        class="vertical_center">{{ form_implantation.vertical_spacing.label_tag }}</label>
+                                </div>
+                                <div class="col-6 p-1 cn">
+                                    {{ form_implantation.vertical_spacing }}
+                                </div>
+                                <div class="col-1 w-100 px-0">
+                                    <p class="vertical_center">m</p>
+                                </div>
+                            </div>
+                            <div class="row horizontal_spacing">
+                                <div class="col-5 p-1">
+                                    <label for="horizontal_spacing"
+                                        class="vertical_center">{{ form_implantation.horizontal_spacing.label_tag }}</label>
+                                </div>
+                                <div class="col-6 p-1 cn">
+                                    {{ form_implantation.horizontal_spacing }}
+                                </div>
+                                <div class="col-1 w-100 px-0">
+                                    <p class="vertical_center">m</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 p-1">
+                                    <label for="distance_top"
+                                        class="vertical_center">{{ form_implantation.distance_top.label_tag }}</label>
+                                </div>
+                                <div class="col-6 p-1 cn">
+                                    {{ form_implantation.distance_top }}
+                                </div>
+                                <div class="col-1 w-100 px-0">
+                                    <p class="vertical_center">m</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 p-1">
+                                    <label for="distance_bottom"
+                                        class="vertical_center">{{ form_implantation.distance_bottom.label_tag }}</label>
+                                </div>
+                                <div class="col-6 p-1 cn">
+                                    {{ form_implantation.distance_bottom }}
+                                </div>
+                                <div class="col-1 w-100 px-0">
+                                    <p class="vertical_center">m</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 p-1">
+                                    <label for="distance_left"
+                                        class="vertical_center">{{ form_implantation.distance_left.label_tag }}</label>
+                                </div>
+                                <div class="col-6 p-1 cn">
+                                    {{ form_implantation.distance_left }}
+                                </div>
+                                <div class="col-1 w-100 px-0">
+                                    <p class="vertical_center">m</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 p-1">
+                                    <label for="distance_right"
+                                        class="vertical_center">{{ form_implantation.distance_right.label_tag }}</label>
+                                </div>
+                                <div class="col-6 p-1 cn">
+                                    {{ form_implantation.distance_right }}
+                                </div>
+                                <div class="col-1 w-100 px-0">
+                                    <p class="vertical_center">m</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 p-1">
+                                    <label for="abergement_top"
+                                        class="vertical_center">{{ form_implantation.abergement_top.label_tag }}</label>
+                                </div>
+                                <div class="col-6 p-1 cn">
+                                    {{ form_implantation.abergement_top }}
+                                </div>
+                                <div class="col-1 w-100 px-0">
+                                    <p class="vertical_center">m</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 p-1">
+                                    <label for="abergement_bottom"
+                                        class="vertical_center">{{ form_implantation.abergement_bottom.label_tag }}</label>
+                                </div>
+                                <div class="col-6 p-1 cn">
+                                    {{ form_implantation.abergement_bottom }}
+                                </div>
+                                <div class="col-1 w-100 px-0">
+                                    <p class="vertical_center">m</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 p-1">
+                                    <label for="abergement_left"
+                                        class="vertical_center">{{ form_implantation.abergement_left.label_tag }}</label>
+                                </div>
+                                <div class="col-6 p-1 cn">
+                                    {{ form_implantation.abergement_left }}
+                                </div>
+                                <div class="col-1 w-100 px-0">
+                                    <p class="vertical_center">m</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 p-1">
+                                    <label for="abergement_right"
+                                        class="vertical_center">{{ form_implantation.abergement_right.label_tag }}</label>
+                                </div>
+                                <div class="col-6 p-1 cn">
+                                    {{ form_implantation.abergement_right }}
+                                </div>
+                                <div class="col-1 w-100 px-0">
+                                    <p class="vertical_center">m</p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-8">
+                        <div class="container draw-border">
+                            <canvas id="myCanvas">
+
+                            </canvas>
+                        </div>
                     </div>
                 </div>
-                <br>
-                <div>
-                    <label for="inputPassword">{{ form_project.panel_id.label_tag }}</label>
-                </div>
-                <div>
-                    {{ form_project.panel_id }}
-                    &nbsp;
-                    <a href="#" class="add_button">Ajouter</a>
-                </div>
-                <div>
-                    {{ form_project.panel_id.errors }}
-                </div>
-                <div id="add_panel"></div>
-                <br>
-            </form>
-        </div>
-        <div id="step-2" class="tab-pane" role="tabpanel" aria-labelledby="step-2">
-            <h3>Step 2 Content</h3>
-            <div>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+            </div>
+            <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
+                <h3>Step 4 Content</h3>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
                 industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
                 scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap
-                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
-                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
-                software like Aldus PageMaker including versions of Lorem Ipsum. </div>
-        </div>
-        <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-            industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-            scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
-            electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of
-            Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like
-            Aldus PageMaker including versions of Lorem Ipsum.
-        </div>
-        <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
-            <h3>Step 4 Content</h3>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-            industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-            scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
-            electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of
-            Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like
-            Aldus PageMaker including versions of Lorem Ipsum.
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-            industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-            scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
-            electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of
-            Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like
-            Aldus PageMaker including versions of Lorem Ipsum.
+                into
+                electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
+                release of
+                Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like
+                Aldus PageMaker including versions of Lorem Ipsum.
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap
+                into
+                electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
+                release of
+                Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like
+                Aldus PageMaker including versions of Lorem Ipsum.
+            </div>
         </div>
     </div>
 </div>
-<br /> &nbsp;
+<div class="modal fade" id="CityModal" tabindex="-1" role="dialog" aria-labelledby="add_city_modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="{% url 'design:add_city' %}" method="POST" id="city-form">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="add_city_modal">Ajouter une ville</h5>
+                    <button type="button" class="close cancel_city" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="add_city" class="container p-3">
+                        <div class="row px-3 justify-content">
+                            {{ form_city.non_field_errors }}
+                            <div id="city_errors">
+                            </div>
+                            <div class="col-7">
+                                <p>Ville à rechercher :</p>
+                            </div>
+                        </div>
+                        <div class="row px-3">
+                            <div class="col-7">
+                                <input type="text" name="city_to_search" id="city_to_find">
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-primary localisation_search">
+                                    Rechercher
+                                </button>
+                            </div>
+                        </div>
+                        <div class="container localisation">
+                            <br>
+                            <p><b><i><u>Donées de la ville :</u></i></b></p>
+                            <div class="localisation_values">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label for="city_name">{{ form_city.name.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 find_city find_city_data">
+                                        {{ form_city.name }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label for="city_lat">{{ form_city.lat.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 find_lat find_city_data">
+                                        {{ form_city.lat }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label for="city_lat">{{ form_city.lon.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 find_lon find_city_data">
+                                        {{ form_city.lon }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary cancel_city" data-dismiss="modal">Annuler</button>
+                    <input id="valid_city_button" type="submit" class="btn btn btn-success" value="Ajouter une ville" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="PanelModal" tabindex="-1" role="dialog" aria-labelledby="add_panel_modal"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="{% url 'design:add_panel' %}" method="POST" id="panel-form">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="add_panel_modal">Ajouter un panneau</h5>
+                    <button type="button" class="close cancel_panel" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="add_panel" class="container p-1">
+                        <div class="container panel">
+                            {{ form_panel.non_field_errors }}
+                            <div id="panel_errors">
+                            </div>
+                            <br>
+                            <p><b><i><u>Informations du panneau :</u></i></b></p>
+                            <div class="panel_values">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.model.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.model }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.manufacturer_id.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.manufacturer_id }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.technology_id.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.technology_id }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.power.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.power }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>Wc</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.tolerance.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.tolerance }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>%</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.radiation.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.radiation }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>W/m²</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.temperature.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.temperature }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>°C</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.short_circuit_current.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.short_circuit_current }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>A</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.open_circuit_voltage.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.open_circuit_voltage }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>V</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.temperature_factor_current.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.temperature_factor_current }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        {{ form_panel.temperature_factor_current_type }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.temperature_factor_voltage.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.temperature_factor_voltage }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        {{ form_panel.temperature_factor_voltage_type }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.temperature_factor_power.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.temperature_factor_power }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        {{ form_panel.temperature_factor_power_type }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.mpp_current.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.mpp_current }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>A</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.mpp_voltage.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.mpp_voltage }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>V</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.voltage_max.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.voltage_max }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>V</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.length.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.length }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>mm</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.width.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.width }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>mm</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.serial_cell_quantity.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.serial_cell_quantity }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.parallel_cell_quantity.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.parallel_cell_quantity }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.cell_surface.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.cell_surface }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>cm²</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>{{ form_panel.comment.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 panel_data">
+                                        {{ form_panel.comment }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary cancel_panel" data-dismiss="modal">Annuler</button>
+                    <input id="valid_panel_button" type="submit" class="btn btn btn-success"
+                        value="Ajouter un panneau" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br />
 {% endblock %}
