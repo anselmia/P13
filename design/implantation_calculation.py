@@ -2,7 +2,6 @@ from .models import (
     Panel,
     Implantation,
     Roof,
-    Roofing_type,
     Roof_type,
     Orientation,
     Pose,
@@ -25,9 +24,7 @@ class Implantation_calculation:
 
         # Roof Data
         roof_type = Roof_type.objects.get(id=datas["roof_type"])
-        roofing_type = Roofing_type.objects.get(id=datas["roofing_type"])
         self.roof = Roof(
-            roofing_type_id=roofing_type,
             roof_type_id=roof_type,
             bottom_length=float(datas["bottom_length"]),
             top_length=float(datas["top_length"]),
@@ -188,6 +185,7 @@ class Implantation_calculation:
             implantation.total_pan = 0
             implantation.nb_panel_length = 0
             implantation.nb_panel_width = 0
+            implantation
 
         if self.roof.roof_type_id_id == 1:
             implantation.surface = self.roof.bottom_length * self.roof.width

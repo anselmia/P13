@@ -30,9 +30,6 @@ class Project(models.Model):
 
     name = models.CharField(max_length=100, unique=True, verbose_name="Nom")
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    building_type = models.IntegerField(
-        blank=True, null=False, verbose_name="Type de bâtiment"
-    )
     city_id = models.ForeignKey(
         City, related_name="ville", on_delete=models.CASCADE, verbose_name="Ville",
     )

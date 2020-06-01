@@ -1,12 +1,22 @@
 from django.shortcuts import render
-from .forms import ProjectForm, CityForm, PanelForm, RoofForm, ImplantationForm
+from .forms import (
+    ProjectForm,
+    CityForm,
+    PanelForm,
+    RoofForm,
+    ImplantationForm,
+    ConfigForm,
+    MPPForm,
+)
 from django.contrib.auth.decorators import login_required
 from design.api import TemperatureData, IrradianceData, Localisation
 from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.contrib import messages
 from project.models import City
-from design.models import Panel, Temperature_coefficient
+from design.models import Panel, Inverter
 from design.implantation_calculation import Implantation_calculation
+from design.configuration_calculation import Calculation
+from django.core import serializers
 import json
 
 # Create your views here.
@@ -34,6 +44,8 @@ def index(request):
         panel = PanelForm()
         roof = RoofForm()
         implantation = ImplantationForm()
+        config = ConfigForm()
+        mpp = MPPForm()
 
     return render(
         request,
@@ -44,6 +56,8 @@ def index(request):
             "form_panel": panel,
             "form_roof": roof,
             "form_implantation": implantation,
+            "form_config": config,
+            "form_mpp": mpp,
         },
     )
 
@@ -119,7 +133,7 @@ def valid_project(request):
             else:
                 return JsonResponse({"errors": project.errors})
         except:
-            return JsonResponse({"errors": True})
+            return JsonResponse({"errors": project.errors})
 
 
 @login_required
@@ -132,7 +146,7 @@ def valid_roof(request):
             else:
                 return JsonResponse({"errors": roof.errors})
         except Exception as E:
-            return JsonResponse({"errors": True})
+            return JsonResponse({"errors": roof.errors})
 
 
 @login_required
@@ -145,7 +159,32 @@ def valid_implantation(request):
             else:
                 return JsonResponse({"errors": implantation.errors})
         except Exception as E:
-            return JsonResponse({"errors": True})
+            return JsonResponse({"errors": implantation.errors})
+
+
+@login_required
+def valid_configuration(request):
+    if request.method == "POST":
+        configuration = ConfigForm(request.POST)
+        try:
+            if configuration.is_valid():
+                return JsonResponse({"success": True})
+            else:
+                return JsonResponse({"errors": configuration.errors})
+        except Exception as E:
+            return JsonResponse({"errors": configuration.errors})
+
+
+def valid_mpp(request):
+    if request.method == "POST":
+        mpp = MPPForm(request.POST)
+        try:
+            if mpp.is_valid():
+                return JsonResponse({"success": True})
+            else:
+                return JsonResponse({"errors": mpp.errors})
+        except Exception as E:
+            return JsonResponse({"errors": mpp.errors})
 
 
 @login_required
@@ -155,7 +194,33 @@ def calcul_implantation(request):
         try:
             implantation = Implantation_calculation(data)
             return JsonResponse(
-                    {"success": True, "implantation_values": implantation.data}
+                {"success": True, "implantation_values": implantation.data}
+            )
+        except Exception as E:
+            return JsonResponse({"errors": True})
+
+
+@login_required
+def calcul_configuration(request):
+    if request.method == "POST":
+        data = json.loads(request.POST.get("data", ""))
+        try:
+            configuration = Calculation(data)
+            return JsonResponse(
+                {"success": True, "configuration_values": configuration.data}
+            )
+        except Exception as E:
+            return JsonResponse({"errors": True})
+
+
+@login_required
+def inverter_data(request):
+    data = request.POST
+    if request.method == "POST":
+        try:
+            inverter = Inverter.objects.get(id=int(data["inverter_id"]))
+            return JsonResponse(
+                {"success": True, "data": serializers.serialize("json", [inverter,]),}
             )
         except Exception as E:
             return JsonResponse({"errors": True})

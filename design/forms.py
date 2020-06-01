@@ -7,10 +7,12 @@ from .models import (
     Temperature_coefficient,
     Roof,
     Roof_type,
-    Roofing_type,
     Implantation,
     Orientation,
     Pose,
+    Config,
+    MPP,
+    Inverter,
 )
 from user.models import User
 from django.forms import ModelForm
@@ -20,7 +22,7 @@ import math
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
-        fields = ("name", "building_type", "city_id", "panel_id")
+        fields = ("name", "city_id", "panel_id")
 
     def __init__(self, *args, **kwargs):
         super(ProjectForm, self).__init__(*args, **kwargs)
@@ -29,10 +31,6 @@ class ProjectForm(ModelForm):
             {"value": 0, "class": "container_100 cn"}
         )
         self.fields["name"].required = True
-        self.fields["building_type"].widget.attrs.update(
-            {"value": 0, "class": "container_100 cn"}
-        )
-        self.fields["building_type"].required = True
 
     city_id = forms.ModelChoiceField(
         queryset=City.objects.all(), label="Ville", required=True, initial=1,
@@ -140,7 +138,6 @@ class RoofForm(ModelForm):
     class Meta:
         model = Roof
         fields = (
-            "roofing_type",
             "roof_type",
             "bottom_length",
             "top_length",
@@ -179,13 +176,6 @@ class RoofForm(ModelForm):
         )
         self.fields["tilt"].widget.attrs.update({"class": "container_100 round_input "})
 
-    roofing_type = forms.ModelChoiceField(
-        queryset=Roofing_type.objects.all(),
-        label="Type de Faîtage",
-        required=True,
-        initial=1,
-    )
-    roofing_type.widget.attrs["class"] = "round_input container_100"
     roof_type = forms.ModelChoiceField(
         queryset=Roof_type.objects.all(),
         label="Type de toîture",
@@ -385,5 +375,58 @@ class ImplantationForm(ModelForm):
                     self._errors["horizontal_overlapping"] = self.error_class(
                         ["Veuillez vérifier la valeur"]
                     )
+        # return any errors if found
+        return self.cleaned_data
+
+
+class ConfigForm(ModelForm):
+    class Meta:
+        model = Config
+        fields = (
+            "inverter_id",
+            "inverter_quantity",
+        )
+
+    def __init__(self, *args, **kwargs):
+        super(ConfigForm, self).__init__(*args, **kwargs)
+        self.fields["inverter_quantity"].required = True
+        self.fields["inverter_quantity"].widget.attrs.update(
+            {"value": 0, "class": "cn config"}
+        )
+        self.fields["inverter_id"].widget.attrs.update(
+            {"class": "container_100 round_input cn config"}
+        )
+
+    inverter_id = forms.ModelChoiceField(
+        queryset=Inverter.objects.all(), label="Onduleur", required=True, initial=1,
+    )
+
+    def clean(self):
+        # data from the form is fetched using super function
+        super(ConfigForm, self).clean()
+
+        # return any errors if found
+        return self.cleaned_data
+
+
+class MPPForm(ModelForm):
+    class Meta:
+        model = MPP
+        fields = (
+            "serial",
+            "parallel",
+        )
+
+    def __init__(self, *args, **kwargs):
+        super(MPPForm, self).__init__(*args, **kwargs)
+        self.fields["serial"].required = True
+        self.fields["serial"].widget.attrs.update({"value": 0, "class": "cn config"})
+        self.fields["parallel"].required = True
+        self.fields["parallel"].widget.attrs.update({"value": 0, "class": "cn config"})
+
+    def clean(self):
+        # data from the form is fetched using super function
+        super(MPPForm, self).clean()
+
         # return any errors if found
         return self.cleaned_data

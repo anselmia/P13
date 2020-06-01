@@ -42,18 +42,6 @@ class Roof_type(models.Model):
         return self.value
 
 
-class Roofing_type(models.Model):
-    """ Roofing Type """
-
-    value = models.CharField(max_length=30, unique=True, verbose_name="Type de Faîtage")
-
-    class Meta:
-        verbose_name = "Type de Faîtage"
-
-    def __str__(self):
-        return self.value
-
-
 class Orientation(models.Model):
     """ Orientation Type """
 
@@ -99,16 +87,18 @@ class Inverter(models.Model):
     mpp_voltage_min = models.IntegerField(blank=True, null=False)
     mpp_voltage_max = models.IntegerField(blank=True, null=False)
     dc_voltage_max = models.IntegerField(blank=True, null=False)
-    dc_current_max = models.IntegerField(blank=True, null=False)
-    dc_power_max = models.IntegerField(blank=True, null=False)
-    ac_power_nominal = models.IntegerField(blank=True, null=False)
-    ac_power_max = models.IntegerField(blank=True, null=False)
-    ac_current_max = models.IntegerField(blank=True, null=False)
-    efficiency = models.DecimalField(max_digits=4, decimal_places=2, null=True)
+    dc_current_max = models.DecimalField(max_digits=5, decimal_places=2, null=False)
+    dc_power_max = models.DecimalField(max_digits=5, decimal_places=2, null=False)
+    ac_power_nominal = models.DecimalField(max_digits=5, decimal_places=2, null=False)
+    ac_power_max = models.DecimalField(max_digits=5, decimal_places=2, null=False)
+    ac_current_max = models.DecimalField(max_digits=5, decimal_places=2, null=False)
+    efficiency = models.DecimalField(max_digits=4, decimal_places=2, null=False)
     mpp_string_max = models.IntegerField(blank=True, null=False)
     mpp = models.IntegerField(blank=True, null=False)
     ac_cabling = models.IntegerField(blank=True, null=False)
-    comment = models.CharField(max_length=1000, unique=True, verbose_name="Commentaire")
+    comment = models.CharField(
+        max_length=1000, unique=True, verbose_name="Commentaire", blank=True, null=True
+    )
 
     class Meta:
         verbose_name = "Onduleur"
@@ -203,9 +193,6 @@ class Roof(models.Model):
         Project, related_name="project", on_delete=models.CASCADE
     )
 
-    roofing_type_id = models.ForeignKey(
-        Roofing_type, related_name="roofing_type", on_delete=models.CASCADE
-    )
     roof_type_id = models.ForeignKey(
         Roof_type, related_name="roof_type", on_delete=models.CASCADE
     )

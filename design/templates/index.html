@@ -23,7 +23,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#step-4">
-                    <strong>Step 4</strong> <br>This is step description
+                    <strong>Step 4</strong> <br>Configuration panneaux / onduleurs
                 </a>
             </li>
         </ul>
@@ -31,597 +31,1665 @@
             <div id="step-1" class="tab-pane size_auto" role="tabpanel" aria-labelledby="step-1">
                 <br>
                 <div class="col-12">
-                    <form class="form_project" method="POST" action="{% url 'design:index' %}">
-                        {% csrf_token %}
-                        {{ form_project.non_field_errors }}
-                        <div class="row">
-                            <div class="col-4">
-                                <label for="" class="vertical_center">{{ form_project.name.label_tag }}</label>
+                    <div class="form-style-10">
+                        <h1>Informations du projet<span></span></h1>
+                        <form class="form_project" method="POST" action="{% url 'design:index' %}">
+                            {% csrf_token %}
+                            {{ form_project.non_field_errors }}
+                            <div class="section"><span>1</span>Nom du projet</div>
+                            <div class="inner-wrap">
+                                <div class="row w-100 tag_error">
+                                    <label class="w-100">{{ form_project.name.label_tag }}
+                                        {{ form_project.name }}</label>
+                                </div>
+                                <div class="row form_errors">
+                                </div>
                             </div>
-                            <div class="col-6">
-                                {{ form_project.name }}
+                            <div class="section"><span>2</span>Localisation</div>
+                            <div class="inner-wrap">
+                                <div class="row w-100 tag_error">
+                                    <label class="w-100">{{ form_project.city_id.label_tag }}
+                                        {{ form_project.city_id }}</label>
+                                </div>
+                                <div class="row form_errors">
+                                </div>
+                                <div class="button-section cn">
+                                    <button id="add_city_button" type="button" class="btn btn-primary"
+                                        data-toggle="modal" data-target="#CityModal">
+                                        Ajouter
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row form_errors">
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-4">
-                                <label for="" class="vertical_center">{{ form_project.building_type.label_tag }}</label>
+                            <div class="section"><span>3</span>Choix du panneau solaire
                             </div>
-                            <div class="col-6">
-                                {{ form_project.building_type }}
+                            <div class="inner-wrap">
+                                <div class="row w-100 tag_error">
+                                    <label class="w-100">{{ form_project.panel_id.label_tag }}
+                                        {{ form_project.panel_id }}</label>
+                                </div>
+                                <div class="row form_errors">
+                                </div>
+                                <div class="button-section cn">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#PanelModal">
+                                        Ajouter
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row form_errors">
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-4">
-                                <label for="" class="vertical_center">{{ form_project.city_id.label_tag }}</label>
-                            </div>
-                            <div class="col-6">{{ form_project.city_id }}</div>
-                            <div class="col-2">
-                                <button id="add_city_button" type="button" class="btn btn-primary vertical_center"
-                                    data-toggle="modal" data-target="#CityModal">
-                                    Ajouter
-                                </button>
-                            </div>
-                        </div>
-                        <div class="row form_errors">
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-4">
-                                <label for="" class="vertical_center">{{ form_project.panel_id.label_tag }}</label>
-                            </div>
-                            <div class="col-6">{{ form_project.panel_id }}</div>
-                            <div class="col-2">
-                                <button type="button" class="btn btn-primary vertical_center" data-toggle="modal"
-                                    data-target="#PanelModal">
-                                    Ajouter
-                                </button>
-                            </div>
-                        </div>
-                        <div class="row form_errors">
-                        </div>
-                        <br>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
             <div id="step-2" class="tab-pane size_auto" role="tabpanel" aria-labelledby="step-2">
                 <br>
                 <div class="col-12">
-                    <form class="form_roof" method="POST" action="{% url 'design:save_roof' %}">
-                        {% csrf_token %}
-                        {{ form_roof.non_field_errors }}
-                        <div class="row">
-                            <div class="col-9 px-0">
-                                <div class="row w-100">
-                                    <div class="col-5">
-                                        <label for="roofingtype"
-                                            class="vertical_center">{{ form_roof.roofing_type.label_tag }}</label>
-                                    </div>
-                                    <div class="col-5">
-                                        {{ form_roof.roofing_type }}
-                                    </div>
-                                </div>
-                                <div class="row form_errors">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-9 px-0">
-                                <div class="row w-100">
-                                    <div class="col-5">
-                                        <label for="roofingtype"
-                                            class="vertical_center">{{ form_roof.roof_type.label_tag }}</label>
-                                    </div>
-                                    <div class="col-5">
-                                        {{ form_roof.roof_type }}
-                                    </div>
-                                </div>
-                                <div class="row form_errors">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-9 px-0">
-                                <div class="row w-100">
-                                    <div class="col-5">
-                                        <label id="id_width"
-                                            class="vertical_center">{{ form_roof.width.label_tag }}</label>
-                                    </div>
-                                    <div class="col-5">
-                                        {{ form_roof.width }}
-                                    </div>
-                                    <div class="col-2 px-0">
-                                        <div id="id_width" class="row w-100">
-                                            <p class="cn">m</p>
+                    <div class="form-style-10">
+                        <h1>Définition de la toîture<span></span></h1>
+                        <form class="form_roof" method="POST" action="{% url 'design:save_roof' %}">
+                            {% csrf_token %}
+                            {{ form_roof.non_field_errors }}
+                            <div class="section"><span>1</span>Format de la toîture</div>
+                            <div class="inner-wrap">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <div class="row w-100 tag_error ">
+                                            <label class="w-100">{{ form_roof.roof_type.label_tag }}
+                                                <div class="row cn">
+                                                    <div class="col-11 px-0">{{ form_roof.roof_type }}</div>
+                                                    <div class="col-1 pr-0">
+                                                        <p></p>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <div class=" row form_errors">
+                                        </div>
+                                        <div class="row w-100 tag_error roof_width">
+                                            <label class="w-100">{{ form_roof.width.label_tag }}
+                                                <div class="row cn">
+                                                    <div class="col-11 px-0">{{ form_roof.width }}</div>
+                                                    <div class="col-1 pr-0">
+                                                        <p>m</p>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <div class="row form_errors">
+                                        </div>
+                                        <div class="row w-100 tag_error roof_length">
+                                            <label class="w-100">{{ form_roof.bottom_length.label_tag }}
+                                                <div class="row cn">
+                                                    <div class="col-11 px-0">{{ form_roof.bottom_length }}</div>
+                                                    <div class="col-1 pr-0">
+                                                        <p>m</p>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <div class="row form_errors">
+                                        </div>
+                                        <div class="row w-100 tag_error roof_top_length">
+                                            <label class="w-100">{{ form_roof.top_length.label_tag }}
+                                                <div class="row cn">
+                                                    <div class="col-11 px-0">{{ form_roof.top_length }}</div>
+                                                    <div class="col-1 pr-0">
+                                                        <p>m</p>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <div class="row form_errors">
+                                        </div>
+                                        <div class="row w-100 tag_error roof_height">
+                                            <label class="w-100">{{ form_roof.height.label_tag }}
+                                                <div class="row cn">
+                                                    <div class="col-11 px-0">{{ form_roof.height }}</div>
+                                                    <div class="col-1 pr-0">
+                                                        <p>m</p>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <div class="row form_errors">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row form_errors">
-                                </div>
-                                <div class="row w-100">
-                                    <div class="col-5">
-                                        <label id="id_bottom_length"
-                                            class="vertical_center">{{ form_roof.bottom_length.label_tag }}</label>
+                                    <div class="col-3 m-0 px-0 aria-hidden roof roof_decoration cn">
+                                        <img class="roof-img align-items-center justify-content-center text-center roof-img-height"
+                                            src="{% get_static_prefix %}images/roof_rectangle.png" alt="type de toît">
                                     </div>
-                                    <div class="col-5">
-                                        {{ form_roof.bottom_length }}
-                                    </div>
-                                    <div class="col-2 px-0">
-                                        <div id="id_bottom_length" class="row w-100">
-                                            <p class="cn">m</p>
+                                </div>
+                            </div>
+                            <div class="section"><span>2</span>Configuration de la toîture</div>
+                            <div class="inner-wrap">
+                                <div class="row tag_error">
+                                    <div class="col-9">
+                                        <div class="row w-100 tag_error">
+                                            <label class="w-100">{{ form_roof.orientation.label_tag }}
+                                                <div class="row cn">
+                                                    <div class="col-11 px-0">{{ form_roof.orientation }}</div>
+                                                    <div class="col-1 pr-0">
+                                                        <p>°</p>
+                                                    </div>
+                                                </div>
+                                            </label>
                                         </div>
                                     </div>
+                                    <div class="col-3 aria-hidden roof_decoration cn">
+                                        <img class="align-items-center justify-content-center text-center roof-img-height"
+                                            src="{% get_static_prefix %}images/orientation.png" alt="type de toît">
+                                    </div>
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row w-100">
-                                    <div class="col-5">
-                                        <label id="id_top_length"
-                                            class="vertical_center">{{ form_roof.top_length.label_tag }}</label>
-                                    </div>
-                                    <div class="col-5">
-                                        {{ form_roof.top_length }}
-                                    </div>
-                                    <div class="col-2 px-0">
-                                        <div id="id_top_length" class="row w-100">
-                                            <p class="cn">m</p>
+                                <div class="row tag_error">
+                                    <div class="col-9">
+                                        <div class="row w-100 tag_error">
+                                            <label class="w-100">{{ form_roof.tilt.label_tag }}
+                                                <div class="row cn">
+                                                    <div class="col-11 px-0">{{ form_roof.tilt }}</div>
+                                                    <div class="col-1 pr-0">
+                                                        <p>°</p>
+                                                    </div>
+                                                </div>
+                                            </label>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row form_errors">
-                                </div>
-                                <div class="row w-100">
-                                    <div class="col-5 ">
-                                        <label class="vertical_center"
-                                            id="id_height">{{ form_roof.height.label_tag }}</label>
-                                    </div>
-                                    <div class="col-5 ">
-                                        {{ form_roof.height }}
-                                    </div>
-                                    <div class="col-2 px-0 ">
-                                        <div id="id_height" class="row w-100">
-                                            <p class="cn">m</p>
-                                        </div>
+                                    <div class="col-3 aria-hidden roof_decoration cn">
+                                        <img class="align-items-center justify-content-center text-center roof-img-height"
+                                            src="{% get_static_prefix %}images/inclinaison.png"
+                                            alt="Inclinaison toîture">
                                     </div>
                                 </div>
                                 <div class="row form_errors">
                                 </div>
                             </div>
-                            <div class="col-3 m-0 px-0 aria-hidden roof roof_decoration">
-                                <img class="roof-img align-items-center justify-content-center text-center"
-                                    src="{% get_static_prefix %}images/roof_rectangle.png" alt="type de toît">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-9 px-0">
-                                <div class="row w-100 vertical_center">
-                                    <div class="col-5">
-                                        <label for="orientation"
-                                            class="vertical_center">{{ form_roof.orientation.label_tag }}</label>
-                                    </div>
-                                    <div class="col-5">
-                                        {{ form_roof.orientation }}
-                                    </div>
-                                    <div class="col-2 row w-100 px-0">
-                                        <p class="vertical_center">°</p>
-                                    </div>
-                                </div>
-                                <div class="row form_errors">
-                                </div>
-                            </div>
-                            <div class="col-3 aria-hidden roof_decoration">
-                                <img class="align-items-center justify-content-center text-center"
-                                    src="{% get_static_prefix %}images/orientation.png" alt="type de toît">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-9 px-0">
-                                <div class="row w-100 vertical_center">
-                                    <div class="col-5">
-                                        <label for="tilt" class="vertical_center">{{ form_roof.tilt.label_tag }}</label>
-                                    </div>
-                                    <div class="col-5">
-                                        {{ form_roof.tilt }}
-                                    </div>
-                                    <div class="col-2 row w-100 px-0">
-                                        <p class="vertical_center">°</p>
-                                    </div>
-                                </div>
-                                <div class="row form_errors">
-                                </div>
-                            </div>
-                            <div class="col-3 aria-hidden roof_decoration">
-                                <img class="align-items-center justify-content-center text-center"
-                                    src="{% get_static_prefix %}images/inclinaison.png" alt="type de toît">
-                            </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
             <div id="step-3" class="tab-pane size_auto" role="tabpanel" aria-labelledby="step-3">
                 <br>
                 <div class="row container size_auto m-0 px-0 cn">
-                    <div class="col-4 size_auto draw-border mx-0">
-                        <button style="margin: 0 auto; display: block;" type="button"
-                            class="btn btn-secondary draw my-3">Dessiner</button>
-                        <br>
-                        <form class="form_implantation" method="POST" action="">
-                            {% csrf_token %}
-                            {{ form_impantation.non_field_errors }}
-                            <div class="row">
-                                <div class="col-5 p-1">
-                                    <label for="panel_orientation"
-                                        class="vertical_center">{{ form_implantation.panel_orientation.label_tag }}</label>
+                    <div class="col-4 size_auto mx-0">
+                        <div class="form-style-10">
+                            <h1>Plan de calepinage<span></span></h1>
+                            <form class="form_implantation" method="POST" action="">
+                                {% csrf_token %}
+                                {{ form_implantation.non_field_errors }}
+                                <div class="section"><span>1</span>Pose des panneaux</div>
+                                <div class="inner-wrap">
+                                    <div class="row w-100 tag_error">
+                                        <label class="w-100">{{ form_implantation.panel_orientation.label_tag }}
+                                            <div class="row cn">
+                                                <div class="col-11 px-0">{{ form_implantation.panel_orientation }}</div>
+                                                <div class="col-1 pr-0">
+                                                    <p></p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class=" row form_errors">
+                                    </div>
+                                    <div class="row w-100 tag_error">
+                                        <label class="w-100">{{ form_implantation.panel_implantation.label_tag }}
+                                            <div class="row cn">
+                                                <div class="col-11 px-0">{{ form_implantation.panel_implantation }}
+                                                </div>
+                                                <div class="col-1 pr-0">
+                                                    <p></p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class="row form_errors">
+                                    </div>
+                                    <div class="row w-100 tag_error vertical_overlapping">
+                                        <label class="w-100">{{ form_implantation.vertical_overlapping.label_tag }}
+                                            <div class="row cn">
+                                                <div class="col-11 px-0">{{ form_implantation.vertical_overlapping }}
+                                                </div>
+                                                <div class="col-1 pr-0">
+                                                    <p>mm</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class="row form_errors">
+                                    </div>
+                                    <div class="row w-100 tag_error horizontal_overlapping">
+                                        <label class="w-100">{{ form_implantation.horizontal_overlapping.label_tag }}
+                                            <div class="row cn">
+                                                <div class="col-11 px-0">{{ form_implantation.horizontal_overlapping }}
+                                                </div>
+                                                <div class="col-1 pr-0">
+                                                    <p>mm</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class="row form_errors">
+                                    </div>
+                                    <div class="row w-100 tag_error vertical_spacing">
+                                        <label class="w-100">{{ form_implantation.vertical_spacing.label_tag }}
+                                            <div class="row cn">
+                                                <div class="col-11 px-0">{{ form_implantation.vertical_spacing }}</div>
+                                                <div class="col-1 pr-0">
+                                                    <p>mm</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class="row form_errors">
+                                    </div>
+                                    <div class="row w-100 tag_error horizontal_spacing">
+                                        <label class="w-100">{{ form_implantation.horizontal_spacing.label_tag }}
+                                            <div class="row cn">
+                                                <div class="col-11 px-0">{{ form_implantation.horizontal_spacing }}
+                                                </div>
+                                                <div class="col-1 pr-0">
+                                                    <p>mm</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class="row form_errors">
+                                    </div>
                                 </div>
-                                <div class="col-6 p-1 cn">
-                                    {{ form_implantation.panel_orientation }}
+                                <div class="section"><span>2</span>Distance des bords</div>
+                                <div class="inner-wrap">
+                                    <div class="row w-100 tag_error">
+                                        <label class="w-100">{{ form_implantation.distance_top.label_tag }}
+                                            <div class="row cn">
+                                                <div class="col-11 px-0">{{ form_implantation.distance_top }}</div>
+                                                <div class="col-1 pr-0">
+                                                    <p>mm</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class=" row form_errors">
+                                    </div>
+                                    <div class="row w-100 tag_error">
+                                        <label class="w-100">{{ form_implantation.distance_bottom.label_tag }}
+                                            <div class="row cn">
+                                                <div class="col-11 px-0">{{ form_implantation.distance_bottom }}</div>
+                                                <div class="col-1 pr-0">
+                                                    <p>mm</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class="row form_errors">
+                                    </div>
+                                    <div class="row w-100 tag_error">
+                                        <label class="w-100">{{ form_implantation.distance_left.label_tag }}
+                                            <div class="row cn">
+                                                <div class="col-11 px-0">{{ form_implantation.distance_left }}</div>
+                                                <div class="col-1 pr-0">
+                                                    <p>mm</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class=" row form_errors">
+                                    </div>
+                                    <div class="row w-100 tag_error">
+                                        <label class="w-100">{{ form_implantation.distance_right.label_tag }}
+                                            <div class="row cn">
+                                                <div class="col-11 px-0">{{ form_implantation.distance_right }}</div>
+                                                <div class="col-1 pr-0">
+                                                    <p>mm</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class="row form_errors">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row form_errors">
-                            </div>
-                            <div class="row">
-                                <div class="col-5 p-1">
-                                    <label for="panel_implantation"
-                                        class="vertical_center">{{ form_implantation.panel_implantation.label_tag }}</label>
+                                <div class="section"><span>3</span>Abergements</div>
+                                <div class="inner-wrap">
+                                    <div class="row w-100 tag_error">
+                                        <label class="w-100">{{ form_implantation.abergement_top.label_tag }}
+                                            <div class="row cn">
+                                                <div class="col-11 px-0">{{ form_implantation.abergement_top }}</div>
+                                                <div class="col-1 pr-0">
+                                                    <p>mm</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class=" row form_errors">
+                                    </div>
+                                    <div class="row w-100 tag_error">
+                                        <label class="w-100">{{ form_implantation.abergement_bottom.label_tag }}
+                                            <div class="row cn">
+                                                <div class="col-11 px-0">{{ form_implantation.abergement_bottom }}</div>
+                                                <div class="col-1 pr-0">
+                                                    <p>mm</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class="row form_errors">
+                                    </div>
+                                    <div class="row w-100 tag_error">
+                                        <label class="w-100">{{ form_implantation.abergement_left.label_tag }}
+                                            <div class="row cn">
+                                                <div class="col-11 px-0">{{ form_implantation.abergement_left }}</div>
+                                                <div class="col-1 pr-0">
+                                                    <p>mm</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class=" row form_errors">
+                                    </div>
+                                    <div class="row w-100 tag_error">
+                                        <label class="w-100">{{ form_implantation.abergement_right.label_tag }}
+                                            <div class="row cn">
+                                                <div class="col-11 px-0">{{ form_implantation.abergement_right }}</div>
+                                                <div class="col-1 pr-0">
+                                                    <p>mm</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class="row form_errors">
+                                    </div>
                                 </div>
-                                <div class="col-6 p-1 cn">
-                                    {{ form_implantation.panel_implantation }}
-                                </div>
-                            </div>
-                            <div class="row form_errors">
-                            </div>
-                            <div class="row vertical_overlapping">
-                                <div class="col-5 p-1">
-                                    <label for="vertical_overlapping"
-                                        class="vertical_center">{{ form_implantation.vertical_overlapping.label_tag }}</label>
-                                </div>
-                                <div class="col-6 p-1 cn block">
-                                    {{ form_implantation.vertical_overlapping }}
-                                </div>
-                                <div class="col-1 w-100 px-0">
-                                    <p class="vertical_center">mm</p>
-                                </div>
-                            </div>
-                            <div class="row form_errors">
-                            </div>
-                            <div class="row horizontal_overlapping">
-                                <div class="col-5 p-1">
-                                    <label for="horizontal_overlapping"
-                                        class="vertical_center">{{ form_implantation.horizontal_overlapping.label_tag }}</label>
-                                </div>
-                                <div class="col-6 p-1 cn">
-                                    {{ form_implantation.horizontal_overlapping }}
-                                </div>
-                                <div class="col-1 w-100 px-0">
-                                    <p class="vertical_center">mm</p>
-                                </div>
-                            </div>
-                            <div class="row vertical_spacing">
-                                <div class="col-5 p-1">
-                                    <label for="vertical_spacing"
-                                        class="vertical_center">{{ form_implantation.vertical_spacing.label_tag }}</label>
-                                </div>
-                                <div class="col-6 p-1 cn">
-                                    {{ form_implantation.vertical_spacing }}
-                                </div>
-                                <div class="col-1 w-100 px-0">
-                                    <p class="vertical_center">mm</p>
-                                </div>
-                            </div>
-                            <div class="row form_errors">
-                            </div>
-                            <div class="row horizontal_spacing">
-                                <div class="col-5 p-1">
-                                    <label for="horizontal_spacing"
-                                        class="vertical_center">{{ form_implantation.horizontal_spacing.label_tag }}</label>
-                                </div>
-                                <div class="col-6 p-1 cn">
-                                    {{ form_implantation.horizontal_spacing }}
-                                </div>
-                                <div class="col-1 w-100 px-0">
-                                    <p class="vertical_center">mm</p>
-                                </div>
-                            </div>
-                            <div class="row form_errors">
-                            </div>
-                            <div class="row">
-                                <div class="col-5 p-1">
-                                    <label for="distance_top"
-                                        class="vertical_center">{{ form_implantation.distance_top.label_tag }}</label>
-                                </div>
-                                <div class="col-6 p-1 cn">
-                                    {{ form_implantation.distance_top }}
-                                </div>
-                                <div class="col-1 w-100 px-0">
-                                    <p class="vertical_center">mm</p>
-                                </div>
-                            </div>
-                            <div class="row form_errors">
-                            </div>
-                            <div class="row">
-                                <div class="col-5 p-1">
-                                    <label for="distance_bottom"
-                                        class="vertical_center">{{ form_implantation.distance_bottom.label_tag }}</label>
-                                </div>
-                                <div class="col-6 p-1 cn">
-                                    {{ form_implantation.distance_bottom }}
-                                </div>
-                                <div class="col-1 w-100 px-0">
-                                    <p class="vertical_center">mm</p>
-                                </div>
-                            </div>
-                            <div class="row form_errors">
-                            </div>
-                            <div class="row">
-                                <div class="col-5 p-1">
-                                    <label for="distance_left"
-                                        class="vertical_center">{{ form_implantation.distance_left.label_tag }}</label>
-                                </div>
-                                <div class="col-6 p-1 cn">
-                                    {{ form_implantation.distance_left }}
-                                </div>
-                                <div class="col-1 w-100 px-0">
-                                    <p class="vertical_center">mm</p>
-                                </div>
-                            </div>
-                            <div class="row form_errors">
-                            </div>
-                            <div class="row">
-                                <div class="col-5 p-1">
-                                    <label for="distance_right"
-                                        class="vertical_center">{{ form_implantation.distance_right.label_tag }}</label>
-                                </div>
-                                <div class="col-6 p-1 cn">
-                                    {{ form_implantation.distance_right }}
-                                </div>
-                                <div class="col-1 w-100 px-0">
-                                    <p class="vertical_center">mm</p>
-                                </div>
-                            </div>
-                            <div class="row form_errors">
-                            </div>
-                            <div class="row">
-                                <div class="col-5 p-1">
-                                    <label for="abergement_top"
-                                        class="vertical_center">{{ form_implantation.abergement_top.label_tag }}</label>
-                                </div>
-                                <div class="col-6 p-1 cn">
-                                    {{ form_implantation.abergement_top }}
-                                </div>
-                                <div class="col-1 w-100 px-0">
-                                    <p class="vertical_center">mm</p>
-                                </div>
-                            </div>
-                            <div class="row form_errors">
-                            </div>
-                            <div class="row">
-                                <div class="col-5 p-1">
-                                    <label for="abergement_bottom"
-                                        class="vertical_center">{{ form_implantation.abergement_bottom.label_tag }}</label>
-                                </div>
-                                <div class="col-6 p-1 cn">
-                                    {{ form_implantation.abergement_bottom }}
-                                </div>
-                                <div class="col-1 w-100 px-0">
-                                    <p class="vertical_center">mm</p>
-                                </div>
-                            </div>
-                            <div class="row form_errors">
-                            </div>
-                            <div class="row">
-                                <div class="col-5 p-1">
-                                    <label for="abergement_left"
-                                        class="vertical_center">{{ form_implantation.abergement_left.label_tag }}</label>
-                                </div>
-                                <div class="col-6 p-1 cn">
-                                    {{ form_implantation.abergement_left }}
-                                </div>
-                                <div class="col-1 w-100 px-0">
-                                    <p class="vertical_center">mm</p>
-                                </div>
-                            </div>
-                            <div class="row form_errors">
-                            </div>
-                            <div class="row">
-                                <div class="col-5 p-1">
-                                    <label for="abergement_right"
-                                        class="vertical_center">{{ form_implantation.abergement_right.label_tag }}</label>
-                                </div>
-                                <div class="col-6 p-1 cn">
-                                    {{ form_implantation.abergement_right }}
-                                </div>
-                                <div class="col-1 w-100 px-0">
-                                    <p class="vertical_center">mm</p>
-                                </div>
-                            </div>
-                            <div class="row form_errors">
-                            </div>
-                        </form>
+                                <br>
+                                <button style="margin: 0 auto; display: block;" type="button"
+                                    class="btn btn-primary draw my-3">Dessiner</button>
+                            </form>
+                        </div>
                     </div>
-                    <div class="col-8 size_auto cn">
-                        <div class="container">
+                    <div class="col-8 size_auto cn block">
+                        <div class="row container">
                             <canvas id="myCanvas">
 
                             </canvas>
                         </div>
-                    </div>
-                </div>
-                <br>
-                <div class="row container infos_implantation col-12 draw-border mx-0">
-                    <div class="col-6">
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="row rectangle trapeze triangle">
-                                    <div class="col-6">
-                                        <p>Longueur goutière :</p>
+                        <div class="row container infos_implantation col-12 mx-0">
+                            <div class="form-style-10">
+                                <h1>Informations<span></span></h1>
+                                <div class="row">
+                                    <div class="col-4 mx-0">
+                                        <div class="section">Toîture</div>
+                                        <div class="inner-wrap px-0">
+                                            <div class="row rectangle trapeze triangle">
+                                                <div class="col-6">
+                                                    <p>Gouttière:</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="bottom_length_value"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>m</p>
+                                                </div>
+                                            </div>
+                                            <div class="row rectangle trapeze triangle">
+                                                <div class="col-6">
+                                                    <p>Hauteur:</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="height_value"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>m</p>
+                                                </div>
+                                            </div>
+                                            <div class="row trapeze">
+                                                <div class="col-6">
+                                                    <p>faitâge :</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="top_length_value"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>m</p>
+                                                </div>
+                                            </div>
+                                            <div class="row rectangle trapeze triangle">
+                                                <div class="col-6">
+                                                    <p>surface:</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="surface_value"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>m²</p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-4">
-                                        <p class="bottom_length_value"></p>
+                                    <div class="col-4 mx-0">
+                                        <div class="section">Distance des bords</div>
+                                        <div class="inner-wrap px-0">
+                                            <div class="row rectangle trapeze triangle">
+                                                <div class="col-6">
+                                                    <p>Haut :</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="top_rest_value"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>m</p>
+                                                </div>
+                                            </div>
+                                            <div class="row rectangle trapeze triangle">
+                                                <div class="col-6">
+                                                    <p>Bas :</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="bottom_rest_value"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>m</p>
+                                                </div>
+                                            </div>
+                                            <div class="row rectangle trapeze triangle">
+                                                <div class="col-6">
+                                                    <p>Gauche :</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="left_rest_value"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>m</p>
+                                                </div>
+                                            </div>
+                                            <div class="row rectangle trapeze triangle">
+                                                <div class="col-6">
+                                                    <p>Droite :</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="right_rest_value"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>m</p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-2">
-                                        <p>m</p>
-                                    </div>
-                                </div>
-                                <div class="row rectangle trapeze triangle">
-                                    <div class="col-6">
-                                        <p>Hauteur toiture :</p>
-                                    </div>
-                                    <div class="col-4">
-                                        <p class="height_value"></p>
-                                    </div>
-                                    <div class="col-2">
-                                        <p>m</p>
-                                    </div>
-                                </div>
-                                <div class="row trapeze">
-                                    <div class="col-6">
-                                        <p>Longueur faitâge :</p>
-                                    </div>
-                                    <div class="col-4">
-                                        <p class="top_length_value"></p>
-                                    </div>
-                                    <div class="col-2">
-                                        <p>m</p>
-                                    </div>
-                                </div>
-                                <div class="row rectangle trapeze triangle">
-                                    <div class="col-6">
-                                        <p>surface toîture :</p>
-                                    </div>
-                                    <div class="col-4">
-                                        <p class="surface_value"></p>
-                                    </div>
-                                    <div class="col-2">
-                                        <p>m²</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="row rectangle trapeze triangle">
-                                    <div class="col-6">
-                                        <p>Reste haut :</p>
-                                    </div>
-                                    <div class="col-4">
-                                        <p class="top_rest_value"></p>
-                                    </div>
-                                    <div class="col-2">
-                                        <p>m</p>
-                                    </div>
-                                </div>
-                                <div class="row rectangle trapeze triangle">
-                                    <div class="col-6">
-                                        <p>Reste bas :</p>
-                                    </div>
-                                    <div class="col-4">
-                                        <p class="bottom_rest_value"></p>
-                                    </div>
-                                    <div class="col-2">
-                                        <p>m</p>
-                                    </div>
-                                </div>
-                                <div class="row rectangle trapeze triangle">
-                                    <div class="col-6">
-                                        <p>Reste gauche :</p>
-                                    </div>
-                                    <div class="col-4">
-                                        <p class="left_rest_value"></p>
-                                    </div>
-                                    <div class="col-2">
-                                        <p>m</p>
-                                    </div>
-                                </div>
-                                <div class="row rectangle trapeze triangle">
-                                    <div class="col-6">
-                                        <p>Reste droite :</p>
-                                    </div>
-                                    <div class="col-4">
-                                        <p class="right_rest_value"></p>
-                                    </div>
-                                    <div class="col-2">
-                                        <p>m</p>
+                                    <div class="col-4 mx-0">
+                                        <div class="section">Panneaux installés</div>
+                                        <div class="inner-wrap px-0">
+                                            <div class="row rectangle trapeze triangle">
+                                                <div class="col-6">
+                                                    <p>Total panneaux :</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="tot_pan_value"></p>
+                                                </div>
+                                            </div>
+                                            <div class="row rectangle trapeze triangle">
+                                                <div class="col-6">
+                                                    <p>Puissance:</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="power_value"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>kW</p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-6">
+                </div>
+                <br>
+            </div>
+            <div id="step-3" class="tab-pane size_auto" role="tabpanel" aria-labelledby="step-3">
+                <br>
+                <div class="row container size_auto m-0 px-0 cn">
+                </div>
+            </div>
+            <div id="step-4" class="tab-pane size_auto" role="tabpanel" aria-labelledby="step-4">
+                <br>
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-Configuration1-tab" data-toggle="tab"
+                            href="#nav-Configuration1" role="tab" aria-controls="nav-Configuration1"
+                            aria-selected="true">Configuration 1 </a>
+                        <a class="nav-item nav-link" id="nav-Configuration2-tab" data-toggle="tab"
+                            href="#nav-Configuration2" role="tab" aria-controls="nav-Configuration2"
+                            aria-selected="false">Configuration 2 &nbsp;<i id="close_config2" class="fa fa-window-close"
+                                aria-hidden="true"></i></a>
+                        <a class="nav-item nav-link" id="nav-Configuration3-tab" data-toggle="tab"
+                            href="#nav-Configuration3" role="tab" aria-controls="nav-Configuration3"
+                            aria-selected="false">Configuration 3 &nbsp;<i id="close_config3" class="fa fa-window-close"
+                                aria-hidden="true"></i></a>
+                        <a class="nav-item nav-link" id="add-tab" href="#"><i class="fa fa-plus"
+                                aria-hidden="true"></i></a>
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-Configuration1" role="tabpanel"
+                        aria-labelledby="nav-Configuration1-tab">
+                        <div class="row">
+                            <div class="form-style-10 mb-0 pb-0">
+                                <h1>Configuration onduleur 1<span></span></h1>
+                                <div class="px-4 section"><span>1</span>Choix de l'onduleur</div>
+                                <div class="inner-wrap">
+                                    <div class="row cn">
+                                        <div class="col-6 mx-0">
+                                            <form class="form_config config_1" method="POST" action="">
+                                                {% csrf_token %}
+                                                <div class="row w-100 tag_error">
+                                                    <label class="w-100">{{ form_config.inverter_id.label_tag }}
+                                                        <div class="row cn">
+                                                            <div class="col-11 px-0">{{ form_config.inverter_id }}
+                                                            </div>
+                                                            <div class="col-1 pr-0">
+                                                                <p></p>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class=" row form_errors">
+                                                </div>
+                                                <div class="row w-100 tag_error">
+                                                    <label class="w-100">{{ form_config.inverter_quantity.label_tag }}
+                                                        <div class="row cn">
+                                                            <div class="col-11 px-0">{{ form_config.inverter_quantity }}
+                                                            </div>
+                                                            <div class="col-1 pr-0">
+                                                                <p></p>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class=" row form_errors">
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="col-6 mx-0">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p>Puissance :</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="inverter_power_value"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>kW</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p>Tension DC max :</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="max_dc_voltage_value"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>V</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p>Plage de Tension MPP :</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="row">
+                                                        <p>
+                                                            <p class="mpp_min_value"></p>&nbsp; - &nbsp;<p
+                                                                class="mpp_max_value">
+                                                            </p>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>V</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p>Courant DC max :</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="current_value"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>kW</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="px-4 section"><span>2</span>Connections</div>
+                                <div class="inner-wrap mb-0">
+                                    <div class="row">
+                                        <div class="col-4 inverter1_mpp1 cn">
+                                            <div class="form-style-10">
+                                                <h1 class="cn">MPP 1<span></span></h1>
+                                                <div class="section"><span>1</span>Branchements</div>
+                                                <div class="inner-wrap">
+                                                    <form class="form_mpp" method="POST" action="">
+                                                        {% csrf_token %}
+                                                        <div class="row w-100 tag_error">
+                                                            <label class="w-100">{{ form_mpp.serial.label_tag }}
+                                                                {{ form_mpp.serial }}
+                                                            </label>
+                                                        </div>
+                                                        <div class=" row form_errors">
+                                                        </div>
+                                                        <div class="row w-100 tag_error">
+                                                            <label class="w-100">{{ form_mpp.parallel.label_tag }}
+                                                                {{ form_mpp.parallel }}
+                                                            </label>
+                                                        </div>
+                                                        <div class=" row form_errors">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="section"><span>2</span>Informations</div>
+                                                <div class="inner-wrap">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Température :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <p>-10 - 70</p>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>°C</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Vmpp :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p>
+                                                                    <p class="mpp_voltage_min_value"></p>&nbsp; - &nbsp;
+                                                                    <p class="mpp_voltage_max_value"></p>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>V</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Vco :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="vco_voltage_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="vco_voltage_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>V</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>I :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="i_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="i_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>A</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 inverter1_mpp2 cn">
+                                            <div class="form-style-10">
+                                                <h1 class="cn">MPP 2<span></span></h1>
+                                                <div class="section"><span>1</span>Branchements</div>
+                                                <div class="inner-wrap">
+                                                    <form class="form_mpp" method="POST" action="">
+                                                        {% csrf_token %}
+                                                        <div class="row w-100 tag_error">
+                                                            <label class="w-100">{{ form_mpp.serial.label_tag }}
+                                                                {{ form_mpp.serial }}
+                                                            </label>
+                                                        </div>
+                                                        <div class=" row form_errors">
+                                                        </div>
+                                                        <div class="row w-100 tag_error">
+                                                            <label class="w-100">{{ form_mpp.parallel.label_tag }}
+                                                                {{ form_mpp.parallel }}
+                                                            </label>
+                                                        </div>
+                                                        <div class=" row form_errors">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="section"><span>2</span>Informations</div>
+                                                <div class="inner-wrap">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Température :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <p>-10 - 70</p>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>°C</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Vmpp :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="mpp_voltage_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="mpp_voltage_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>V</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Vco :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="vco_voltage_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="vco_voltage_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>V</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>I :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="i_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="i_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>A</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 inverter1_mpp3 cn">
+                                            <div class="form-style-10">
+                                                <h1 class="cn">MPP 3<span></span></h1>
+                                                <div class="section"><span>1</span>Branchements</div>
+                                                <div class="inner-wrap">
+                                                    <form class="form_mpp" method="POST" action="">
+                                                        {% csrf_token %}
+                                                        <div class="row w-100 tag_error">
+                                                            <label class="w-100">{{ form_mpp.serial.label_tag }}
+                                                                {{ form_mpp.serial }}
+                                                            </label>
+                                                        </div>
+                                                        <div class=" row form_errors">
+                                                        </div>
+                                                        <div class="row w-100 tag_error">
+                                                            <label class="w-100">{{ form_mpp.parallel.label_tag }}
+                                                                {{ form_mpp.parallel }}
+                                                            </label>
+                                                        </div>
+                                                        <div class=" row form_errors">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="section"><span>2</span>Informations</div>
+                                                <div class="inner-wrap">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Température :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <p>-10 - 70</p>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>°C</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Vmpp :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="mpp_voltage_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="mpp_voltage_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>V</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Vco :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="vco_voltage_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="vco_voltage_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>V</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>I :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="i_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="i_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>A</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="px-4 section"><span>3</span>Vérifications</div>
+                                <div class="inner-wrap mb-2 py-1">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p>Itot :</p>
+                                                </div>
+                                                <div class="col-4 mx-auto">
+                                                    <div class="row">
+                                                        <p class="i_tot_min_value"></p>
+                                                        <p>&nbsp; - &nbsp;</p>
+                                                        <p class="i_tot_max_value"></p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>A</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p>Pdc/Pac :</p>
+                                                </div>
+                                                <div class="col-4 mx-auto">
+                                                    <p class="ratio_pn_value"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>%</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-Configuration2" role="tabpanel"
+                        aria-labelledby="nav-Configuration2-tab">
+                        <div class="row">
+                            <div class="form-style-10 mb-0 pb-0">
+                                <h1>Configuration onduleur 2<span></span></h1>
+                                <div class="px-4 section"><span>1</span>Choix de l'onduleur</div>
+                                <div class="inner-wrap">
+                                    <div class="row cn">
+                                        <div class="col-6 mx-0">
+                                            <form class="form_config config_2" method="POST" action="">
+                                                {% csrf_token %}
+                                                <div class="row w-100 tag_error">
+                                                    <label class="w-100">{{ form_config.inverter_id.label_tag }}
+                                                        <div class="row cn">
+                                                            <div class="col-11 px-0">{{ form_config.inverter_id }}
+                                                            </div>
+                                                            <div class="col-1 pr-0">
+                                                                <p></p>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class=" row form_errors">
+                                                </div>
+                                                <div class="row w-100 tag_error">
+                                                    <label class="w-100">{{ form_config.inverter_quantity.label_tag }}
+                                                        <div class="row cn">
+                                                            <div class="col-11 px-0">{{ form_config.inverter_quantity }}
+                                                            </div>
+                                                            <div class="col-1 pr-0">
+                                                                <p></p>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class=" row form_errors">
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="col-6 mx-0">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p>Puissance :</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="inverter_power_value"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>kW</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p>Tension DC max :</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="max_dc_voltage_value"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>V</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p>Plage de Tension MPP :</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="row">
+                                                        <p>
+                                                            <p class="mpp_min_value"></p>&nbsp; - &nbsp;<p
+                                                                class="mpp_max_value">
+                                                            </p>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>V</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p>Courant DC max :</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="current_value"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>kW</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="px-4 section"><span>2</span>Connections</div>
+                                <div class="inner-wrap mb-0">
+                                    <div class="row">
+                                        <div class="col-4 inverter2_mpp1 cn">
+                                            <div class="form-style-10">
+                                                <h1 class="cn">MPP 1<span></span></h1>
+                                                <div class="section"><span>1</span>Branchements</div>
+                                                <div class="inner-wrap">
+                                                    <form class="form_mpp" method="POST" action="">
+                                                        {% csrf_token %}
+                                                        <div class="row w-100 tag_error">
+                                                            <label class="w-100">{{ form_mpp.serial.label_tag }}
+                                                                {{ form_mpp.serial }}
+                                                            </label>
+                                                        </div>
+                                                        <div class=" row form_errors">
+                                                        </div>
+                                                        <div class="row w-100 tag_error">
+                                                            <label class="w-100">{{ form_mpp.parallel.label_tag }}
+                                                                {{ form_mpp.parallel }}
+                                                            </label>
+                                                        </div>
+                                                        <div class=" row form_errors">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="section"><span>2</span>Informations</div>
+                                                <div class="inner-wrap">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Température :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <p>-10 - 70</p>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>°C</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Vmpp :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p>
+                                                                    <p class="mpp_voltage_min_value"></p>&nbsp; - &nbsp;
+                                                                    <p class="mpp_voltage_max_value"></p>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>V</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Vco :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p>
+                                                                    <p class="vco_voltage_min_value"></p>&nbsp; - &nbsp;
+                                                                    <p class="vco_voltage_max_value"></p>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>V</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>I :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p>
+                                                                    <p class="i_min_value"></p>&nbsp; - &nbsp;<p
+                                                                        class="i_max_value"></p>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>A</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 inverter2_mpp2 cn">
+                                            <div class="form-style-10">
+                                                <h1 class="cn">MPP 2<span></span></h1>
+                                                <div class="section"><span>1</span>Branchements</div>
+                                                <div class="inner-wrap">
+                                                    <form class="form_mpp" method="POST" action="">
+                                                        {% csrf_token %}
+                                                        <div class="row w-100 tag_error">
+                                                            <label class="w-100">{{ form_mpp.serial.label_tag }}
+                                                                {{ form_mpp.serial }}
+                                                            </label>
+                                                        </div>
+                                                        <div class=" row form_errors">
+                                                        </div>
+                                                        <div class="row w-100 tag_error">
+                                                            <label class="w-100">{{ form_mpp.parallel.label_tag }}
+                                                                {{ form_mpp.parallel }}
+                                                            </label>
+                                                        </div>
+                                                        <div class=" row form_errors">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="section"><span>2</span>Informations</div>
+                                                <div class="inner-wrap">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Température :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <p>-10 - 70</p>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>°C</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Vmpp :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="mpp_voltage_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="mpp_voltage_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>V</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Vco :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="vco_voltage_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="vco_voltage_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>V</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>I :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="i_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="i_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>A</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 inverter2_mpp3 cn">
+                                            <div class="form-style-10">
+                                                <h1 class="cn">MPP 3<span></span></h1>
+                                                <div class="section"><span>1</span>Branchements</div>
+                                                <div class="inner-wrap">
+                                                    <form class="form_mpp" method="POST" action="">
+                                                        {% csrf_token %}
+                                                        <div class="row w-100 tag_error">
+                                                            <label class="w-100">{{ form_mpp.serial.label_tag }}
+                                                                {{ form_mpp.serial }}
+                                                            </label>
+                                                        </div>
+                                                        <div class=" row form_errors">
+                                                        </div>
+                                                        <div class="row w-100 tag_error">
+                                                            <label class="w-100">{{ form_mpp.parallel.label_tag }}
+                                                                {{ form_mpp.parallel }}
+                                                            </label>
+                                                        </div>
+                                                        <div class=" row form_errors">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="section"><span>2</span>Informations</div>
+                                                <div class="inner-wrap">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Température :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <p>-10 - 70</p>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>°C</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Vmpp :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="mpp_voltage_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="mpp_voltage_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>V</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Vco :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="vco_voltage_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="vco_voltage_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>V</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>I :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="i_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="i_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>A</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-Configuration3" role="tabpanel"
+                        aria-labelledby="nav-Configuration3-tab">
+                        <div class="row">
+                            <div class="form-style-10 mb-0 pb-0">
+                                <h1>Configuration onduleur 3<span></span></h1>
+                                <div class="px-4 section"><span>1</span>Choix de l'onduleur</div>
+                                <div class="inner-wrap">
+                                    <div class="row cn">
+                                        <div class="col-6 mx-0">
+                                            <form class="form_config config_3" method="POST" action="">
+                                                {% csrf_token %}
+                                                <div class="row w-100 tag_error">
+                                                    <label class="w-100">{{ form_config.inverter_id.label_tag }}
+                                                        <div class="row cn">
+                                                            <div class="col-11 px-0">{{ form_config.inverter_id }}
+                                                            </div>
+                                                            <div class="col-1 pr-0">
+                                                                <p></p>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class=" row form_errors">
+                                                </div>
+                                                <div class="row w-100 tag_error">
+                                                    <label class="w-100">{{ form_config.inverter_quantity.label_tag }}
+                                                        <div class="row cn">
+                                                            <div class="col-11 px-0">
+                                                                {{ form_config.inverter_quantity }}
+                                                            </div>
+                                                            <div class="col-1 pr-0">
+                                                                <p></p>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class=" row form_errors">
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="col-6 mx-0">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p>Puissance :</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="inverter_power_value"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>kW</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p>Tension DC max :</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="max_dc_voltage_value"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>V</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p>Plage de Tension MPP :</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="row">
+                                                        <p class="mpp_min_value"></p>&nbsp; - &nbsp;<p
+                                                            class="mpp_max_value">
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>V</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p>Courant DC max :</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="current_value"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>kW</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="px-4 section"><span>2</span>Connections</div>
+                                <div class="inner-wrap mb-0">
+                                    <div class="row">
+                                        <div class="col-4 inverter3_mpp1 cn">
+                                            <div class="form-style-10">
+                                                <h1 class="cn">MPP 1<span></span></h1>
+                                                <div class="section"><span>1</span>Branchements</div>
+                                                <div class="inner-wrap">
+                                                    <form class="form_mpp" method="POST" action="">
+                                                        {% csrf_token %}
+                                                        <div class="row w-100 tag_error">
+                                                            <label class="w-100">{{ form_mpp.serial.label_tag }}
+                                                                {{ form_mpp.serial }}
+                                                            </label>
+                                                        </div>
+                                                        <div class=" row form_errors">
+                                                        </div>
+                                                        <div class="row w-100 tag_error">
+                                                            <label class="w-100">{{ form_mpp.parallel.label_tag }}
+                                                                {{ form_mpp.parallel }}
+                                                            </label>
+                                                        </div>
+                                                        <div class=" row form_errors">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="section"><span>2</span>Informations</div>
+                                                <div class="inner-wrap">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Température :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <p>-10 - 70</p>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>°C</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Vmpp :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="mpp_voltage_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="mpp_voltage_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>V</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Vco :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="vco_voltage_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="vco_voltage_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>V</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>I :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="i_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="i_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>A</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 inverter3_mpp2 cn">
+                                            <div class="form-style-10">
+                                                <h1 class="cn">MPP 2<span></span></h1>
+                                                <div class="section"><span>1</span>Branchements</div>
+                                                <div class="inner-wrap">
+                                                    <form class="form_mpp" method="POST" action="">
+                                                        {% csrf_token %}
+                                                        <div class="row w-100 tag_error">
+                                                            <label class="w-100">{{ form_mpp.serial.label_tag }}
+                                                                {{ form_mpp.serial }}
+                                                            </label>
+                                                        </div>
+                                                        <div class=" row form_errors">
+                                                        </div>
+                                                        <div class="row w-100 tag_error">
+                                                            <label class="w-100">{{ form_mpp.parallel.label_tag }}
+                                                                {{ form_mpp.parallel }}
+                                                            </label>
+                                                        </div>
+                                                        <div class=" row form_errors">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="section"><span>2</span>Informations</div>
+                                                <div class="inner-wrap">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Température :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <p>-10 - 70</p>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>°C</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Vmpp :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="mpp_voltage_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="mpp_voltage_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>V</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Vco :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="vco_voltage_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="vco_voltage_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>V</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>I :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="i_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="i_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>A</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 inverter3_mpp3 cn">
+                                            <div class="form-style-10">
+                                                <h1 class="cn">MPP 3<span></span></h1>
+                                                <div class="section"><span>1</span>Branchements</div>
+                                                <div class="inner-wrap">
+                                                    <form class="form_mpp" method="POST" action="">
+                                                        {% csrf_token %}
+                                                        <div class="row w-100 tag_error">
+                                                            <label class="w-100">{{ form_mpp.serial.label_tag }}
+                                                                {{ form_mpp.serial }}
+                                                            </label>
+                                                        </div>
+                                                        <div class=" row form_errors">
+                                                        </div>
+                                                        <div class="row w-100 tag_error">
+                                                            <label class="w-100">{{ form_mpp.parallel.label_tag }}
+                                                                {{ form_mpp.parallel }}
+                                                            </label>
+                                                        </div>
+                                                        <div class=" row form_errors">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="section"><span>2</span>Informations</div>
+                                                <div class="inner-wrap">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Température :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <p>-10 - 70</p>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>°C</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Vmpp :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="mpp_voltage_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="mpp_voltage_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>V</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>Vco :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="vco_voltage_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="vco_voltage_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>V</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <p>I :</p>
+                                                        </div>
+                                                        <div class="col-4 mx-auto">
+                                                            <div class="row">
+                                                                <p class="i_min_value"></p>
+                                                                <p>&nbsp; - &nbsp;</p>
+                                                                <p class="i_max_value"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <p>A</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-style-10 mb-0 pb-1">
+                    <h1 class="cn">Vérifications<span></span></h1>
+                    <div class="inner-wrap">
                         <div class="row">
                             <div class="col-6">
-                                <div class="row rectangle trapeze triangle">
+                                <div class="row">
                                     <div class="col-6">
-                                        <p>Total panneaux :</p>
+                                        <p>Pdc :</p>
                                     </div>
-                                    <div class="col-4">
-                                        <p class="tot_pan_value"></p>
+                                    <div class="col-4 mx-auto">
+                                        <p class="p_dc_tot_value"></p>
                                     </div>
-                                </div>
-                                <div class="row rectangle trapeze">
-                                    <div class="col-6">
-                                        <p>Panneaux sur le rampant :</p>
-                                    </div>
-                                    <div class="col-4">
-                                        <p class="tot_pan_width_value"></p>
-                                    </div>
-                                </div>
-                                <div class="row rectangle trapeze">
-                                    <div class="col-6">
-                                        <p>Panneaux sur la longueur :</p>
-                                    </div>
-                                    <div class="col-4">
-                                        <p class="tot_pan_length_value"></p>
-                                    </div>
-                                </div>
-                                <div class="row triangle trapeze">
-                                    <div class="col-6">
-                                        <p>Panneaux triangle gauche :</p>
-                                    </div>
-                                    <div class="col-4">
-                                        <p class="tot_pan_left_triangle_value"></p>
-                                    </div>
-                                </div>
-                                <div class="row triangle trapeze">
-                                    <div class="col-6">
-                                        <p>Panneaux triangle droit :</p>
-                                    </div>
-                                    <div class="col-4">
-                                        <p class="tot_pan_right_triangle_value"></p>
+                                    <div class="col-2">
+                                        <p>kW</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-6">
-                                <div class="row rectangle trapeze triangle">
+                                <div class="row">
                                     <div class="col-6">
-                                        <p>Longueur panneau :</p>
+                                        <p>Pac :</p>
                                     </div>
-                                    <div class="col-4">
-                                        <p class="panel_length_value"></p>
-                                    </div>
-                                    <div class="col-2">
-                                        <p>m</p>
-                                    </div>
-                                </div>
-                                <div class="row rectangle trapeze triangle">
-                                    <div class="col-6">
-                                        <p>Largeur panneau :</p>
-                                    </div>
-                                    <div class="col-4">
-                                        <p class="panel_width_value"></p>
-                                    </div>
-                                    <div class="col-2">
-                                        <p>m</p>
-                                    </div>
-                                </div>
-                                <div class="row rectangle trapeze triangle">
-                                    <div class="col-6">
-                                        <p>Puissance DC totale :</p>
-                                    </div>
-                                    <div class="col-4">
-                                        <p class="power_value"></p>
+                                    <div class="col-4 mx-auto">
+                                        <p class="pac_tot_value"></p>
                                     </div>
                                     <div class="col-2">
                                         <p>kW</p>
@@ -629,27 +1697,38 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div id="step-4" class="tab-pane size_auto" role="tabpanel" aria-labelledby="step-4">
-                <br>
-                <nav>
-                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
-                            role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
-                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile"
-                            role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
-                        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact"
-                            role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
-                    </div>
-                </nav>
-                <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                        ...</div>
-                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...
-                    </div>
-                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <p>Total panneaux :</p>
+                                    </div>
+                                    <div class="col-6 mx-auto">
+                                        <p class="tot_panel_value"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <p>Panneaux configurés :</p>
+                                    </div>
+                                    <div class="col-6 mx-auto">
+                                        <p class="configured_panel_value"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <p>Reste :</p>
+                                    </div>
+                                    <div class="col-6 mx-auto">
+                                        <p class="rest_panel_value"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

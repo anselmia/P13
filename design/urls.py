@@ -14,4 +14,10 @@ urlpatterns = [
     path("valid_roof/", views.valid_roof, name="valid_roof"),
     path("valid_implantation/", views.valid_implantation, name="valid_implantation"),
     path("calcul_implantation/", views.calcul_implantation, name="calcul_implantation"),
+    path("valid_configuration/", views.valid_configuration, name="valid_configuration"),
+    path("valid_mpp/", views.valid_mpp, name="valid_mpp"),
+    path(
+        "calcul_configuration/", views.calcul_configuration, name="calcul_configuration"
+    ),
+    path("inverter_data/", views.inverter_data, name="inverter_data"),
 ]
