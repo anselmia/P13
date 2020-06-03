@@ -6,30 +6,60 @@
 
 (function ($) {
 
+  //#region Global Variable
+  //###################################################################
+  var form_project = null,
+    form_roof = null,
+    form_implantation = null,
+    form_config1 = null,
+    form_config1_mpp1 = null,
+    form_config1_mpp2 = null,
+    form_config1_mpp3 = null,
+    form_config2 = null,
+    form_config2_mpp1 = null,
+    form_config2_mpp2 = null,
+    form_config2_mpp3 = null,
+    form_config3 = null,
+    form_config3_mpp1 = null,
+    form_config3_mpp2 = null,
+    form_config3_mpp3 = null;
+  var id_site = 0,
+    id_panel = 0;
+  var orientation = 0,
+    tilt = 0;
+  var roof_type = 0,
+    roof_bottom_length = 0,
+    roof_top_length = 0,
+    roof_height = 0,
+    roof_width = 0;
+  var roof_installed_power = 0,
+    roof_installed_panel = 0;
+  var configs, tot_configured_ac_power = 0;
+
+  function set_global_variable(step_index) {
+    if (step_index == 0) {
+      id_site = $('#id_city_id').val();
+      id_panel = $('#id_panel_id').val();
+    } else if (step_index == 1) {
+      orientation = $('#id_orientation').val();
+      tilt = $('#id_tilt').val();
+      roof_bottom_length = $('#id_bottom_length').val();
+      roof_top_length = $('#id_top_length').val();
+      roof_height = $('#id_height').val();
+      roof_width = $('#id_width').val();
+      roof_type = $('#id_roof_type').val();
+    } else if (step_index == 2) {
+      roof_installed_power = $('p.id_orientation').text();
+      roof_installed_panel = $('p.tot_pan_value').text();
+    } else if (step_index == 3) {
+      tot_configured_ac_power = $('p.pac_tot_value').text();
+    }
+  }
+  //#endregion
+
   "use strict"; // Start of use strict
   $(document).ready(function () {
-    function getCookie(name) {
-      var cookieValue = null;
-      if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-          var cookie = cookies[i].trim();
-          // Does this cookie string begin with the name we want?
-          if (cookie.substring(0, name.length + 1) === (name + '=')) {
-            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-            break;
-          }
-        }
-      }
-      return cookieValue;
-    }
-
     var csrftoken = getCookie('csrftoken');
-
-    function csrfSafeMethod(method) {
-      // these HTTP methods do not require CSRF protection
-      return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-    }
 
     $.ajaxSetup({
       beforeSend: function (xhr, settings) {
@@ -40,11 +70,6 @@
     });
 
     startWizard();
-    $(".roof-img").hide();
-    $(".vertical_spacing").hide();
-    $(".horizontal_spacing").hide();
-    $(".vertical_overlapping").hide();
-    $(".horizontal_overlapping").hide();
   });
 
   // SmartWizard  Functions
@@ -60,67 +85,64 @@
       theme: "arrows",
     };
     $('#smartwizard').smartWizard("setOptions", options);
-    $('.tab-content').css('height', 'auto');
-    $('*[id*=step]').each(function () {
-      $(this).css('width', '100%');
-    });
   };
 
   let isLastStepChecked = false;
+  let moveForward = false;
   //Initialize the leaveStep event
   $("#smartwizard").on("leaveStep", function (e, anchorObject, stepIndex, stepDirection) {
     $('#smartwizard').smartWizard("loader", "show");
     if (!isLastStepChecked && (stepDirection == "forward")) {
+      moveForward = false;
       e.preventDefault();
       check_step_fail(stepIndex, stepDirection, function (resp) {
         if (resp["success"]) {
-          // Clear Step 3
-          if (stepIndex == 1) {
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            $('.infos_implantation').hide();
-          } else if (stepIndex == 2) {
-            tot_pan = $('.tot_pan_value').text();
-            $('#nav-Configuration2-tab').hide();
-            $('#nav-Configuration3-tab').hide();
-          }
+          set_global_variable(stepIndex);
+          moveForward = true;
+          isLastStepChecked = true;
           $('#smartwizard').smartWizard("next");
         } else {
           isLastStepChecked = false;
         }
-
         // Update errors in forms
         check_forms_errors(resp);
-
       });
       isLastStepChecked = true;
       $('#smartwizard').smartWizard("loader", "hide");
-      return stepDirection === "forward"
+      return stepDirection == "forward"
     } else {
       isLastStepChecked = false;
       $('#smartwizard').smartWizard("loader", "hide");
-      return true;
+      return stepDirection == "backward" || moveForward;
     }
   });
 
   $('#smartwizard').on('showStep', function (e, anchorObject, stepIndex, stepDirection, stepPosition) {
+    set_step_view();
+
+    if (stepIndex == 1)
+      init_roof();
+    else if (stepIndex == 2) {
+      init_implantation();
+      calculate_implantation();
+    } else if (stepIndex == 3) {
+      init_config();
+    } else if (stepIndex == 4) {
+      init_infos_prod();
+      calculate_prod();
+    }
+  });
+
+  function set_step_view() {
     $('.tab-content').css('height', 'auto')
     $('*[id*=step').each(function () {
       $(this).css('width', '100%');
     });
-    if (stepIndex == 2)
-      calculate_implantation();
-    else if (stepIndex == 3) {
-      $('.tot_panel_value').text(tot_pan);
-      calculate_configuration();
-    }
-  });
+  }
 
-  function check_forms_errors(resp) {
-
-    if ($(".form_validation_errors").length) {
-      $(".is-invalid").removeClass("form-control is-invalid");
-      $(".form_errors").empty();
-    }
+  function check_forms_errors(resp, error_tag = "") {
+    $(".is-invalid").removeClass("form-control is-invalid");
+    $(".form_errors").empty();
 
     if (resp != null && resp.errors) {
       var errors = resp.errors
@@ -128,9 +150,14 @@
         for (var i in errors[name]) {
           // object message error django
           var $input = $("[name='" + name + "']");
-          $input.addClass("form-control is-invalid");
-          var next = $input.closest('.row .tag_error').next();
-          next.append("<p class ='form_validation_errors'>" + errors[name][i] + "</p>");
+          if ($input.length == 0 && error_tag != "") {
+            $('.form_errors' + error_tag).append("<p class ='form_validation_errors'>" + errors[name][i] + "</p>")
+          } else {
+
+            $input.addClass("form-control is-invalid");
+            var next = $input.closest('.row .tag_error').next();
+            next.append("<p class ='form_validation_errors'>" + errors[name][i] + "</p>");
+          }
         }
       }
     }
@@ -138,34 +165,20 @@
 
   function check_step_fail(stepIndex, stepDirection, callback) {
     if (stepIndex == 0 && stepDirection == "forward") {
-      $.ajax({
-        data: $('.form_project').serialize(),
-        type: "POST",
-        url: '/valid_project/',
-        success: function (response) {
-          callback(response);
-        }
+      ajax_post('/valid_project/', $('.form_project').serialize(), function (resp) {
+        callback(resp.responseJSON);
       });
     } else if (stepIndex == 1 && stepDirection == "forward") {
-      $.ajax({
-        data: $('.form_roof').serialize(),
-        type: "POST",
-        url: '/valid_roof/',
-        success: function (response) {
-          callback(response);
-        }
+      ajax_post('/valid_roof/', $('.form_roof').serialize(), function (resp) {
+        callback(resp.responseJSON);
       });
     } else if (stepIndex == 2 && stepDirection == "forward") {
-      $.ajax({
-        data: $('.form_implantation').serialize(),
-        type: "POST",
-        url: '/valid_implantation/',
-        success: function (response) {
-          callback(response);
-        }
+      ajax_post('/valid_implantation/', $('.form_implantation').serialize(), function (resp) {
+        callback(resp.responseJSON);
       });
     } else if (stepIndex == 3 && stepDirection == "forward") {
-      callback(valid_configuration());
+      var response = valid_configuration();
+      callback(response);
     }
   };
 
@@ -173,20 +186,26 @@
   //###################################################################
 
   $('.localisation_search').bind('click', function () {
+    $('#smartwizard').smartWizard("loader", "show");
     var search_text = $('#city_to_find').val();
 
-    $.post('/get_meteo_data/', {
+    $.post('/get_localisation_data/', {
       "search": search_text
     }).done(function (INFO) {
-      if (INFO.status == true && Object.keys(INFO.localisation).length > 0) {
-        $('.localisation').css('display', 'block');
-        $('.find_city').val(INFO.localisation["city"]);
-        $('.find_lat').val(INFO.localisation["lat"]);
-        $('.find_lon').val(INFO.localisation["lon"]);
-        $("#city_errors").html("");
-      }
+      if (INFO.status == true && Object.keys(INFO.loc).length > 0) {
+        set_meteo_data(INFO);
+      } else
+        $('.city_no_result').text("Pas de données disponibles");
+      $('#smartwizard').smartWizard("loader", "hide");
     });
   });
+
+  function set_meteo_data(INFO) {
+    $('.localisation').css('display', 'block');
+    $('.find_city').val(INFO.loc["name"]);
+    $('.find_lat').val(INFO.loc["lat"]);
+    $('.find_lon').val(INFO.loc["lon"]);
+  }
 
   $('#city-form').on('submit', function (event) {
     event.preventDefault();
@@ -194,39 +213,25 @@
   });
 
   function add_city(form) {
-    var items = [];
-    $.ajax({
-      data: form.serialize(),
-      type: form.attr('method'),
-      url: form.attr('action'),
-      success: function (response) {
-        if (response['success']) {
-          $("#city_errors").html();
-          $('#id_city_id').val('');
-          $('#id_city_id').append('<option value="' + response["id"] + '">' + response["name"] + '</option>')
-          $('#id_city_id option').filter(function () {
-            return ($(this).text() == response["name"]);
-          }).prop('selected', true);
-          $('.localisation').css('display', 'none');
-          $('#CityModal').hide();
-          $('body').removeClass('modal-open');
-          $('.modal-backdrop').remove();
-        } else if (response['errors']) {
-          response['errors'].forEach(function (item) {
-            items.push(item);
-          });
-        }
-      },
-      complete: function () {
-        if (items.length > 0) {
-          $("#city_errors").html("<div class='alert alert-danger'>" +
-            items.join("") + "</div>");
-        } else {
-          $("#city_errors").html("");
-        }
-      }
-    }).done(check_forms_errors(resp));
-  };
+    $('#smartwizard').smartWizard("loader", "show");
+    ajax_post('/add_city/', form.serialize(), function (resp) {
+      if (resp.responseJSON["success"]) {
+        $("#city_errors").html();
+        $('#id_city_id').val('');
+        $('#id_city_id').append('<option value="' + resp.responseJSON["id"] + '">' + resp.responseJSON["name"] + '</option>')
+        $('#id_city_id option').filter(function () {
+          return ($(this).text() == resp.responseJSON["name"]);
+        }).prop('selected', true);
+        $('.localisation').css('display', 'none');
+        $('#CityModal').hide();
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+      } else
+        $('.localisation').css('display', 'none');
+      check_forms_errors(resp.responseJSON, ".city_errors");
+      $('#smartwizard').smartWizard("loader", "hide");
+    });
+  }
 
   $("#CityModal").on('hide.bs.modal', function () {
     $('#city_to_find').val('');
@@ -242,38 +247,23 @@
   });
 
   function add_panel(form) {
-    var items = [];
-    $.ajax({
-      data: form.serialize(),
-      type: form.attr('method'),
-      url: form.attr('action'),
-      success: function (response) {
-        if (response['success']) {
-          $("#panel_errors").html();
-          $('#id_panel_id').val('');
-          $('#id_panel_id').append('<option value="' + response["id"] + '">' + response["model"] + '</option>')
-          $('#id_panel_id option').filter(function () {
-            return ($(this).text() == response["name"]);
-          }).prop('selected', true);
-          $('#PanelModal').hide();
-          $('body').removeClass('modal-open');
-          $('.modal-backdrop').remove();
-        } else if (response['errors']) {
-          response['errors'].forEach(function (item) {
-            items.push(item);
-          });
-        }
-      },
-      complete: function () {
-        if (items.length > 0) {
-          $("#panel_errors").html("<div class='alert alert-danger'>" +
-            items.join("") + "</div>");
-        } else {
-          $("#panel_errors").html("");
-        }
+    ajax_post('/add_panel/', form.serialize(), function (resp) {
+      if (resp.responseJSON["success"]) {
+        $("#panel_errors").html();
+        $('#id_panel_id').val('');
+        $('#id_panel_id').append('<option value="' + resp.responseJSON["id"] + '">' + resp.responseJSON["model"] + '</option>')
+        $('#id_panel_id option').filter(function () {
+          return ($(this).text() == resp.responseJSON["name"]);
+        }).prop('selected', true);
+        $('#PanelModal').hide();
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
       }
-    })
-  };
+
+      check_forms_errors(resp.responseJSON, ".panel_errors");
+      $('#smartwizard').smartWizard("loader", "hide");
+    });
+  }
 
   $("#PanelModal").on('hide.bs.modal', function () {
     $("#panel_errors").html("");
@@ -347,8 +337,20 @@
     check_forms_errors(null);
   });
 
+  function init_roof() {
+    $(".roof-img").hide();
+    $(".vertical_spacing").hide();
+    $(".horizontal_spacing").hide();
+    $(".vertical_overlapping").hide();
+    $(".horizontal_overlapping").hide();
+  }
+
   // Implantation Functions
   //###################################################################
+  function init_implantation() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    $('.infos_implantation').hide();
+  }
 
   $('#id_panel_implantation').on('change', function () {
     var type = $("#id_panel_implantation option:selected").text();
@@ -394,62 +396,100 @@
     var form_roof = $('.form_roof').serialize();
     var form_implantation = $('.form_implantation').serialize();
 
-    $.ajax({
-      data: form_project,
-      type: "POST",
-      url: '/valid_project/',
-    }).done(function (resp) {
-      if (resp["success"]) {
-        $.ajax({
-          data: form_roof,
-          type: "POST",
-          url: '/valid_roof/',
-        }).done(function (resp) {
-          if (resp["success"]) {
-            $.ajax({
-              data: form_implantation,
-              type: "POST",
-              url: '/valid_implantation/'
-            }).done(function (resp) {
-              if (resp["success"]) {
+    ajax_post('/valid_project/', form_project, function (resp) {
+      if (resp.responseJSON["success"]) {
+        ajax_post('/valid_roof/', form_roof, function (resp) {
+          if (resp.responseJSON["success"]) {
+            ajax_post('/valid_implantation/', form_implantation, function (resp) {
+              if (resp.responseJSON["success"]) {
                 var datas = {};
-                var split = form_project.split('&');
-                split.forEach(function (item) {
-                  datas[item.split('=')[0]] = item.split('=')[1];
-                });
-                split = form_roof.split('&');
-                split.forEach(function (item) {
-                  datas[item.split('=')[0]] = item.split('=')[1];
-                });
-                split = form_implantation.split('&');
-                split.forEach(function (item) {
-                  datas[item.split('=')[0]] = item.split('=')[1];
-                });
+                datas = data_out_of_serialized_form(form_project);
+                datas = extend(datas, data_out_of_serialized_form(form_roof));
+                datas = extend(datas, data_out_of_serialized_form(form_implantation));
                 $.each(datas, function (i, o) {
                   var val = parseFloat(o);
                   if (!isNaN(val))
                     original_datas[i] = val;
                 });
-                $.ajax({
-                  data: datas,
-                  type: "POST",
-                  url: '/calcul_implantation/',
-                }).done(function (resp) {
-                  if (resp["success"]) {
-                    var datas = JSON.parse(resp["implantation_values"]);
+                ajax_post('/calcul_implantation/', datas, function (resp) {
+                  if (resp.responseJSON["success"]) {
+                    var datas = JSON.parse(resp.responseJSON["implantation_values"]);
                     draw(datas)
-                  }
-                  check_forms_errors(resp);
-                })
-              } else {
-                check_forms_errors(resp);
-              }
-            })
-          }
-        })
-      }
+
+                    check_forms_errors(resp.responseJSON);
+                    $('#smartwizard').smartWizard("loader", "hide");
+                  } else
+                    check_forms_errors(resp.responseJSON);
+                  $('#smartwizard').smartWizard("loader", "hide");
+                });
+              } else
+                check_forms_errors(resp.responseJSON);
+              $('#smartwizard').smartWizard("loader", "hide");
+            });
+          } else
+            check_forms_errors(resp.responseJSON);
+          $('#smartwizard').smartWizard("loader", "hide");
+        });
+      } else
+        check_forms_errors(resp.responseJSON);
       $('#smartwizard').smartWizard("loader", "hide");
-    })
+      // $.ajax({
+      //   data: form_project,
+      //   type: "POST",
+      //   url: '/valid_project/',
+      // }).done(function (resp) {
+      //   if (resp["success"]) {
+      //     $.ajax({
+      //       data: form_roof,
+      //       type: "POST",
+      //       url: '/valid_roof/',
+      //     }).done(function (resp) {
+      //       if (resp["success"]) {
+      //         $.ajax({
+      //           data: form_implantation,
+      //           type: "POST",
+      //           url: '/valid_implantation/'
+      //         }).done(function (resp) {
+      //           if (resp["success"]) {
+      //             var datas = {};
+      //             var split = form_project.split('&');
+      //             split.forEach(function (item) {
+      //               datas[item.split('=')[0]] = item.split('=')[1];
+      //             });
+      //             split = form_roof.split('&');
+      //             split.forEach(function (item) {
+      //               datas[item.split('=')[0]] = item.split('=')[1];
+      //             });
+      //             split = form_implantation.split('&');
+      //             split.forEach(function (item) {
+      //               datas[item.split('=')[0]] = item.split('=')[1];
+      //             });
+      //             $.each(datas, function (i, o) {
+      //               var val = parseFloat(o);
+      //               if (!isNaN(val))
+      //                 original_datas[i] = val;
+      //             });
+      //             $.ajax({
+      //               data: datas,
+      //               type: "POST",
+      //               url: '/calcul_implantation/',
+      //             }).done(function (resp) {
+      //               if (resp["success"]) {
+      //                 var datas = JSON.parse(resp["implantation_values"]);
+      //                 draw(datas)
+      //               }
+      //               check_forms_errors(resp);
+      //             })
+      //           } else {
+      //             check_forms_errors(resp);
+      //           }
+      //         })
+      //       }
+      //     })
+      //   }
+      //   $('#smartwizard').smartWizard("loader", "hide");
+      // })
+    });
   }
 
   function draw(datas) {
@@ -479,7 +519,7 @@
       canvas.width = canva_height * (original_datas["bottom_length"] / original_datas["width"]);
     }
 
-    var context = canvas.getContext('2d');
+    context = canvas.getContext('2d');
   }
 
   function draw_roof(datas) {
@@ -564,23 +604,17 @@
 
   // Configuration Functions
   //###################################################################
-  var form_project = null,
-    form_roof = null,
-    form_implantation = null,
-    form_config1 = null,
-    form_config1_mpp1 = null,
-    form_config1_mpp2 = null,
-    form_config1_mpp3 = null,
-    form_config2 = null,
-    form_config2_mpp1 = null,
-    form_config2_mpp2 = null,
-    form_config2_mpp3 = null,
-    form_config3 = null,
-    form_config3_mpp1 = null,
-    form_config3_mpp2 = null,
-    form_config3_mpp3 = null;
-  var tot_pan = 0;
-  //###################################################################
+
+  function init_config() {
+    tot_pan = $('.tot_pan_value').text();
+    $('#nav-Configuration2-tab').hide();
+    $('#nav-Configuration3-tab').hide();
+    $('.tot_panel_value').text(tot_pan);
+    $('.rest_panel_value').text(0);
+    $('.rest_panel_value').text(tot_pan);
+    $('.configured_panel_value').text(0);
+    calculate_configuration();
+  }
 
   $('#add-tab').on('click', function (event) {
     event.preventDefault();
@@ -651,47 +685,44 @@
     $('#smartwizard').smartWizard("loader", "show");
     init_config_var();
 
-    $.when(ajax_post_form('/valid_project/', form_project, function (resp) {
+    ajax_post('/valid_project/', form_project, function (resp) {
       if (resp.responseJSON["success"] || resp.responseJSON["pass"]) {
-        ajax_post_form('/valid_roof/', form_roof, function (resp) {
+        ajax_post('/valid_roof/', form_roof, function (resp) {
           if (resp.responseJSON["success"] || resp.responseJSON["pass"]) {
-            ajax_post_form('/valid_implantation/', form_implantation, function (resp) {
+            ajax_post('/valid_implantation/', form_implantation, function (resp) {
               if (resp.responseJSON["success"] || resp.responseJSON["pass"]) {
-
                 var datas = set_config_datas();
-
                 if (datas["configs"].length > 0) {
-                  $.ajax({
-                    data: {
-                      'data': JSON.stringify(datas)
-                    },
-                    type: "POST",
-                    url: '/calcul_configuration/',
-                  }).done(function (resp) {
-                    if (resp["success"]) {
-                      var datas = JSON.parse(resp["configuration_values"]);
+                  datas = {
+                    'data': JSON.stringify(datas)
+                  };
+                  ajax_post('/calcul_configuration/', datas, function (resp) {
+                    if (resp.responseJSON["success"]) {
+                      var datas = JSON.parse(resp.responseJSON["configuration_values"]);
                       set_configurations_informations(datas);
                     }
-                    check_forms_errors(resp);
+                    check_forms_errors(resp.responseJSON);
                     $('#smartwizard').smartWizard("loader", "hide");
-                  })
-                } else
+                  });
+                } else {
                   $('#smartwizard').smartWizard("loader", "hide");
+                  check_forms_errors(resp.responseJSON);
+                }
               } else {
-                check_forms_errors(resp);
+                check_forms_errors(resp.responseJSON);
                 $('#smartwizard').smartWizard("loader", "hide");
               }
             });
           } else {
-            check_forms_errors(resp);
+            check_forms_errors(resp.responseJSON);
             $('#smartwizard').smartWizard("loader", "hide");
           }
         });
       } else {
-        check_forms_errors(resp);
+        check_forms_errors(resp.responseJSON);
         $('#smartwizard').smartWizard("loader", "hide");
       }
-    }))
+    });
   }
 
   function init_config_var() {
@@ -812,6 +843,7 @@
       if (config.mpps.length > 0)
         datas["configs"].push(config);
     }
+    configs = datas["configs"]
 
     return datas;
   }
@@ -863,25 +895,22 @@
   }
 
   function valid_configuration() {
-    $('p[class*=_value]').css("color").each(function () {
+    $('p[class*=_value]').each(function () {
       if ($(this).css('color') == 'red') {
         return {
           "errors": true
         };
       }
     });
-    if ($('.rest_panel_value').val() == 0)
+    if (parseInt($('.rest_panel_value').text()) == 0)
       return {
         "success": true
       }
     else
-      return {
-        "errors": true
-      };
-  }
-
-  function reset_config_value(index) {
-    // $('.inverter' + index + '_mpp' + i).find('p[class*=_value]').text('');
+      $('.rest_panel_value').css('color', 'red')
+    return {
+      "errors": true
+    };
   }
 
   function Config(inverter_id, inverter_quantity, index) {
@@ -897,15 +926,140 @@
     this.parallel = parallel;
   }
 
+  // Production Functions
+  //###################################################################
+
+  $('.save_prod').on('click', function (event) {
+    calculate_prod();
+  });
+
+  function init_infos_prod() {
+    var datas = {
+      "panel_id": id_panel,
+      "config": configs,
+      "site_id": id_site,
+      "tot_pan": roof_installed_panel
+    };
+
+    datas = {
+      'data': JSON.stringify(datas)
+    };
+
+    ajax_post('/production_data/', datas, function (resp) {
+      if (resp.responseJSON["success"]) {
+        var datas = resp.responseJSON["infos"];
+        // Site Informations
+        $('p.energy_site_name').text(datas["site_data"][0])
+        $('p.energy_latitude').text(datas["site_data"][1])
+        $('p.energy_longitude').text(datas["site_data"][2])
+        // Solar panel Information
+        $('p.energy_panel_model').text(datas["pv_data"][0])
+        $('p.energy_panel_power').text(datas["pv_data"][1])
+        $('p.energy_tot_panel').text(roof_installed_panel)
+        $('p.energy_tot_panel_power').text(roof_installed_power)
+        $('p.energy_tot_panel_surface').text(datas["pv_data"][2])
+
+        if (datas["inverters_datas"].length > 0) {
+          for (var i = 1; i < 4; i++) {
+            var inverter = datas["inverters_datas"].find(function (element) {
+              return element[0] == i - 1;
+            });
+
+            if (inverter != null) {
+              $('.energy_inverter' + String(i)).show();
+              $('p.energy_inverter_model' + String(i)).text(inverter[1])
+              $('p.energy_inverter_power' + String(i)).text(inverter[2])
+
+              var config = configs.find(function (conf) {
+                return conf.index == i;
+              });
+              $('p.energy_inverter_quantity' + +String(i)).text(config.inverter_quantity)
+              for (var mpp = 1; mpp < 4; mpp++) {
+                var Mpp = config.mpps.find(function (find_mpp) {
+                  return find_mpp.index == mpp;
+                });
+                if (Mpp != null && Mpp.serial > 0) {
+                  $('.energy_inverter' + String(i) + '_MPP' + String(mpp)).show();
+                  $('p.energy_inverter' + String(i) + '_serial' + String(mpp)).text(Mpp.serial)
+                  $('p.energy_inverter' + String(i) + '_parallel' + String(mpp)).text(Mpp.serial)
+                } else
+                  $('.energy_inverter' + String(i) + '_MPP' + String(mpp)).hide();
+              }
+            } else
+              $('.energy_inverter' + String(i)).hide();
+          }
+        } else {
+          $('.energy_inverter1').hide();
+          $('.energy_inverter2').hide();
+          $('.energy_inverter3').hide();
+        }
+      }
+    });
+  }
+
+  function calculate_prod() {
+    $('#smartwizard').smartWizard("loader", "show");
+    var datas = {
+      "panel_id": $('#id_panel_id').val(),
+      "site_id": $('#id_city_id').val(),
+      "orientation": $('#id_orientation').val(),
+      "tilt": $('#id_tilt').val(),
+      "tot_panel": $('.tot_panel_value').text()
+    };
+
+    datas = {
+      'data': JSON.stringify(datas)
+    };
+
+    ajax_post('/calculate_production/', datas, function (resp) {
+      if (resp.responseJSON["success"])
+        set_info_prod();
+      $('#smartwizard').smartWizard("loader", "hide");
+    });
+  }
+
+  function set_info_prod() {
+    var datas = resp.responseJSON["production_values"];
+    var month = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
+    for (var i = 0; i < month.length; i++) {
+      $('p.energy_prod_' + month[i]).text(datas["monthly_prod"][i]);
+      $('p.energy_irrad_' + month[i]).text(datas["monthly_irrad"][i]);
+    }
+    $('p.energy_irrad_year').text(datas["yearly_irrad"]);
+    $('p.energy_prod_year').text(datas["yearly_prod"]);
+    $('p.energy_ratio_prod').text(datas["ratio"]);
+  }
+
   // General Functions
   //###################################################################
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+  }
+
   function repsonse_null() {
     this.responseJSON = {
       "pass": true
     };
   }
 
-  function ajax_post_form(url, form, callback) {
+  function ajax_post(url, form, callback) {
     if (form == null)
       callback(new repsonse_null());
     else {
@@ -928,6 +1082,13 @@
     });
 
     return datas;
+  }
+
+  function extend(obj, src) {
+    for (var key in src) {
+      if (src.hasOwnProperty(key)) obj[key] = src[key];
+    }
+    return obj;
   }
 
 })(jQuery); // End of use strict

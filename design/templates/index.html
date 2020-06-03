@@ -26,6 +26,11 @@
                     <strong>Step 4</strong> <br>Configuration panneaux / onduleurs
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#step-5">
+                    <strong>Step 5</strong> <br>Energie du système
+                </a>
+            </li>
         </ul>
         <div class="tab-content">
             <div id="step-1" class="tab-pane size_auto" role="tabpanel" aria-labelledby="step-1">
@@ -541,11 +546,6 @@
                     </div>
                 </div>
                 <br>
-            </div>
-            <div id="step-3" class="tab-pane size_auto" role="tabpanel" aria-labelledby="step-3">
-                <br>
-                <div class="row container size_auto m-0 px-0 cn">
-                </div>
             </div>
             <div id="step-4" class="tab-pane size_auto" role="tabpanel" aria-labelledby="step-4">
                 <br>
@@ -1732,6 +1732,751 @@
                     </div>
                 </div>
             </div>
+            <div id="step-5" class="tab-pane size_auto" role="tabpanel" aria-labelledby="step-5">
+                <br>
+                <div class="row container size_auto m-0 px-0 cn">
+                    <div class="form-style-10">
+                        <h1>Calcul de la production énergétique du système<span></span></h1>
+                        <div class="section"><span>1</span>Installation photovoltaïque</div>
+                        <div class="inner-wrap">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="row energy_panel_model">
+                                        <div class="col-6">
+                                            <p>Modèle :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_panel_model"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                        </div>
+                                    </div>
+                                    <div class="row energy_panel_power">
+                                        <div class="col-6">
+                                            <p>Puissance :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_panel_power"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>W</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row energy_tot_panel">
+                                        <div class="col-6">
+                                            <p>Nombre total :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_tot_panel"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                        </div>
+                                    </div>
+                                    <div class="row energy_tot_panel_power">
+                                        <div class="col-6">
+                                            <p>Puissance totale :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_tot_panel_power"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kW</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_tot_panel_surface">
+                                        <div class="col-6">
+                                            <p>Surface panneaux</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_tot_panel_surface"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>m²</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="section"><span>2</span>Configuration</div>
+                        <div class="inner-wrap">
+                            <div class="row">
+                                <div class="col-4 energy_inverter1">
+                                    <div class="row energy_inverter_model1">
+                                        <div class="col-6">
+                                            <p>Modèle :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_inverter_model1"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                        </div>
+                                    </div>
+                                    <div class="row energy_inverter_power1">
+                                        <div class="col-6">
+                                            <p>Puissance :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_inverter_power1"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kW</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_inverter_quantity1">
+                                        <div class="col-6">
+                                            <p>Nb onduleur :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_inverter_quantity1"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                        </div>
+                                    </div>
+                                    <div class="energy_inverter1_MPP1">
+                                        <div class="section">MPP1</div>
+                                        <div class="row">
+                                            <div class="col-6 pl-4">
+                                                <p>En série :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_inverter1_serial1"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 pl-4">
+                                                <p>En parallèle :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_inverter1_parallel1"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="energy_inverter1_MPP2">
+                                        <div class="section">MPP2</div>
+                                        <div class="row">
+                                            <div class="col-6 pl-4">
+                                                <p>En série :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_inverter1_serial2"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 pl-4">
+                                                <p>En parallèle :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_inverter1_parallel2"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="energy_inverter1_MPP3">
+                                        <div class="section">MPP3</div>
+                                        <div class="row">
+                                            <div class="col-6 pl-4">
+                                                <p>En série :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_inverter1_serial3"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 pl-4">
+                                                <p>En parallèle :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_inverter1_parallel3"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4 energy_inverter2">
+                                    <div class="row energy_inverter_model2">
+                                        <div class="col-6">
+                                            <p>Modèle :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_inverter_model2"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                        </div>
+                                    </div>
+                                    <div class="row energy_inverter_power2">
+                                        <div class="col-6">
+                                            <p>Puissance :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_inverter_power2"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kW</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_inverter_quantity2">
+                                        <div class="col-6">
+                                            <p>Nb onduleur :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_inverter_quantity2"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                        </div>
+                                    </div>
+                                    <div class="energy_inverter2_MPP1">
+                                        <div class="section">MPP1</div>
+                                        <div class="row">
+                                            <div class="col-6 pl-4">
+                                                <p>En série :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_inverter2_serial1"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 pl-4">
+                                                <p>En parallèle :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_inverter2_parallel1"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="energy_inverter2_MPP2">
+                                        <div class="section">MPP2</div>
+                                        <div class="row">
+                                            <div class="col-6 pl-4">
+                                                <p>En série :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_inverter2_serial2"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 pl-4">
+                                                <p>En parallèle :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_inverter2_parallel2"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="energy_inverter2_MPP3">
+                                        <div class="section">MPP3</div>
+                                        <div class="row">
+                                            <div class="col-6 pl-4">
+                                                <p>En série :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_inverter2_serial3"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 pl-4">
+                                                <p>En parallèle :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_inverter2_parallel3"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4 energy_inverter3">
+                                    <div class="row energy_inverter_model3">
+                                        <div class="col-6">
+                                            <p>Modèle :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_inverter_model3"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                        </div>
+                                    </div>
+                                    <div class="row energy_inverter_power3">
+                                        <div class="col-6">
+                                            <p>Puissance :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_inverter_power3"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kW</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_inverter_quantity3">
+                                        <div class="col-6">
+                                            <p>Nb onduleur :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_inverter_quantity3"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                        </div>
+                                    </div>
+                                    <div class="energy_inverter3_MPP1">
+                                        <div class="section">MPP1</div>
+                                        <div class="row">
+                                            <div class="col-6 pl-4">
+                                                <p>En série :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_inverter3_serial1"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 pl-4">
+                                                <p>En parallèle :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_inverter3_parallel1"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="energy_inverter3_MPP2">
+                                        <div class="section">MPP2</div>
+                                        <div class="row">
+                                            <div class="col-6 pl-4">
+                                                <p>En série :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_inverter3_serial2"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 pl-4">
+                                                <p>En parallèle :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_inverter3_parallel2"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="energy_inverter3_MPP3">
+                                        <div class="section">MPP3</div>
+                                        <div class="row">
+                                            <div class="col-6  pl-4">
+                                                <p>En série :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_inverter3_serial3"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 pl-4">
+                                                <p>En parallèle :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_inverter3_parallel3"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="section"><span>3</span>Site
+                        </div>
+                        <div class="inner-wrap">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="row energy_site_name">
+                                        <div class="col-6">
+                                            <p>Nom :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_site_name"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="row energy_latitude">
+                                        <div class="col-6">
+                                            <p>Latitude :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_latitude"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>°</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="row energy_longitude">
+                                        <div class="col-6">
+                                            <p>Longitude :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_longitude"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>°</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="section"><span>4</span>Production énergétique
+                        </div>
+                        <div class="inner-wrap">
+                            <div class="row">
+                                <div class="form-style-10 col-5">
+                                    <h1>Irradiations Moyennes Mensuelles<span></span></h1>
+                                    <br>
+                                    <div class="row energy_irrad_jan">
+                                        <div class="col-6">
+                                            <p>Janvier :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_irrad_jan"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_irrad_feb">
+                                        <div class="col-6">
+                                            <p>Février :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_irrad_feb"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_irrad_mar">
+                                        <div class="col-6">
+                                            <p>Mars :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_irrad_mar"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_irrad_apr">
+                                        <div class="col-6">
+                                            <p>Avril :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_irrad_apr"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_irrad_may">
+                                        <div class="col-6">
+                                            <p>Mai :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_irrad_may"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_irrad_jun">
+                                        <div class="col-6">
+                                            <p>Juin :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_irrad_jun"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_irrad_jul">
+                                        <div class="col-6">
+                                            <p>Juillet :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_irrad_jul"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_irrad_aug">
+                                        <div class="col-6">
+                                            <p>Aout :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_irrad_aug"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_irrad_sep">
+                                        <div class="col-6">
+                                            <p>Septembre :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_irrad_sep"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_irrad_oct">
+                                        <div class="col-6">
+                                            <p>Octobre :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_irrad_oct"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_irrad_nov">
+                                        <div class="col-6">
+                                            <p>Novembre :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_irrad_nov"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_irrad_dec">
+                                        <div class="col-6">
+                                            <p>Décembre :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_irrad_dec"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-style-10 col-5">
+                                    <h1>Production Mensuelle<span></span></h1>
+                                    <br>
+                                    <div class="row energy_prod_jan">
+                                        <div class="col-6">
+                                            <p>Janvier :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_prod_jan"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_prod_feb">
+                                        <div class="col-6">
+                                            <p>Février :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_prod_feb"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_prod_mar">
+                                        <div class="col-6">
+                                            <p>Mars :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_prod_mar"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_prod_apr">
+                                        <div class="col-6">
+                                            <p>Avril :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_prod_apr"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_prod_may">
+                                        <div class="col-6">
+                                            <p>Mai :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_prod_may"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_prod_jun">
+                                        <div class="col-6">
+                                            <p>Juin :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_prod_jun"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_prod_jul">
+                                        <div class="col-6">
+                                            <p>Juillet :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_prod_jul"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_prod_aug">
+                                        <div class="col-6">
+                                            <p>Aout :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_prod_aug"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_prod_sep">
+                                        <div class="col-6">
+                                            <p>Septembre :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_prod_sep"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_prod_oct">
+                                        <div class="col-6">
+                                            <p>Octobre :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_prod_oct"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_prod_nov">
+                                        <div class="col-6">
+                                            <p>Novembre :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_prod_nov"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="row energy_prod_dec">
+                                        <div class="col-6">
+                                            <p>Décembre :</p>
+                                        </div>
+                                        <div class="col-4 mx-auto">
+                                            <p class="energy_prod_dec"></p>
+                                        </div>
+                                        <div class="col-2 mx-auto">
+                                            <p>kWh/m²</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 offset-3">
+                                    <div class="form-style-10">
+                                        <h1>Résultats<span></span></h1>
+                                        <br>
+                                        <div class="row energy_irrad_year">
+                                            <div class="col-6">
+                                                <p>Irradiation annuelle :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_irrad_year"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                                <p>kWh/m²</p>
+                                            </div>
+                                        </div>
+                                        <div class="row energy_prod_year">
+                                            <div class="col-6">
+                                                <p>Production annuelle :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_prod_year"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                                <p>kWh</p>
+                                            </div>
+                                        </div>
+                                        <div class="row energy_ratio_prod">
+                                            <div class="col-6">
+                                                <p>Ratio d'énergie :</p>
+                                            </div>
+                                            <div class="col-4 mx-auto">
+                                                <p class="energy_ratio_prod"></p>
+                                            </div>
+                                            <div class="col-2 mx-auto">
+                                                <p>kWh/kWc</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <button style="margin: 0 auto; display: block;" type="button"
+                            class="btn btn-primary save_prod my-3">Sauvegarder</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -1749,15 +2494,21 @@
                 <div class="modal-body">
                     <div id="add_city" class="container p-3">
                         <div class="row px-3 justify-content">
-                            {{ form_city.non_field_errors }}
-                            <div id="city_errors">
+                            <div class="row w-100">
+                                <div class="col-7">
+                                    <p>Ville à rechercher :</p>
+                                </div>
                             </div>
-                            <div class="col-7">
-                                <p>Ville à rechercher :</p>
+                            <div class="row w-100">
+                                <div class="city_errors form_errors">
+                                </div>
                             </div>
                         </div>
+                        <div class="row px-3 justify-content">
+                            <p class="city_no_result"></p>
+                        </div>
                         <div class="row px-3">
-                            <div class="col-7">
+                            <div class="col-4">
                                 <input type="text" name="city_to_search" id="city_to_find">
                             </div>
                             <div class="col-4">
@@ -1770,30 +2521,43 @@
                             <br>
                             <p><b><i><u>Donées de la ville :</u></i></b></p>
                             <div class="localisation_values">
-                                <div class="row">
-                                    <div class="col-4">
-                                        <label for="city_name">{{ form_city.name.label_tag }}</label>
-                                    </div>
-                                    <div class="col-6 find_city find_city_data">
-                                        {{ form_city.name }}
-                                    </div>
+                                <div class="row tag_error">
+                                    <label class="w-100">{{ form_city.name.label_tag }}
+                                        <div class="row cn">
+                                            <div class="col-11 px-0 find_city find_city_data">{{ form_city.name }}</div>
+                                            <div class="col-1 pr-0">
+                                                <p></p>
+                                            </div>
+                                        </div>
+                                    </label>
                                 </div>
-                                <div class="row">
-                                    <div class="col-4">
-                                        <label for="city_lat">{{ form_city.lat.label_tag }}</label>
-                                    </div>
-                                    <div class="col-6 find_lat find_city_data">
-                                        {{ form_city.lat }}
-                                    </div>
+                                <div class=" row form_errors">
                                 </div>
-                                <div class="row">
-                                    <div class="col-4">
-                                        <label for="city_lat">{{ form_city.lon.label_tag }}</label>
-                                    </div>
-                                    <div class="col-6 find_lon find_city_data">
-                                        {{ form_city.lon }}
-                                    </div>
+                                <div class="row tag_error">
+                                    <label class="w-100">{{ form_city.lat.label_tag }}
+                                        <div class="row cn">
+                                            <div class="col-11 px-0 find_lat find_city_data">{{ form_city.lat }}</div>
+                                            <div class="col-1 pr-0">
+                                                <p>°C</p>
+                                            </div>
+                                        </div>
+                                    </label>
                                 </div>
+                                <div class=" row form_errors">
+                                </div>
+                                <div class="row tag_error">
+                                    <label class="w-100">{{ form_city.lon.label_tag }}
+                                        <div class="row cn">
+                                            <div class="col-11 px-0 find_lon find_city_data">{{ form_city.lon }}</div>
+                                            <div class="col-1 pr-0">
+                                                <p>°C</p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class=" row form_errors">
+                                </div>
+                                <br>
                             </div>
                         </div>
                     </div>
@@ -1821,13 +2585,14 @@
                 <div class="modal-body">
                     <div id="add_panel" class="container p-1">
                         <div class="container panel">
-                            {{ form_panel.non_field_errors }}
-                            <div id="panel_errors">
+                            <div class="row w-100">
+                                <div class="panel_errors form_errors">
+                                </div>
                             </div>
                             <br>
                             <p><b><i><u>Informations du panneau :</u></i></b></p>
                             <div class="panel_values">
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.model.label_tag }}</label>
                                     </div>
@@ -1837,7 +2602,7 @@
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.manufacturer_id.label_tag }}</label>
                                     </div>
@@ -1847,7 +2612,7 @@
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.technology_id.label_tag }}</label>
                                     </div>
@@ -1857,7 +2622,7 @@
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.power.label_tag }}</label>
                                     </div>
@@ -1870,7 +2635,7 @@
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.tolerance.label_tag }}</label>
                                     </div>
@@ -1883,7 +2648,7 @@
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.radiation.label_tag }}</label>
                                     </div>
@@ -1896,7 +2661,7 @@
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.temperature.label_tag }}</label>
                                     </div>
@@ -1909,7 +2674,7 @@
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.short_circuit_current.label_tag }}</label>
                                     </div>
@@ -1922,7 +2687,7 @@
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.open_circuit_voltage.label_tag }}</label>
                                     </div>
@@ -1935,7 +2700,7 @@
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.temperature_factor_current.label_tag }}</label>
                                     </div>
@@ -1948,7 +2713,7 @@
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.temperature_factor_voltage.label_tag }}</label>
                                     </div>
@@ -1961,7 +2726,7 @@
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.temperature_factor_power.label_tag }}</label>
                                     </div>
@@ -1974,7 +2739,7 @@
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.mpp_current.label_tag }}</label>
                                     </div>
@@ -1987,7 +2752,7 @@
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.mpp_voltage.label_tag }}</label>
                                     </div>
@@ -2000,7 +2765,7 @@
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.voltage_max.label_tag }}</label>
                                     </div>
@@ -2013,7 +2778,7 @@
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.length.label_tag }}</label>
                                     </div>
@@ -2026,7 +2791,7 @@
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.width.label_tag }}</label>
                                     </div>
@@ -2039,7 +2804,7 @@
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.serial_cell_quantity.label_tag }}</label>
                                     </div>
@@ -2049,7 +2814,7 @@
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.parallel_cell_quantity.label_tag }}</label>
                                     </div>
@@ -2059,7 +2824,7 @@
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.cell_surface.label_tag }}</label>
                                     </div>
@@ -2072,7 +2837,7 @@
                                 </div>
                                 <div class="row form_errors">
                                 </div>
-                                <div class="row">
+                                <div class="row tag_error">
                                     <div class="col-5">
                                         <label>{{ form_panel.comment.label_tag }}</label>
                                     </div>

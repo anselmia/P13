@@ -10,12 +10,8 @@ class City(models.Model):
     """ Projects """
 
     name = models.CharField(max_length=100, unique=True, verbose_name="Nom")
-    lat = models.DecimalField(
-        max_digits=9, decimal_places=7, null=False, verbose_name="Latitude"
-    )
-    lon = models.DecimalField(
-        max_digits=10, decimal_places=7, null=False, verbose_name="Longitude"
-    )
+    lat = models.DecimalField(max_digits=9, decimal_places=7, verbose_name="Latitude")
+    lon = models.DecimalField(max_digits=10, decimal_places=7, verbose_name="Longitude")
 
     class Meta:
         verbose_name = "Ville"

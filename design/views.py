@@ -9,13 +9,15 @@ from .forms import (
     MPPForm,
 )
 from django.contrib.auth.decorators import login_required
-from design.api import TemperatureData, IrradianceData, Localisation
+from design.api import Localisation
 from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.contrib import messages
 from project.models import City
 from design.models import Panel, Inverter
 from design.implantation_calculation import Implantation_calculation
 from design.configuration_calculation import Calculation
+from design.energy_calculation import Production
+from .informations import Informations
 from django.core import serializers
 import json
 
@@ -63,12 +65,12 @@ def index(request):
 
 
 @login_required
-def get_meteo_data(request):
+def get_localisation_data(request):
     if request.method == "POST":
         search_text = request.POST["search"]
         try:
-            localisation = Localisation(search_text)
-            return JsonResponse({"status": True, "localisation": localisation.data,})
+            loc = Localisation(search_text).data
+            return JsonResponse({"status": True, "loc": loc,})
         except Exception as E:
             return JsonResponse({"status": False})
     return JsonResponse({"status": False})
@@ -222,5 +224,28 @@ def inverter_data(request):
             return JsonResponse(
                 {"success": True, "data": serializers.serialize("json", [inverter,]),}
             )
+        except Exception as E:
+            return JsonResponse({"errors": True})
+
+
+@login_required
+def production_data(request):
+    if request.method == "POST":
+        data = json.loads(request.POST.get("data", ""))
+        try:
+            information = Informations()
+            infos = information.get_information(data)
+            return JsonResponse({"success": True, "infos": infos})
+        except Exception as E:
+            return JsonResponse({"errors": True})
+
+
+@login_required
+def calculate_production(request):
+    if request.method == "POST":
+        data = json.loads(request.POST.get("data", ""))
+        try:
+            datas = Production(data).datas
+            return JsonResponse({"success": True, "datas": datas})
         except Exception as E:
             return JsonResponse({"errors": True})

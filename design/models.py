@@ -84,18 +84,18 @@ class Inverter(models.Model):
     manufacturer_id = models.ForeignKey(
         Manufacturer, related_name="fabricant_onduleur", on_delete=models.CASCADE
     )
-    mpp_voltage_min = models.IntegerField(blank=True, null=False)
-    mpp_voltage_max = models.IntegerField(blank=True, null=False)
-    dc_voltage_max = models.IntegerField(blank=True, null=False)
-    dc_current_max = models.DecimalField(max_digits=5, decimal_places=2, null=False)
-    dc_power_max = models.DecimalField(max_digits=5, decimal_places=2, null=False)
-    ac_power_nominal = models.DecimalField(max_digits=5, decimal_places=2, null=False)
-    ac_power_max = models.DecimalField(max_digits=5, decimal_places=2, null=False)
-    ac_current_max = models.DecimalField(max_digits=5, decimal_places=2, null=False)
-    efficiency = models.DecimalField(max_digits=4, decimal_places=2, null=False)
-    mpp_string_max = models.IntegerField(blank=True, null=False)
-    mpp = models.IntegerField(blank=True, null=False)
-    ac_cabling = models.IntegerField(blank=True, null=False)
+    mpp_voltage_min = models.IntegerField(blank=True)
+    mpp_voltage_max = models.IntegerField(blank=True)
+    dc_voltage_max = models.IntegerField(blank=True)
+    dc_current_max = models.DecimalField(max_digits=5, decimal_places=2)
+    dc_power_max = models.DecimalField(max_digits=5, decimal_places=2)
+    ac_power_nominal = models.DecimalField(max_digits=5, decimal_places=2)
+    ac_power_max = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    ac_current_max = models.DecimalField(max_digits=5, decimal_places=2)
+    efficiency = models.DecimalField(max_digits=4, decimal_places=2)
+    mpp_string_max = models.IntegerField(blank=True, null=True)
+    mpp = models.IntegerField(blank=True)
+    ac_cabling = models.IntegerField(blank=True, null=True)
     comment = models.CharField(
         max_length=1000, unique=True, verbose_name="Commentaire", blank=True, null=True
     )
@@ -118,15 +118,13 @@ class Panel(models.Model):
     technology_id = models.ForeignKey(
         Technology, related_name="technologie_panneau", on_delete=models.CASCADE
     )
-    power = models.IntegerField(blank=True, null=False, verbose_name="Puissance")
+    power = models.IntegerField(blank=True, verbose_name="Puissance")
     tolerance = models.DecimalField(
         max_digits=3, decimal_places=2, null=True, verbose_name="Tolérance"
     )
-    radiation = models.IntegerField(
-        blank=True, null=False, verbose_name="Rayonnement de référence"
-    )
+    radiation = models.IntegerField(blank=True, verbose_name="Rayonnement de référence")
     temperature = models.IntegerField(
-        blank=True, null=False, verbose_name="Température de référence"
+        blank=True, verbose_name="Température de référence"
     )
     short_circuit_current = models.DecimalField(
         max_digits=4, decimal_places=2, null=True, verbose_name="Icc"
@@ -164,14 +162,14 @@ class Panel(models.Model):
     mpp_voltage = models.DecimalField(
         max_digits=5, decimal_places=2, null=True, verbose_name="Vmpp"
     )
-    voltage_max = models.IntegerField(blank=True, null=False, verbose_name="Vmax")
-    length = models.IntegerField(blank=True, null=False, verbose_name="Longueur")
-    width = models.IntegerField(blank=True, null=False, verbose_name="Largeur")
+    voltage_max = models.IntegerField(blank=True, verbose_name="Vmax")
+    length = models.IntegerField(blank=True, verbose_name="Longueur")
+    width = models.IntegerField(blank=True, verbose_name="Largeur")
     serial_cell_quantity = models.IntegerField(
-        blank=True, null=False, verbose_name="Cell. en Série"
+        blank=True, verbose_name="Cell. en Série"
     )
     parallel_cell_quantity = models.IntegerField(
-        blank=True, null=False, verbose_name="Cell. en Parallèle"
+        blank=True, verbose_name="Cell. en Parallèle"
     )
     cell_surface = models.DecimalField(
         max_digits=5, decimal_places=2, null=True, verbose_name="Surface d'une Cell."
@@ -258,41 +256,25 @@ class Implantation(models.Model):
     )
 
     vertical_overlapping = models.IntegerField(
-        blank=True, null=False, verbose_name="Recouvrement vertical"
+        blank=True, verbose_name="Recouvrement vertical"
     )
     horizontal_overlapping = models.IntegerField(
-        blank=True, null=False, verbose_name="Recouvrement horizontal"
+        blank=True, verbose_name="Recouvrement horizontal"
     )
     vertical_spacing = models.IntegerField(
-        blank=True, null=False, verbose_name="Espacement vertical"
+        blank=True, verbose_name="Espacement vertical"
     )
     horizontal_spacing = models.IntegerField(
-        blank=True, null=False, verbose_name="Espacement horizontal"
+        blank=True, verbose_name="Espacement horizontal"
     )
-    distance_top = models.IntegerField(
-        blank=True, null=False, verbose_name="Distance haut"
-    )
-    distance_bottom = models.IntegerField(
-        blank=True, null=False, verbose_name="Distance bas"
-    )
-    distance_left = models.IntegerField(
-        blank=True, null=False, verbose_name="Distance gauche"
-    )
-    distance_right = models.IntegerField(
-        blank=True, null=False, verbose_name="Distance droite"
-    )
-    abergement_top = models.IntegerField(
-        blank=True, null=False, verbose_name="Abergement Haut"
-    )
-    abergement_bottom = models.IntegerField(
-        blank=True, null=False, verbose_name="Abergement bas"
-    )
-    abergement_left = models.IntegerField(
-        blank=True, null=False, verbose_name="Abergement gauche"
-    )
-    abergement_right = models.IntegerField(
-        blank=True, null=False, verbose_name="Abergement droit"
-    )
+    distance_top = models.IntegerField(blank=True, verbose_name="Distance haut")
+    distance_bottom = models.IntegerField(blank=True, verbose_name="Distance bas")
+    distance_left = models.IntegerField(blank=True, verbose_name="Distance gauche")
+    distance_right = models.IntegerField(blank=True, verbose_name="Distance droite")
+    abergement_top = models.IntegerField(blank=True, verbose_name="Abergement Haut")
+    abergement_bottom = models.IntegerField(blank=True, verbose_name="Abergement bas")
+    abergement_left = models.IntegerField(blank=True, verbose_name="Abergement gauche")
+    abergement_right = models.IntegerField(blank=True, verbose_name="Abergement droit")
 
     class Meta:
         verbose_name = "Implémentation"
@@ -316,7 +298,7 @@ class Config(models.Model):
         verbose_name="Onduleur",
     )
     inverter_quantity = models.IntegerField(
-        blank=True, null=False, verbose_name="Nombre d'onduleurs"
+        blank=True, verbose_name="Nombre d'onduleurs"
     )
 
     class Meta:
@@ -333,8 +315,8 @@ class MPP(models.Model):
     config_id = models.ForeignKey(
         Project, related_name="config", on_delete=models.CASCADE
     )
-    serial = models.IntegerField(blank=True, null=False, verbose_name="En série")
-    parallel = models.IntegerField(blank=True, null=False, verbose_name="En parallèle")
+    serial = models.IntegerField(blank=True, verbose_name="En série")
+    parallel = models.IntegerField(blank=True, verbose_name="En parallèle")
 
     class Meta:
         verbose_name = "MPP"

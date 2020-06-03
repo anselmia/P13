@@ -48,15 +48,21 @@ class ProjectForm(ModelForm):
 class CityForm(ModelForm):
     class Meta:
         model = City
-        fields = ("name", "lat", "lon")
+        fields = (
+            "name",
+            "lat",
+            "lon",
+        )
 
     def __init__(self, *args, **kwargs):
         super(CityForm, self).__init__(*args, **kwargs)
-        self.fields["name"].widget.attrs.update({"class": "find_city"})
+        self.fields["name"].widget.attrs.update(
+            {"class": "find_city", "readonly": True}
+        )
         self.fields["name"].required = True
-        self.fields["lat"].widget.attrs.update({"class": "find_lat"})
+        self.fields["lat"].widget.attrs.update({"class": "find_lat", "readonly": True})
         self.fields["lat"].required = True
-        self.fields["lon"].widget.attrs.update({"class": "find_lon"})
+        self.fields["lon"].widget.attrs.update({"class": "find_lon", "readonly": True})
         self.fields["lon"].required = True
 
 

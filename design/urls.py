@@ -6,7 +6,11 @@ app_name = "design"
 
 urlpatterns = [
     path("design/", views.index, name="index"),
-    path("get_meteo_data/", views.get_meteo_data, name="get_meteo_data",),
+    path(
+        "get_localisation_data/",
+        views.get_localisation_data,
+        name="get_localisation_data",
+    ),
     path("add_city/", views.add_city, name="add_city"),
     path("add_panel/", views.add_panel, name="add_panel"),
     path("save_roof/", views.save_roof, name="save_roof"),
@@ -20,4 +24,8 @@ urlpatterns = [
         "calcul_configuration/", views.calcul_configuration, name="calcul_configuration"
     ),
     path("inverter_data/", views.inverter_data, name="inverter_data"),
+    path("production_data/", views.production_data, name="production_data"),
+    path(
+        "calculate_production/", views.calculate_production, name="calculate_production"
+    ),
 ]
