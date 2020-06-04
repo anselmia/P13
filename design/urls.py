@@ -20,6 +20,12 @@ urlpatterns = [
     path("calcul_implantation/", views.calcul_implantation, name="calcul_implantation"),
     path("valid_configuration/", views.valid_configuration, name="valid_configuration"),
     path("valid_mpp/", views.valid_mpp, name="valid_mpp"),
+    path("save_project/", views.save_project, name="save_project"),
+    path("save_roof/", views.save_roof, name="save_roof"),
+    path("save_implantation/", views.save_implantation, name="save_implantation"),
+    path("calcul_implantation/", views.calcul_implantation, name="calcul_implantation"),
+    path("save_configuration/", views.save_configuration, name="save_configuration"),
+    path("save_mpp/", views.save_mpp, name="save_mpp"),
     path(
         "calcul_configuration/", views.calcul_configuration, name="calcul_configuration"
     ),

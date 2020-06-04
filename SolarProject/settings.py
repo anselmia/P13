@@ -33,7 +33,6 @@ INSTALLED_APPS = [
     "component.apps.ComponentConfig",
     "design.apps.DesignConfig",
     "user.apps.UserConfig",
-    "project.apps.ProjectConfig",
     "home.apps.HomeConfig",
     "django.contrib.admin",
     "django.contrib.auth",

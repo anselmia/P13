@@ -98,9 +98,9 @@
                                 <div class="row">
                                     <div class="col-9">
                                         <div class="row w-100 tag_error ">
-                                            <label class="w-100">{{ form_roof.roof_type.label_tag }}
+                                            <label class="w-100">{{ form_roof.roof_type_id.label_tag }}
                                                 <div class="row cn">
-                                                    <div class="col-11 px-0">{{ form_roof.roof_type }}</div>
+                                                    <div class="col-11 px-0">{{ form_roof.roof_type_id }}</div>
                                                     <div class="col-1 pr-0">
                                                         <p></p>
                                                     </div>
@@ -576,8 +576,9 @@
                                 <div class="inner-wrap">
                                     <div class="row cn">
                                         <div class="col-6 mx-0">
-                                            <form class="form_config config_1" method="POST" action="">
+                                            <form id="config_1" class="form_config config_1" method="POST" action="">
                                                 {% csrf_token %}
+                                                <div class="index1" style="display: none;">{{ form_config.index }}</div>
                                                 <div class="row w-100 tag_error">
                                                     <label class="w-100">{{ form_config.inverter_id.label_tag }}
                                                         <div class="row cn">
@@ -668,7 +669,7 @@
                                                 <h1 class="cn">MPP 1<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
                                                 <div class="inner-wrap">
-                                                    <form class="form_mpp" method="POST" action="">
+                                                    <form id="mpp1" class="form_mpp" method="POST" action="">
                                                         {% csrf_token %}
                                                         <div class="row w-100 tag_error">
                                                             <label class="w-100">{{ form_mpp.serial.label_tag }}
@@ -753,7 +754,7 @@
                                                 <h1 class="cn">MPP 2<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
                                                 <div class="inner-wrap">
-                                                    <form class="form_mpp" method="POST" action="">
+                                                    <form id="mpp2" class="form_mpp" method="POST" action="">
                                                         {% csrf_token %}
                                                         <div class="row w-100 tag_error">
                                                             <label class="w-100">{{ form_mpp.serial.label_tag }}
@@ -837,7 +838,7 @@
                                                 <h1 class="cn">MPP 3<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
                                                 <div class="inner-wrap">
-                                                    <form class="form_mpp" method="POST" action="">
+                                                    <form id="mpp3" class="form_mpp" method="POST" action="">
                                                         {% csrf_token %}
                                                         <div class="row w-100 tag_error">
                                                             <label class="w-100">{{ form_mpp.serial.label_tag }}
@@ -928,9 +929,9 @@
                                                 </div>
                                                 <div class="col-4 mx-auto">
                                                     <div class="row">
-                                                        <p class="i_tot_min_value"></p>
+                                                        <p class="i_tot_min_value1"></p>
                                                         <p>&nbsp; - &nbsp;</p>
-                                                        <p class="i_tot_max_value"></p>
+                                                        <p class="i_tot_max_value1"></p>
                                                     </div>
                                                 </div>
                                                 <div class="col-2">
@@ -944,7 +945,7 @@
                                                     <p>Pdc/Pac :</p>
                                                 </div>
                                                 <div class="col-4 mx-auto">
-                                                    <p class="ratio_pn_value"></p>
+                                                    <p class="ratio_pn_value1"></p>
                                                 </div>
                                                 <div class="col-2">
                                                     <p>%</p>
@@ -966,8 +967,9 @@
                                 <div class="inner-wrap">
                                     <div class="row cn">
                                         <div class="col-6 mx-0">
-                                            <form class="form_config config_2" method="POST" action="">
+                                            <form id="config_2" class="form_config config_2" method="POST" action="">
                                                 {% csrf_token %}
+                                                <div class="index2" style="display: none;">{{ form_config.index }}</div>
                                                 <div class="row w-100 tag_error">
                                                     <label class="w-100">{{ form_config.inverter_id.label_tag }}
                                                         <div class="row cn">
@@ -1058,7 +1060,7 @@
                                                 <h1 class="cn">MPP 1<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
                                                 <div class="inner-wrap">
-                                                    <form class="form_mpp" method="POST" action="">
+                                                    <form id="mpp1" class="form_mpp" method="POST" action="">
                                                         {% csrf_token %}
                                                         <div class="row w-100 tag_error">
                                                             <label class="w-100">{{ form_mpp.serial.label_tag }}
@@ -1145,7 +1147,7 @@
                                                 <h1 class="cn">MPP 2<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
                                                 <div class="inner-wrap">
-                                                    <form class="form_mpp" method="POST" action="">
+                                                    <form id="mpp2" class="form_mpp" method="POST" action="">
                                                         {% csrf_token %}
                                                         <div class="row w-100 tag_error">
                                                             <label class="w-100">{{ form_mpp.serial.label_tag }}
@@ -1229,7 +1231,7 @@
                                                 <h1 class="cn">MPP 3<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
                                                 <div class="inner-wrap">
-                                                    <form class="form_mpp" method="POST" action="">
+                                                    <form id="mpp3" class="form_mpp" method="POST" action="">
                                                         {% csrf_token %}
                                                         <div class="row w-100 tag_error">
                                                             <label class="w-100">{{ form_mpp.serial.label_tag }}
@@ -1310,6 +1312,42 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="px-4 section"><span>3</span>Vérifications</div>
+                                <div class="inner-wrap mb-2 py-1">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p>Itot :</p>
+                                                </div>
+                                                <div class="col-4 mx-auto">
+                                                    <div class="row">
+                                                        <p class="i_tot_min_value2"></p>
+                                                        <p>&nbsp; - &nbsp;</p>
+                                                        <p class="i_tot_max_value2"></p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>A</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p>Pdc/Pac :</p>
+                                                </div>
+                                                <div class="col-4 mx-auto">
+                                                    <p class="ratio_pn_value2"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>%</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1322,8 +1360,9 @@
                                 <div class="inner-wrap">
                                     <div class="row cn">
                                         <div class="col-6 mx-0">
-                                            <form class="form_config config_3" method="POST" action="">
+                                            <form id="config_3" class="form_config config_3" method="POST" action="">
                                                 {% csrf_token %}
+                                                <div class="index3" style="display: none;">{{ form_config.index }}</div>
                                                 <div class="row w-100 tag_error">
                                                     <label class="w-100">{{ form_config.inverter_id.label_tag }}
                                                         <div class="row cn">
@@ -1413,7 +1452,7 @@
                                                 <h1 class="cn">MPP 1<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
                                                 <div class="inner-wrap">
-                                                    <form class="form_mpp" method="POST" action="">
+                                                    <form id="mpp1" class="form_mpp" method="POST" action="">
                                                         {% csrf_token %}
                                                         <div class="row w-100 tag_error">
                                                             <label class="w-100">{{ form_mpp.serial.label_tag }}
@@ -1497,7 +1536,7 @@
                                                 <h1 class="cn">MPP 2<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
                                                 <div class="inner-wrap">
-                                                    <form class="form_mpp" method="POST" action="">
+                                                    <form id="mpp2" class="form_mpp" method="POST" action="">
                                                         {% csrf_token %}
                                                         <div class="row w-100 tag_error">
                                                             <label class="w-100">{{ form_mpp.serial.label_tag }}
@@ -1581,7 +1620,7 @@
                                                 <h1 class="cn">MPP 3<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
                                                 <div class="inner-wrap">
-                                                    <form class="form_mpp" method="POST" action="">
+                                                    <form id="mpp3" class="form_mpp" method="POST" action="">
                                                         {% csrf_token %}
                                                         <div class="row w-100 tag_error">
                                                             <label class="w-100">{{ form_mpp.serial.label_tag }}
@@ -1661,6 +1700,42 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="px-4 section"><span>3</span>Vérifications</div>
+                                <div class="inner-wrap mb-2 py-1">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p>Itot :</p>
+                                                </div>
+                                                <div class="col-4 mx-auto">
+                                                    <div class="row">
+                                                        <p class="i_tot_min_value3"></p>
+                                                        <p>&nbsp; - &nbsp;</p>
+                                                        <p class="i_tot_max_value3"></p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>A</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p>Pdc/Pac :</p>
+                                                </div>
+                                                <div class="col-4 mx-auto">
+                                                    <p class="ratio_pn_value3"></p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <p>%</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
                                 </div>
                             </div>
                         </div>
@@ -2303,7 +2378,7 @@
                                             <p class="energy_prod_jan"></p>
                                         </div>
                                         <div class="col-2 mx-auto">
-                                            <p>kWh/m²</p>
+                                            <p>kWh</p>
                                         </div>
                                     </div>
                                     <div class="row energy_prod_feb">
@@ -2314,7 +2389,7 @@
                                             <p class="energy_prod_feb"></p>
                                         </div>
                                         <div class="col-2 mx-auto">
-                                            <p>kWh/m²</p>
+                                            <p>kWh</p>
                                         </div>
                                     </div>
                                     <div class="row energy_prod_mar">
@@ -2325,7 +2400,7 @@
                                             <p class="energy_prod_mar"></p>
                                         </div>
                                         <div class="col-2 mx-auto">
-                                            <p>kWh/m²</p>
+                                            <p>kWh</p>
                                         </div>
                                     </div>
                                     <div class="row energy_prod_apr">
@@ -2336,7 +2411,7 @@
                                             <p class="energy_prod_apr"></p>
                                         </div>
                                         <div class="col-2 mx-auto">
-                                            <p>kWh/m²</p>
+                                            <p>kWh</p>
                                         </div>
                                     </div>
                                     <div class="row energy_prod_may">
@@ -2347,7 +2422,7 @@
                                             <p class="energy_prod_may"></p>
                                         </div>
                                         <div class="col-2 mx-auto">
-                                            <p>kWh/m²</p>
+                                            <p>kWh</p>
                                         </div>
                                     </div>
                                     <div class="row energy_prod_jun">
@@ -2358,7 +2433,7 @@
                                             <p class="energy_prod_jun"></p>
                                         </div>
                                         <div class="col-2 mx-auto">
-                                            <p>kWh/m²</p>
+                                            <p>kWh</p>
                                         </div>
                                     </div>
                                     <div class="row energy_prod_jul">
@@ -2369,7 +2444,7 @@
                                             <p class="energy_prod_jul"></p>
                                         </div>
                                         <div class="col-2 mx-auto">
-                                            <p>kWh/m²</p>
+                                            <p>kWh</p>
                                         </div>
                                     </div>
                                     <div class="row energy_prod_aug">
@@ -2380,7 +2455,7 @@
                                             <p class="energy_prod_aug"></p>
                                         </div>
                                         <div class="col-2 mx-auto">
-                                            <p>kWh/m²</p>
+                                            <p>kWh</p>
                                         </div>
                                     </div>
                                     <div class="row energy_prod_sep">
@@ -2391,7 +2466,7 @@
                                             <p class="energy_prod_sep"></p>
                                         </div>
                                         <div class="col-2 mx-auto">
-                                            <p>kWh/m²</p>
+                                            <p>kWh</p>
                                         </div>
                                     </div>
                                     <div class="row energy_prod_oct">
@@ -2402,7 +2477,7 @@
                                             <p class="energy_prod_oct"></p>
                                         </div>
                                         <div class="col-2 mx-auto">
-                                            <p>kWh/m²</p>
+                                            <p>kWh</p>
                                         </div>
                                     </div>
                                     <div class="row energy_prod_nov">
@@ -2413,7 +2488,7 @@
                                             <p class="energy_prod_nov"></p>
                                         </div>
                                         <div class="col-2 mx-auto">
-                                            <p>kWh/m²</p>
+                                            <p>kWh</p>
                                         </div>
                                     </div>
                                     <div class="row energy_prod_dec">
@@ -2424,7 +2499,7 @@
                                             <p class="energy_prod_dec"></p>
                                         </div>
                                         <div class="col-2 mx-auto">
-                                            <p>kWh/m²</p>
+                                            <p>kWh</p>
                                         </div>
                                     </div>
                                 </div>
@@ -2474,6 +2549,10 @@
                         <br>
                         <button style="margin: 0 auto; display: block;" type="button"
                             class="btn btn-primary save_prod my-3">Sauvegarder</button>
+                        <br>
+                        <div>
+                            <p class="save_project cn"></p>
+                        </div>
                     </div>
                 </div>
             </div>

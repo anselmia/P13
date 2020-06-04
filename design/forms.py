@@ -1,5 +1,4 @@
 from django import forms
-from project.models import City, Project
 from .models import (
     Panel,
     Technology,
@@ -13,6 +12,8 @@ from .models import (
     Config,
     MPP,
     Inverter,
+    City,
+    Project,
 )
 from user.models import User
 from django.forms import ModelForm
@@ -22,7 +23,7 @@ import math
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
-        fields = ("name", "city_id", "panel_id")
+        fields = ("name", "city_id", "panel_id", "user_id")
 
     def __init__(self, *args, **kwargs):
         super(ProjectForm, self).__init__(*args, **kwargs)
@@ -31,6 +32,7 @@ class ProjectForm(ModelForm):
             {"value": 0, "class": "container_100 cn"}
         )
         self.fields["name"].required = True
+        self.fields["user_id"].required = False
 
     city_id = forms.ModelChoiceField(
         queryset=City.objects.all(), label="Ville", required=True, initial=1,
@@ -144,7 +146,7 @@ class RoofForm(ModelForm):
     class Meta:
         model = Roof
         fields = (
-            "roof_type",
+            "roof_type_id",
             "bottom_length",
             "top_length",
             "width",
@@ -182,26 +184,26 @@ class RoofForm(ModelForm):
         )
         self.fields["tilt"].widget.attrs.update({"class": "container_100 round_input "})
 
-    roof_type = forms.ModelChoiceField(
+    roof_type_id = forms.ModelChoiceField(
         queryset=Roof_type.objects.all(),
         label="Type de toîture",
         required=True,
         initial=1,
     )
-    roof_type.widget.attrs["class"] = "round_input container_100"
+    roof_type_id.widget.attrs["class"] = "round_input container_100"
 
     def clean(self):
         # data from the form is fetched using super function
         super(RoofForm, self).clean()
 
-        roof_type = self.cleaned_data.get("roof_type")
+        roof_type_id = self.cleaned_data.get("roof_type_id")
         bottom_length = self.cleaned_data.get("bottom_length")
         top_length = self.cleaned_data.get("top_length")
         width = self.cleaned_data.get("width")
         height = self.cleaned_data.get("height")
 
-        if roof_type is not None:
-            if roof_type.id == 1 or roof_type.id == 3:
+        if roof_type_id is not None:
+            if roof_type_id.id == 1 or roof_type_id.id == 3:
                 if bottom_length is None or bottom_length == "" or bottom_length <= 0:
                     self._errors["bottom_length"] = self.error_class(
                         ["Veuillez vérifier la valeur"]
@@ -210,7 +212,7 @@ class RoofForm(ModelForm):
                     self._errors["width"] = self.error_class(
                         ["Veuillez vérifier la valeur"]
                     )
-                if roof_type.id == 3:
+                if roof_type_id.id == 3:
                     if not (
                         bottom_length is None
                         or bottom_length == ""
@@ -231,7 +233,7 @@ class RoofForm(ModelForm):
                             self._errors["width"] = self.error_class(
                                 ["Veuillez vérifier la valeur"]
                             )
-            elif roof_type.id == 2:
+            elif roof_type_id.id == 2:
                 if bottom_length is None or bottom_length == "" or bottom_length <= 0:
                     self._errors["bottom_length"] = self.error_class(
                         ["Veuillez vérifier la valeur"]
@@ -391,6 +393,7 @@ class ConfigForm(ModelForm):
         fields = (
             "inverter_id",
             "inverter_quantity",
+            "index",
         )
 
     def __init__(self, *args, **kwargs):
@@ -407,13 +410,6 @@ class ConfigForm(ModelForm):
         queryset=Inverter.objects.all(), label="Onduleur", required=True, initial=1,
     )
 
-    def clean(self):
-        # data from the form is fetched using super function
-        super(ConfigForm, self).clean()
-
-        # return any errors if found
-        return self.cleaned_data
-
 
 class MPPForm(ModelForm):
     class Meta:
@@ -429,10 +425,3 @@ class MPPForm(ModelForm):
         self.fields["serial"].widget.attrs.update({"value": 0, "class": "cn config"})
         self.fields["parallel"].required = True
         self.fields["parallel"].widget.attrs.update({"value": 0, "class": "cn config"})
-
-    def clean(self):
-        # data from the form is fetched using super function
-        super(MPPForm, self).clean()
-
-        # return any errors if found
-        return self.cleaned_data

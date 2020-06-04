@@ -25,13 +25,6 @@
     form_config3_mpp3 = null;
   var id_site = 0,
     id_panel = 0;
-  var orientation = 0,
-    tilt = 0;
-  var roof_type = 0,
-    roof_bottom_length = 0,
-    roof_top_length = 0,
-    roof_height = 0,
-    roof_width = 0;
   var roof_installed_power = 0,
     roof_installed_panel = 0;
   var configs, tot_configured_ac_power = 0;
@@ -47,9 +40,9 @@
       roof_top_length = $('#id_top_length').val();
       roof_height = $('#id_height').val();
       roof_width = $('#id_width').val();
-      roof_type = $('#id_roof_type').val();
+      roof_type = $('#id_roof_type_id').val();
     } else if (step_index == 2) {
-      roof_installed_power = $('p.id_orientation').text();
+      roof_installed_power = $('p.power_value').text();
       roof_installed_panel = $('p.tot_pan_value').text();
     } else if (step_index == 3) {
       tot_configured_ac_power = $('p.pac_tot_value').text();
@@ -120,12 +113,15 @@
   $('#smartwizard').on('showStep', function (e, anchorObject, stepIndex, stepDirection, stepPosition) {
     set_step_view();
 
-    if (stepIndex == 1)
+    if (stepIndex == 1) {
+      form_project = $('.form_project');
       init_roof();
-    else if (stepIndex == 2) {
+    } else if (stepIndex == 2) {
+      form_roof = $('.form_roof');
       init_implantation();
       calculate_implantation();
     } else if (stepIndex == 3) {
+      form_implantation = $('.form_implantation');
       init_config();
     } else if (stepIndex == 4) {
       init_infos_prod();
@@ -165,15 +161,15 @@
 
   function check_step_fail(stepIndex, stepDirection, callback) {
     if (stepIndex == 0 && stepDirection == "forward") {
-      ajax_post('/valid_project/', $('.form_project').serialize(), function (resp) {
+      ajax_post('/valid_project/', $(".form_project").serialize(), function (resp) {
         callback(resp.responseJSON);
       });
     } else if (stepIndex == 1 && stepDirection == "forward") {
-      ajax_post('/valid_roof/', $('.form_roof').serialize(), function (resp) {
+      ajax_post('/valid_roof/', $(".form_roof").serialize(), function (resp) {
         callback(resp.responseJSON);
       });
     } else if (stepIndex == 2 && stepDirection == "forward") {
-      ajax_post('/valid_implantation/', $('.form_implantation').serialize(), function (resp) {
+      ajax_post('/valid_implantation/', $(".form_implantation").serialize(), function (resp) {
         callback(resp.responseJSON);
       });
     } else if (stepIndex == 3 && stepDirection == "forward") {
@@ -181,6 +177,28 @@
       callback(response);
     }
   };
+
+  function get_form(step_index) {
+    var form
+    if (step_index == 0) {
+      if (form_project != null)
+        form = form_project.serialize();
+      else
+        form = $('.form_project').serialize();
+    } else if (step_index == 1) {
+      if (form_roof != null)
+        form = form_roof.serialize();
+      else
+        form = $('.form_roof').serialize();
+    } else if (step_index == 2) {
+      if (form_implantation != null)
+        form = form_implantation.serialize();
+      else
+        form = $('.form_implantation').serialize();
+    }
+
+    return form;
+  }
 
   // Project  Functions
   //###################################################################
@@ -300,8 +318,8 @@
   // Roof Functions
   //###################################################################
 
-  $('#id_roof_type').on('change', function () {
-    var type = $("#id_roof_type option:selected").text();
+  $('#id_roof_type_id').on('change', function () {
+    var type = $("#id_roof_type_id option:selected").text();
     if (type == "---------") {
       $(".roof-img").hide();
       $(".roof_width").hide();
@@ -338,6 +356,7 @@
   });
 
   function init_roof() {
+    form_roof = $('.form_roof');
     $(".roof-img").hide();
     $(".vertical_spacing").hide();
     $(".horizontal_spacing").hide();
@@ -348,6 +367,7 @@
   // Implantation Functions
   //###################################################################
   function init_implantation() {
+    form_implantation = $('.form_implantation');
     context.clearRect(0, 0, canvas.width, canvas.height);
     $('.infos_implantation').hide();
   }
@@ -391,21 +411,16 @@
 
   function calculate_implantation() {
     $('#smartwizard').smartWizard("loader", "show");
-
-    var form_project = $('.form_project').serialize();
-    var form_roof = $('.form_roof').serialize();
-    var form_implantation = $('.form_implantation').serialize();
-
-    ajax_post('/valid_project/', form_project, function (resp) {
+    ajax_post('/valid_project/', get_form(0), function (resp) {
       if (resp.responseJSON["success"]) {
-        ajax_post('/valid_roof/', form_roof, function (resp) {
+        ajax_post('/valid_roof/', get_form(1), function (resp) {
           if (resp.responseJSON["success"]) {
-            ajax_post('/valid_implantation/', form_implantation, function (resp) {
+            ajax_post('/valid_implantation/', get_form(2), function (resp) {
               if (resp.responseJSON["success"]) {
                 var datas = {};
-                datas = data_out_of_serialized_form(form_project);
-                datas = extend(datas, data_out_of_serialized_form(form_roof));
-                datas = extend(datas, data_out_of_serialized_form(form_implantation));
+                datas = data_out_of_serialized_form(get_form(0));
+                datas = extend(datas, data_out_of_serialized_form(get_form(1)));
+                datas = extend(datas, data_out_of_serialized_form(get_form(2)));
                 $.each(datas, function (i, o) {
                   var val = parseFloat(o);
                   if (!isNaN(val))
@@ -433,62 +448,6 @@
       } else
         check_forms_errors(resp.responseJSON);
       $('#smartwizard').smartWizard("loader", "hide");
-      // $.ajax({
-      //   data: form_project,
-      //   type: "POST",
-      //   url: '/valid_project/',
-      // }).done(function (resp) {
-      //   if (resp["success"]) {
-      //     $.ajax({
-      //       data: form_roof,
-      //       type: "POST",
-      //       url: '/valid_roof/',
-      //     }).done(function (resp) {
-      //       if (resp["success"]) {
-      //         $.ajax({
-      //           data: form_implantation,
-      //           type: "POST",
-      //           url: '/valid_implantation/'
-      //         }).done(function (resp) {
-      //           if (resp["success"]) {
-      //             var datas = {};
-      //             var split = form_project.split('&');
-      //             split.forEach(function (item) {
-      //               datas[item.split('=')[0]] = item.split('=')[1];
-      //             });
-      //             split = form_roof.split('&');
-      //             split.forEach(function (item) {
-      //               datas[item.split('=')[0]] = item.split('=')[1];
-      //             });
-      //             split = form_implantation.split('&');
-      //             split.forEach(function (item) {
-      //               datas[item.split('=')[0]] = item.split('=')[1];
-      //             });
-      //             $.each(datas, function (i, o) {
-      //               var val = parseFloat(o);
-      //               if (!isNaN(val))
-      //                 original_datas[i] = val;
-      //             });
-      //             $.ajax({
-      //               data: datas,
-      //               type: "POST",
-      //               url: '/calcul_implantation/',
-      //             }).done(function (resp) {
-      //               if (resp["success"]) {
-      //                 var datas = JSON.parse(resp["implantation_values"]);
-      //                 draw(datas)
-      //               }
-      //               check_forms_errors(resp);
-      //             })
-      //           } else {
-      //             check_forms_errors(resp);
-      //           }
-      //         })
-      //       }
-      //     })
-      //   }
-      //   $('#smartwizard').smartWizard("loader", "hide");
-      // })
     });
   }
 
@@ -606,6 +565,10 @@
   //###################################################################
 
   function init_config() {
+    $('.save_prod').show();
+    $('.index1').find('#id_index').val(1);
+    $('.index2').find('#id_index').val(2);
+    $('.index3').find('#id_index').val(3);
     tot_pan = $('.tot_pan_value').text();
     $('#nav-Configuration2-tab').hide();
     $('#nav-Configuration3-tab').hide();
@@ -638,9 +601,11 @@
   $('[id*=close_config').on('click', function (event) {
     var id_config = $(this).attr('id').match(/\d+/)[0];
     $('#nav-Configuration' + id_config + '-tab').hide();
+    $('#add-tab').show();
     $('nav-Configuration' + id_config).find('input[class=.config]').val(0);
     $('#nav-Configuration1-tab').trigger('click');
-    $('#add-tab').show();
+    $('#nav-Configuration1-tab').trigger('click');
+
   });
 
   $('[id=id_inverter_id]').on('change', function () {
@@ -685,12 +650,12 @@
     $('#smartwizard').smartWizard("loader", "show");
     init_config_var();
 
-    ajax_post('/valid_project/', form_project, function (resp) {
-      if (resp.responseJSON["success"] || resp.responseJSON["pass"]) {
-        ajax_post('/valid_roof/', form_roof, function (resp) {
-          if (resp.responseJSON["success"] || resp.responseJSON["pass"]) {
-            ajax_post('/valid_implantation/', form_implantation, function (resp) {
-              if (resp.responseJSON["success"] || resp.responseJSON["pass"]) {
+    ajax_post('/valid_project/', get_form(0), function (resp) {
+      if (resp.responseJSON["success"]) {
+        ajax_post('/valid_roof/', get_form(1), function (resp) {
+          if (resp.responseJSON["success"]) {
+            ajax_post('/valid_implantation/', get_form(2), function (resp) {
+              if (resp.responseJSON["success"]) {
                 var datas = set_config_datas();
                 if (datas["configs"].length > 0) {
                   datas = {
@@ -726,10 +691,7 @@
   }
 
   function init_config_var() {
-    $('p[class*=_value]').css("color", "black")
-    form_project = $('.form_project').serialize();
-    form_roof = $('.form_roof').serialize();
-    form_implantation = $('.form_implantation').serialize();
+    $('p[class*=_value]').css("color", "black");
 
     form_config1 = $('.form_config.config_1').serialize();
     form_config1_mpp1 = $("div.inverter1_mpp1").find("form.form_mpp").serialize();
@@ -859,12 +821,12 @@
       var config = datas["configs"][i];
       var index_config = config["index"].toString();
 
-      $('.i_tot_max_value').text(config["icc_tot_at_70"].toFixed(1));
-      $('.i_tot_max_value').css('color', 'green');
-      $('.i_tot_min_value').text(config["icc_tot_at__10"].toFixed(1));
-      $('.i_tot_min_value').css('color', 'green');
-      $('.ratio_pn_value').text(config["power_ratio"].toFixed(1));
-      $('.ratio_pn_value').css('color', 'green');
+      $('.i_tot_max_value' + index_config).text(config["icc_tot_at_70"].toFixed(1));
+      $('.i_tot_max_value' + index_config).css('color', 'green');
+      $('.i_tot_min_value' + index_config).text(config["icc_tot_at__10"].toFixed(1));
+      $('.i_tot_min_value' + index_config).css('color', 'green');
+      $('.ratio_pn_value' + index_config).text(config["power_ratio"].toFixed(1));
+      $('.ratio_pn_value' + index_config).css('color', 'green');
 
       for (var j = 0; j < config["mpps"].length; j++) {
         var mpp = config["mpps"][j];
@@ -928,10 +890,67 @@
 
   // Production Functions
   //###################################################################
+  function sync_ajax(datas) {
+    for (var i = 0; i < datas.length; i++) {
+      var result = doAjax('/' + datas[i][0] + '/', datas[i][1]);
+      try {
+        if (!result["success"])
+          return false;
+      } catch {
+        return false;
+      }
+    }
+    return true;
+  }
 
   $('.save_prod').on('click', function (event) {
-    calculate_prod();
+    var datas = [
+      ["valid_project", get_form(0)],
+      ["valid_roof", get_form(1)],
+      ["valid_implantation", get_form(2)]
+    ];
+
+    datas = check_conf_and_mpp_form(datas);
+
+    var validOk = sync_ajax(datas);
+
+    if (validOk) {
+      for (var i = 0; i < datas.length; i++) {
+        datas[i][0] = datas[i][0].replace('valid', 'save');
+      }
+      var savedOk = sync_ajax(datas);
+      if (savedOk) {
+        $('p.save_project').text('Le projet a été sauvegardé !')
+        $('.save_prod').hide();
+      } else
+        $('p.save_project').text('Erreur pendant la sauvegarde du projet !')
+    }
   });
+
+  function check_conf_and_mpp_form(datas) {
+    Array.prototype.forEach.call($('.form_config'), form => {
+      form = $(form);
+      var id_conf = form.attr('id').match(/\d+/)[0];
+      var config = configs.find(function (conf) {
+        return conf.index == id_conf;
+      });
+      if (config != null) {
+        datas.push(["valid_configuration", form.serialize()]);
+        Array.prototype.forEach.call(form.closest("#nav-Configuration" + id_conf).find('.form_mpp'), mpp_form => {
+          mpp_form = $(mpp_form);
+          var id_mpp = mpp_form.attr('id').match(/\d+/)[0];
+          var mpp = config.mpps.find(function (_mpp) {
+            return _mpp.index == id_mpp;
+          });
+          if (mpp != null) {
+            datas.push(["valid_mpp", mpp_form.serialize()]);
+          }
+        });
+      }
+    });
+    return datas;
+  }
+
 
   function init_infos_prod() {
     var datas = {
@@ -947,54 +966,58 @@
 
     ajax_post('/production_data/', datas, function (resp) {
       if (resp.responseJSON["success"]) {
-        var datas = resp.responseJSON["infos"];
-        // Site Informations
-        $('p.energy_site_name').text(datas["site_data"][0])
-        $('p.energy_latitude').text(datas["site_data"][1])
-        $('p.energy_longitude').text(datas["site_data"][2])
-        // Solar panel Information
-        $('p.energy_panel_model').text(datas["pv_data"][0])
-        $('p.energy_panel_power').text(datas["pv_data"][1])
-        $('p.energy_tot_panel').text(roof_installed_panel)
-        $('p.energy_tot_panel_power').text(roof_installed_power)
-        $('p.energy_tot_panel_surface').text(datas["pv_data"][2])
-
-        if (datas["inverters_datas"].length > 0) {
-          for (var i = 1; i < 4; i++) {
-            var inverter = datas["inverters_datas"].find(function (element) {
-              return element[0] == i - 1;
-            });
-
-            if (inverter != null) {
-              $('.energy_inverter' + String(i)).show();
-              $('p.energy_inverter_model' + String(i)).text(inverter[1])
-              $('p.energy_inverter_power' + String(i)).text(inverter[2])
-
-              var config = configs.find(function (conf) {
-                return conf.index == i;
-              });
-              $('p.energy_inverter_quantity' + +String(i)).text(config.inverter_quantity)
-              for (var mpp = 1; mpp < 4; mpp++) {
-                var Mpp = config.mpps.find(function (find_mpp) {
-                  return find_mpp.index == mpp;
-                });
-                if (Mpp != null && Mpp.serial > 0) {
-                  $('.energy_inverter' + String(i) + '_MPP' + String(mpp)).show();
-                  $('p.energy_inverter' + String(i) + '_serial' + String(mpp)).text(Mpp.serial)
-                  $('p.energy_inverter' + String(i) + '_parallel' + String(mpp)).text(Mpp.serial)
-                } else
-                  $('.energy_inverter' + String(i) + '_MPP' + String(mpp)).hide();
-              }
-            } else
-              $('.energy_inverter' + String(i)).hide();
-          }
-        } else {
-          $('.energy_inverter1').hide();
-          $('.energy_inverter2').hide();
-          $('.energy_inverter3').hide();
-        }
+        show_init_config_infos(resp.responseJSON["infos"]);
       }
     });
+  }
+
+  function show_init_config_infos(datas) {
+    $('p.save_project').text('');
+    // Site Informations
+    $('p.energy_site_name').text(datas["site_data"][0])
+    $('p.energy_latitude').text(datas["site_data"][1])
+    $('p.energy_longitude').text(datas["site_data"][2])
+    // Solar panel Information
+    $('p.energy_panel_model').text(datas["pv_data"][0])
+    $('p.energy_panel_power').text(datas["pv_data"][1])
+    $('p.energy_tot_panel').text(roof_installed_panel)
+    $('p.energy_tot_panel_power').text(roof_installed_power)
+    $('p.energy_tot_panel_surface').text(datas["pv_data"][2])
+
+    if (datas["inverters_datas"].length > 0) {
+      for (var i = 1; i < 4; i++) {
+        var inverter = datas["inverters_datas"].find(function (element) {
+          return element[0] == i - 1;
+        });
+
+        if (inverter != null) {
+          $('.energy_inverter' + String(i)).show();
+          $('p.energy_inverter_model' + String(i)).text(inverter[1])
+          $('p.energy_inverter_power' + String(i)).text(inverter[2])
+
+          var config = configs.find(function (conf) {
+            return conf.index == i;
+          });
+          $('p.energy_inverter_quantity' + +String(i)).text(config.inverter_quantity)
+          for (var mpp = 1; mpp < 4; mpp++) {
+            var Mpp = config.mpps.find(function (find_mpp) {
+              return find_mpp.index == mpp;
+            });
+            if (Mpp != null && Mpp.serial > 0) {
+              $('.energy_inverter' + String(i) + '_MPP' + String(mpp)).show();
+              $('p.energy_inverter' + String(i) + '_serial' + String(mpp)).text(Mpp.serial)
+              $('p.energy_inverter' + String(i) + '_parallel' + String(mpp)).text(Mpp.serial)
+            } else
+              $('.energy_inverter' + String(i) + '_MPP' + String(mpp)).hide();
+          }
+        } else
+          $('.energy_inverter' + String(i)).hide();
+      }
+    } else {
+      $('.energy_inverter1').hide();
+      $('.energy_inverter2').hide();
+      $('.energy_inverter3').hide();
+    }
   }
 
   function calculate_prod() {
@@ -1013,13 +1036,12 @@
 
     ajax_post('/calculate_production/', datas, function (resp) {
       if (resp.responseJSON["success"])
-        set_info_prod();
+        set_info_prod(resp.responseJSON["datas"]);
       $('#smartwizard').smartWizard("loader", "hide");
     });
   }
 
-  function set_info_prod() {
-    var datas = resp.responseJSON["production_values"];
+  function set_info_prod(datas) {
     var month = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
     for (var i = 0; i < month.length; i++) {
       $('p.energy_prod_' + month[i]).text(datas["monthly_prod"][i]);
@@ -1072,6 +1094,22 @@
         }
       });
     }
+  }
+
+  function doAjax(url, data) {
+    var resp
+    $.ajax({
+      async: false,
+      url: url,
+      type: 'POST',
+      data: data,
+      done: function (response) {
+        return response;
+      }
+    }).done(function (response) {
+      resp = response;
+    });
+    return resp;
   }
 
   function data_out_of_serialized_form(form) {

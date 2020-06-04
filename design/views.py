@@ -12,8 +12,7 @@ from django.contrib.auth.decorators import login_required
 from design.api import Localisation
 from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.contrib import messages
-from project.models import City
-from design.models import Panel, Inverter
+from design.models import Panel, Inverter, Roof, Config, Implantation, City, Project
 from design.implantation_calculation import Implantation_calculation
 from design.configuration_calculation import Calculation
 from design.energy_calculation import Production
@@ -31,23 +30,14 @@ def index(request):
     :param request:
     :return render home.html:
     """
-    if request.method == "POST":
-        project = ProjectForm(data=request.POST)
-        try:
-            if project.is_valid():
-                project.save(commit=False)
-                project.user_id = request.user
-                project.save()
-        except:
-            pass
-    else:
-        project = ProjectForm()
-        city = CityForm()
-        panel = PanelForm()
-        roof = RoofForm()
-        implantation = ImplantationForm()
-        config = ConfigForm()
-        mpp = MPPForm()
+
+    project = ProjectForm()
+    city = CityForm()
+    panel = PanelForm()
+    roof = RoofForm()
+    implantation = ImplantationForm()
+    config = ConfigForm()
+    mpp = MPPForm()
 
     return render(
         request,
@@ -89,11 +79,9 @@ def add_city(request):
                     {"success": True, "name": city_added.name, "id": city_added.id}
                 )
             else:
-                response = [v for k, v in city.errors.items()]
-                return JsonResponse({"errors": response})
+                return JsonResponse({"errors": city.errors})
         except Exception as E:  # pragma: no cover
-            messages.warning(request, "Erreur lors de l'enregistrement de la ville")
-            return JsonResponse()
+            return JsonResponse({"errors": city.errors})
 
     return HttpResponse()
 
@@ -106,35 +94,45 @@ def add_panel(request):
             if panel.is_valid():
                 panel.save()
                 panel_added = Panel.objects.get(model=request.POST["model"])
-                messages.success(request, "Le panneau a été créé")
                 return JsonResponse(
                     {"success": True, "model": panel_added.model, "id": panel_added.id}
                 )
             else:
-                response = [v for k, v in panel.errors.items()]
-                return JsonResponse({"errors": response})
+                return JsonResponse({"errors": panel.errors})
         except Exception as E:  # pragma: no cover
-            messages.warning(request, "Erreur lors de l'enregistrement du panneau")
-            return JsonResponse()
+            return JsonResponse({"errors": panel.errors})
 
     return HttpResponse()
 
 
 @login_required
-def save_roof(request):
-    pass
+def valid_project(request):
+    # if request.method == "POST":
+    #     project = ProjectForm(request.POST)
+    #     try:
+    #         if project.is_valid():
+    return JsonResponse({"success": True})
+    #         else:
+    #             return JsonResponse({"errors": project.errors})
+    #     except Exception as e:
+    #         return JsonResponse({"errors": project.errors})
 
 
 @login_required
-def valid_project(request):
+def save_project(request):
     if request.method == "POST":
         project = ProjectForm(request.POST)
         try:
-            if project.is_valid():
-                return JsonResponse({"success": True})
-            else:
-                return JsonResponse({"errors": project.errors})
-        except:
+            # if project.is_valid():
+            # project = project.save(commit=False)
+            # project.user_id = request.user
+            # #         project.save()
+            # saved_project = Project.objects.get(name=project.name, user_id=request.user)
+            request.session["project_id"] = 14  # saved_project.id
+            return JsonResponse({"success": True})
+            # else:
+            #     return JsonResponse({"errors": project.errors})
+        except Exception as e:
             return JsonResponse({"errors": project.errors})
 
 
@@ -147,6 +145,25 @@ def valid_roof(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": roof.errors})
+        except Exception as E:
+            return JsonResponse({"errors": roof.errors})
+
+
+@login_required
+def save_roof(request):
+    if request.method == "POST":
+        roof = RoofForm(request.POST)
+        try:
+            # if roof.is_valid() and request.session["project_id"]:
+            #     roof = roof.save(commit=False)
+            #     project = Project.objects.get(id=request.session["project_id"])
+            #     roof.project_id = project
+            #     roof.save()
+            #     saved_roof = Roof.objects.get(project_id=project.id)
+            request.session["roof_id"] = 4  # saved_roof
+            return JsonResponse({"success": True})
+            # else:
+            #     return JsonResponse({"errors": roof.errors})
         except Exception as E:
             return JsonResponse({"errors": roof.errors})
 
@@ -165,6 +182,23 @@ def valid_implantation(request):
 
 
 @login_required
+def save_implantation(request):
+    if request.method == "POST":
+        implantation = ImplantationForm(request.POST)
+        try:
+            # if implantation.is_valid():
+            #     implantation = implantation.save(commit=False)
+            #     roof_id = request.session["roof_id"]
+            #     roof = Roof.objects.get(id=roof_id)
+            #     implantation.roof_id = roof
+            return JsonResponse({"success": True})
+            # else:
+            #     return JsonResponse({"errors": implantation.errors})
+        except Exception as E:
+            return JsonResponse({"errors": implantation.errors})
+
+
+@login_required
 def valid_configuration(request):
     if request.method == "POST":
         configuration = ConfigForm(request.POST)
@@ -177,11 +211,50 @@ def valid_configuration(request):
             return JsonResponse({"errors": configuration.errors})
 
 
+@login_required
+def save_configuration(request):
+    if request.method == "POST":
+        configuration = ConfigForm(request.POST)
+        try:
+            if configuration.is_valid():
+                configuration = configuration.save(commit=False)
+                project = Project.objects.get(id=request.session["project_id"])
+                configuration.project_id = project
+                configuration.save()
+                saved_config = Config.objects.get(
+                    project_id=project.id, index=configuration.index
+                )
+                request.session["config_id"] = saved_config.id
+                return JsonResponse({"success": True})
+            else:
+                return JsonResponse({"errors": configuration.errors})
+        except Exception as E:
+            return JsonResponse({"errors": configuration.errors})
+
+
+@login_required
 def valid_mpp(request):
     if request.method == "POST":
         mpp = MPPForm(request.POST)
         try:
             if mpp.is_valid():
+                return JsonResponse({"success": True})
+            else:
+                return JsonResponse({"errors": mpp.errors})
+        except Exception as E:
+            return JsonResponse({"errors": mpp.errors})
+
+
+@login_required
+def save_mpp(request):
+    if request.method == "POST":
+        mpp = MPPForm(request.POST)
+        try:
+            if mpp.is_valid():
+                mpp = mpp.save(commit=False)
+                config = Config.objects.get(id=request.session["config_id"])
+                mpp.config_id = config
+                mpp.save()
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": mpp.errors})

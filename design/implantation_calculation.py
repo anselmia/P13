@@ -23,7 +23,7 @@ class Implantation_calculation:
         self.panel = Panel.objects.get(id=panel_id)
 
         # Roof Data
-        roof_type = Roof_type.objects.get(id=datas["roof_type"])
+        roof_type = Roof_type.objects.get(id=datas["roof_type_id"])
         self.roof = Roof(
             roof_type_id=roof_type,
             bottom_length=float(datas["bottom_length"]),
