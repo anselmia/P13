@@ -1,8 +1,15 @@
+""" import """
 from .models import Inverter, Panel
 import json
 
 
 class Calculation:
+    """ 
+        Class to realize calculation regarding sizing of PVsystem connected to a given inverter.
+        User is allowed to build up to 3 differents configurations.
+
+    """
+
     def __init__(self, datas):
         self.tot_installed_panel = int(datas["tot_panel"])
         self.panel = Panel.objects.get(id=int(datas["panel_id"]))
@@ -27,21 +34,33 @@ class Calculation:
         self.data = self.toJSON()
 
     def calculate_tot_panel(self):
+        """ Calculate total configured panel to inverter """
         self.tot_configured_panel = 0
         for config in self.configs:
             self.tot_configured_panel += config.tot_panel * config.inverter_quantity
 
     def calculate_tot_ac_nom_power(self):
+        """ Calculate total inverter power """
         self.tot_ac_nom_power = 0
         for config in self.configs:
             self.tot_ac_nom_power += config.tot_nom_ac_power
 
     def toJSON(self):
+        """ From self instance, return a json format of the attributes """
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
 
 class Configuration:
+    """ 
+    A configuration represent an amout of inverters and panels connected together.
+    Target is to verify electrical matching of both systems using various calculations at
+    a working temperature between -10 to 70°C
+
+    Will return a list of errors regarding problematic fields using this configuration.
+    """
+
     def __init__(self, config, panel):
+        """ Init with a configuration and a panel model """
         self.index = int(config["index"])
         self.panel = panel
         self.inverter = Inverter.objects.get(id=int(config["inverter_id"]))
@@ -57,6 +76,7 @@ class Configuration:
         self.Calculate_Config()
 
     def Calculate_Config(self):
+        """ Calculate electrical fields of a given configuration """
         self.tot_panel = 0
         for mpp in self.mpps:
             self.tot_panel += mpp.serial * mpp.parallel
@@ -140,11 +160,21 @@ class Configuration:
 
 
 class MPP:
+    """ 
+    Maximum Power Point tracking 
+    Related to an individual input of the inverter, this one 
+    will track the best power curve to achieve the maximum output power.
+    An mpp instance is a set of serial connected panel and parallel connection quantity.
+    """
+
     def __init__(self, mpp, panel):
+        """ 
+            Init with mpp : -> List with serial and parallel quantity
+                      panel : Instance of Panel used in the mpp connection
+        """
         self.index = int(mpp["index"])
         self.serial = int(mpp["serial"])
         self.parallel = int(mpp["parallel"])
-        self.power = self.string_power(panel)
 
         self.mpp_string_voltage_at_70 = self.string_mpp_voltage_at_temp(70, panel)
         self.mpp_string_voltage_at__10 = self.string_mpp_voltage_at_temp(-10, panel)
@@ -155,10 +185,8 @@ class MPP:
         self.icc_at__10 = self.icc_at_temp(-10, panel)
         self.icc_at_70 = self.icc_at_temp(70, panel)
 
-    def string_power(self, panel):
-        return self.serial * panel.power
-
     def string_mpp_voltage_at_temp(self, temp, panel):
+        """ Voltage in a given mpp at desired temperature """
         if panel.temperature_factor_voltage_type_id == 1:
             return (
                 float(panel.mpp_voltage)
@@ -178,6 +206,7 @@ class MPP:
             ) * self.serial
 
     def string_vco_voltage_at_temp(self, temp, panel):
+        """ Open-Circuit Voltage in a given mpp at desired temperature """
         if panel.temperature_factor_voltage_type_id == 1:
             return (
                 float(panel.open_circuit_voltage)
@@ -197,6 +226,7 @@ class MPP:
             ) * self.serial
 
     def icc_at_temp(self, temp, panel):
+        """ Short-Circuit current in a given mpp at desired temperature """
         if panel.temperature_factor_current_type_id == 1:
             return (
                 float(panel.short_circuit_current)

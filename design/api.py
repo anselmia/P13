@@ -6,12 +6,12 @@ import json
 
 class Localisation:
     """
-        Class to communicate with google find place api
-        Init with attribute search, place to find within the google aî
+        API ressource to retrieve data from Opencagedata.
+        Retrieve latitude and longitude from city name
     """
 
     def __init__(self, city_name):
-        """Init function of class Map"""
+        """Init function of class Localisation"""
         self.url = "https://api.opencagedata.com/geocode/v1/json?"
         self.city = city_name
         self.parameters = {
@@ -22,7 +22,10 @@ class Localisation:
         self.data = self.get_response()
 
     def get_response(self):
-        """ request gmap api """
+        """ request opencagedata api
+            return city name, latitude and longitude if found,
+            empty list if not
+        """
         try:
             request = requests.get(self.url, params=self.parameters).json()
             cities = request["results"]
@@ -41,14 +44,18 @@ class Localisation:
 
 class EnergyData:
     """
-        Class to communicate with google find place api
-        Init with attribute search, place to find within the google aî
+        API ressource to retrieve data from PVGis.
     """
 
-    def __init__(self):
-        """Init function of class Map"""
-
     def get_ener(self, lat, lon, installation_power, tilt, orientation):
+        """
+            Given Latitude, Longitude, PV power, roof tilt and orientation,
+            request PVGis Api to retrieve monthly average irradiation of the
+            given site and monthly average photovoltaic production.
+
+            When ok return list of monthly and yearly pv production and solar irradiation, ratio of system energy production by installed power (kWh/kWc).
+            else empty list
+        """
         self.parameters = {
             "lat": lat,
             "lon": lon,

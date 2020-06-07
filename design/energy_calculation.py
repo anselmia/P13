@@ -6,7 +6,12 @@ from .api import EnergyData
 
 
 class Production:
+    """ Class to process necessary datas to use with the PVGis api """
+
     def __init__(self, datas):
+        """ 
+        init expect : panel's id, site's id, roof orientation and tilt, total installed panel
+        """
         self.monthly_prod = [0] * 12
         self.month = [
             "jan",
@@ -33,6 +38,7 @@ class Production:
         self.get_production()
 
     def get_production(self):
+        """ Call PVGis Api and retrieve enrgy data related to the pv system """
         energy = EnergyData()
         self.datas = energy.get_ener(
             self.lat, self.lon, self.tot_power, self.tilt, self.orientation

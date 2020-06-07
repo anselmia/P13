@@ -3,7 +3,12 @@ from design.energy_calculation import Production
 
 
 class Informations:
+    """ Class used to retrieved informations from models and make calculation
+        to be used in design.js script to avoid client side calculation.
+    """
+
     def get_production_information(self, datas):
+        """ Data used in step 5 : Production """
         panel = Panel.objects.get(id=int(datas["panel_id"]))
         pv_data = [
             panel.model,
@@ -32,6 +37,7 @@ class Informations:
         }
 
     def get_projects_informations(self, projects):
+        """ Data used in my projects  """
         datas = []
 
         for project in projects:

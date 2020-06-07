@@ -12,8 +12,13 @@ import json
 
 
 class Implantation_calculation:
+    """ 
+        Calculation to full roof with panel given a specific implantation
+        Need to be rewrote...
+    """
+
     def __init__(self, datas):
-        """Init function of class Map"""
+        """Init function of Implantation_calculation"""
 
         # Replace empty values by 0
         datas = {k: (0 if v == "" else v) for (k, v) in datas.items()}
@@ -55,6 +60,12 @@ class Implantation_calculation:
         self.data = self.init_roof_data()
 
     def init_roof_data(self):
+        """ 
+            Initialize roof data
+            Calculate amount of panel to be installed in each column and row
+            Calculate coordonate to plot the system in the canva.
+            Calculate information to be shown to the user regarding the installation.
+        """
         if self.roof.roof_type_id_id == 3:
             self.roof.height = math.sqrt(
                 (self.roof.width * self.roof.width)
@@ -276,6 +287,7 @@ class Roof_implantation_Calculation:
         self.total_pan = 0
 
     def modif_width(self, implantation):
+        """ Update roof width removing unavailable space """
         if ((self.width - (self.nb_panel_width * self.panel_width)) / 2) < (
             implantation.distance_top + implantation.abergement_top
         ):
@@ -299,7 +311,7 @@ class Roof_implantation_Calculation:
             self.abergement_bottom = 0
 
     def modif_length(self, implantation):
-
+        """ Update roof bottom length removing unavailable space """
         if ((self.bottom_length - (self.nb_panel_length * self.panel_length)) / 2) < (
             implantation.distance_left + implantation.abergement_left
         ):
@@ -325,6 +337,10 @@ class Roof_implantation_Calculation:
             self.abergement_right = 0
 
     def modif_top_length(self, implantation):
+        """ Update roof top length removing unavailable space 
+            and calculate lateral available space after filling
+            center rectangle with panel
+        """
         if self.distance_left >= self.side_rest:
             self.top_length = self.top_length - (self.distance_left - self.side_rest)
             self.left_rest = 0
@@ -341,6 +357,10 @@ class Roof_implantation_Calculation:
             )
 
     def modif_height(self, implantation):
+        """ Update roof height removing unavailable space 
+            Calculate vertical centering remaining space after filing
+            with panel.
+        """
         if ((self.height - (self.nb_panel_width * self.panel_width)) / 2) < (
             implantation.distance_top + implantation.abergement_top
         ):
@@ -366,6 +386,10 @@ class Roof_implantation_Calculation:
         ) / 2
 
     def lateral_space(self, implantation):
+        """ calculate min distance from the side to install panel in the triangle zone.
+            Calculate Available horizontal space in each triangle zone.
+            Calculate how many column of panel in each triangle
+        """
         self.min_dist_left = (
             (
                 self.panel_width
@@ -428,6 +452,7 @@ class Roof_implantation_Calculation:
             )
 
     def Centering(self, implantation):
+        """ Caalculate horizontale centering value to center the system on the roof """
         if self.left_rest > 0:
             self.centering = (
                 self.left_rest
@@ -450,6 +475,12 @@ class Roof_implantation_Calculation:
                 )
 
     def lateral_rest(self):
+        """ calculate available horizontal space in each triangle 
+            after removing unavailable space.
+            Calculate Available horizontal space in each triangle zone.
+            Calculate how many column of panel in each triangle
+            Calculate Horizontale centering distance of the instalation
+        """
         if (
             (self.distance_left >= self.side_rest)
             or (self.abergement_left >= self.side_rest)
@@ -506,6 +537,10 @@ class Roof_implantation_Calculation:
             )
 
     def set_panel_in_triangle_col(self, roof, implantation):
+        """ 
+            Calculate amount of panel in each column of panel in each 
+            triangle zone.
+        """
         self.panel_right_triangle = [
             0 for x in range(self.nb_pan_lentgh_right_triangle + 2)
         ]
@@ -655,6 +690,9 @@ class Roof_implantation_Calculation:
                     )
 
     def Set_nb_pan_in_triangle_length(self, roof, implantation):
+        """ Update panel in each triangle column taking care of the 
+            pose conditions.
+        """
         if roof.roof_type_id_id == 2:
             self.vert_centering = (
                 self.height
@@ -953,6 +991,7 @@ class Roof_implantation_Calculation:
                     self.nb_pan_lentgh_right_triangle = 0
 
     def update_tempnbpan(self, implantation, temp_nb_pan, temp_left_space):
+        """ update panel quantity that match available space in triangle width """
         if implantation.panel_implantation_id == 3:
             while (
                 temp_nb_pan * self.panel_length
@@ -963,6 +1002,7 @@ class Roof_implantation_Calculation:
         return temp_nb_pan
 
     def set_rest(self):
+        """ Calculate available space arround the installation """
         self.left_rest = (
             self.distance_left
             + self.abergement_left
@@ -1005,6 +1045,10 @@ class Roof_implantation_Calculation:
         )
 
     def reset_pan_in_col(self, roof, implantation):
+        """ 
+            Update amount of panel in each column of panel in each 
+            triangle zone.
+        """
         A = 0
         i = 0
         if roof.roof_type_id_id == 2:
@@ -1526,6 +1570,7 @@ class Roof_implantation_Calculation:
                 self.panel_right_triangle[i] = 0
 
     def set_pose(self, implantation):
+        """ Set pose values from implantation """
         if implantation.panel_implantation_id == 1:
             self.horizontal_pose = 0
             self.vertical_pose = 0
@@ -1537,6 +1582,7 @@ class Roof_implantation_Calculation:
             self.horizontal_pose = 0 - implantation.horizontal_overlapping
 
     def update_roof_available_size(self, roof, implantation):
+        """ Set used space by amount of panel in width and length """
         if (implantation.panel_implantation_id == 2) or (
             implantation.panel_implantation_id == 3
         ):
@@ -1551,18 +1597,21 @@ class Roof_implantation_Calculation:
                 )
 
     def pan_in_width(self, roof):
+        """ Calculate maximum quantity of panel in th roof width"""
         if roof.roof_type_id_id == 1:
             self.nb_panel_width = int(self.width / self.panel_width)
         elif roof.roof_type_id_id == 2:
             self.nb_panel_width = int(self.height / self.panel_width)
 
     def pan_in_length(self, roof):
+        """ Calculate maximum quantity of panel in th roof length """
         if roof.roof_type_id_id == 1:
             self.nb_panel_length = int(self.bottom_length / self.panel_length)
         elif roof.roof_type_id_id == 2:
             self.nb_panel_length = int(self.top_length / self.panel_length)
 
     def set_pan_in_width(self, roof, implantation):
+        """ Update maximum quantity of panel in th roof width"""
         if implantation.panel_implantation_id == 2:
             if roof.roof_type_id_id == 1:
                 while self.temp_pan_width > self.width:
@@ -1592,6 +1641,7 @@ class Roof_implantation_Calculation:
                 self.nb_panel_width = self.nb_panel_width - 1
 
     def set_pan_in_length(self, roof, implantation):
+        """ Update maximum quantity of panel in th roof length"""
         if implantation.panel_implantation_id == 2:
             if roof.roof_type_id_id == 1:
                 while self.temp_pan_length > self.bottom_length:
@@ -1621,11 +1671,12 @@ class Roof_implantation_Calculation:
                 self.nb_panel_length = self.nb_panel_length - 1
 
     def toJSON(self):
+        """ return a json object of the class instance """
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
     def plot_data(self, roof, implantation):
+        """ Calculate coordonate to plot the system """
         # region toit 1
-
         pan_num = 0
         j = [0] * (
             self.nb_panel_length
@@ -1893,6 +1944,7 @@ class Roof_implantation_Calculation:
         # endregion
 
     def set_abergement(self, column, ligne):
+        """ Calculate coordonate of abergement system to plot in the canva """
         if ligne == self.nb_panel_width - 1:
             if column == 0:
                 x = (

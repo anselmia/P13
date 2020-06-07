@@ -37,9 +37,9 @@ import json
 @login_required
 def index(request, project_name=""):
     """
-    Views for home
-    :param request:
-    :return render home.html:
+        Views for design index
+        :param request, project_name if using existing project:
+        :return render index_design.html:
     """
     config1 = None
     config2 = None
@@ -277,6 +277,11 @@ def index(request, project_name=""):
 
 @login_required
 def get_localisation_data(request):
+    """
+        Views to retrieve localisation data from api
+        :param request:
+        :return JsonResponse with status and localisation if ok:
+    """
     if request.method == "POST":
         search_text = request.POST["search"]
         try:
@@ -289,6 +294,11 @@ def get_localisation_data(request):
 
 @login_required
 def add_city(request):
+    """
+        Views to add city in the database
+        :param request:
+        :return JsonResponse with status and added city name and id if ok:
+    """
     if request.method == "POST":
         city = CityForm(request.POST)
         try:
@@ -309,6 +319,11 @@ def add_city(request):
 
 @login_required
 def add_panel(request):
+    """
+        Views to add panel to database
+        :param request:
+        :return JsonResponse with status and panel model and id if ok:
+    """
     if request.method == "POST":
         panel = PanelForm(request.POST)
         try:
@@ -328,6 +343,11 @@ def add_panel(request):
 
 @login_required
 def add_inverter(request):
+    """
+        Views to add inverter to database
+        :param request:
+        :return JsonResponse with status and inverter model and id if ok:
+    """
     if request.method == "POST":
         inverter = InverterForm(request.POST)
         try:
@@ -351,6 +371,11 @@ def add_inverter(request):
 
 @login_required
 def valid_project(request):
+    """
+        Views to validate project form
+        :param request:
+        :return JsonResponse with status and errors if not ok:
+    """
     if request.method == "POST":
         project = ProjectForm(request.POST)
         try:
@@ -364,6 +389,11 @@ def valid_project(request):
 
 @login_required
 def save_project(request):
+    """
+        Views to save project form
+        :param request:
+        :return JsonResponse with status and errors if not ok:
+    """
     if request.method == "POST":
         project = ProjectForm(request.POST)
         try:
@@ -384,6 +414,11 @@ def save_project(request):
 
 @login_required
 def valid_roof(request):
+    """
+        Views to validate roof form
+        :param request:
+        :return JsonResponse with status and errors if not ok:
+    """
     if request.method == "POST":
         roof = RoofForm(request.POST)
         try:
@@ -397,6 +432,11 @@ def valid_roof(request):
 
 @login_required
 def save_roof(request):
+    """
+        Views to save roof form
+        :param request:
+        :return JsonResponse with status and errors if not ok:
+    """
     if request.method == "POST":
         roof = RoofForm(request.POST)
         try:
@@ -416,6 +456,11 @@ def save_roof(request):
 
 @login_required
 def valid_implantation(request):
+    """
+        Views to validate implantation form
+        :param request:
+        :return JsonResponse with status and errors if not ok:
+    """
     if request.method == "POST":
         implantation = ImplantationForm(request.POST)
         try:
@@ -429,6 +474,11 @@ def valid_implantation(request):
 
 @login_required
 def save_implantation(request):
+    """
+        Views to save implantation form
+        :param request:
+        :return JsonResponse with status and errors if not ok:
+    """
     if request.method == "POST":
         implantation = ImplantationForm(request.POST)
         try:
@@ -447,6 +497,11 @@ def save_implantation(request):
 
 @login_required
 def valid_configuration(request):
+    """
+        Views to validate configuration form
+        :param request:
+        :return JsonResponse with status and errors if not ok:
+    """
     if request.method == "POST":
         configuration = ConfigForm(request.POST)
         try:
@@ -460,6 +515,11 @@ def valid_configuration(request):
 
 @login_required
 def save_configuration(request):
+    """
+        Views to save configuration form
+        :param request:
+        :return JsonResponse with status and errors if not ok:
+    """
     if request.method == "POST":
         configuration = ConfigForm(request.POST)
         try:
@@ -481,6 +541,11 @@ def save_configuration(request):
 
 @login_required
 def valid_mpp(request):
+    """
+        Views to validate mpp form
+        :param request:
+        :return JsonResponse with status and errors if not ok:
+    """
     if request.method == "POST":
         mpp = MPPForm(request.POST)
         try:
@@ -494,6 +559,11 @@ def valid_mpp(request):
 
 @login_required
 def save_mpp(request):
+    """
+        Views to save mpp form
+        :param request:
+        :return JsonResponse with status and errors if not ok:
+    """
     if request.method == "POST":
         mpp = MPPForm(request.POST)
         try:
@@ -505,12 +575,17 @@ def save_mpp(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": mpp.errors})
-        except Exception as E:
+        except:
             return JsonResponse({"errors": mpp.errors})
 
 
 @login_required
 def calcul_implantation(request):
+    """
+        Views to calculate implantation data
+        :param request:
+        :return JsonResponse with status and implantation values if ok:
+    """
     if request.method == "POST":
         data = request.POST
         try:
@@ -524,6 +599,11 @@ def calcul_implantation(request):
 
 @login_required
 def calcul_configuration(request):
+    """
+        Views to calculate configuration data
+        :param request:
+        :return JsonResponse with status and configuration values if ok:
+    """
     if request.method == "POST":
         data = json.loads(request.POST.get("data", ""))
         try:
@@ -537,6 +617,11 @@ def calcul_configuration(request):
 
 @login_required
 def inverter_data(request):
+    """
+        Views to retrieve inverter data
+        :param request:
+        :return JsonResponse with status and inverter datas if ok:
+    """
     data = request.POST
     if request.method == "POST":
         try:
@@ -550,6 +635,11 @@ def inverter_data(request):
 
 @login_required
 def production_data(request):
+    """
+        Views to retrieve production datas from models and calculation 
+        :param request:
+        :return JsonResponse with status and informations values if ok:
+    """
     if request.method == "POST":
         data = json.loads(request.POST.get("data", ""))
         try:
@@ -562,6 +652,11 @@ def production_data(request):
 
 @login_required
 def calculate_production(request):
+    """
+        Views to calculate production datas
+        :param request:
+        :return JsonResponse with status and production values if ok:
+    """
     if request.method == "POST":
         data = json.loads(request.POST.get("data", ""))
         try:

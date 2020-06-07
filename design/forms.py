@@ -1,3 +1,4 @@
+""" Import """
 from django import forms
 from .models import (
     Panel,
@@ -22,6 +23,8 @@ import math
 
 
 class ProjectForm(ModelForm):
+    """ Form related to Project Model """
+
     class Meta:
         model = Project
         fields = ("name", "city_id", "panel_id", "user_id")
@@ -44,6 +47,8 @@ class ProjectForm(ModelForm):
 
 
 class CityForm(ModelForm):
+    """ Form related to City Model """
+
     class Meta:
         model = City
         fields = (
@@ -65,6 +70,8 @@ class CityForm(ModelForm):
 
 
 class PanelForm(ModelForm):
+    """ Form related to Panel Model """
+
     class Meta:
         model = Panel
         fields = (
@@ -139,6 +146,8 @@ class PanelForm(ModelForm):
 
 
 class InverterForm(ModelForm):
+    """ Form related to Inverter Model """
+
     class Meta:
         model = Inverter
         fields = (
@@ -169,6 +178,8 @@ class InverterForm(ModelForm):
 
 
 class RoofForm(ModelForm):
+    """ Form related to Roof Model """
+
     class Meta:
         model = Roof
         fields = (
@@ -290,6 +301,8 @@ class RoofForm(ModelForm):
 
 
 class ImplantationForm(ModelForm):
+    """ Form related to Implantation Model """
+
     class Meta:
         model = Implantation
         fields = (
@@ -408,6 +421,8 @@ class ImplantationForm(ModelForm):
 
 
 class ConfigForm(ModelForm):
+    """ Form related to Config Model """
+
     class Meta:
         model = Config
         fields = (
@@ -432,6 +447,8 @@ class ConfigForm(ModelForm):
 
 
 class MPPForm(ModelForm):
+    """ Form related to MPP Model """
+
     class Meta:
         model = MPP
         fields = (
