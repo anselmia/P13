@@ -29,9 +29,7 @@ class ProjectForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProjectForm, self).__init__(*args, **kwargs)
 
-        self.fields["name"].widget.attrs.update(
-            {"value": 0, "class": "container_100 cn"}
-        )
+        self.fields["name"].widget.attrs.update({"class": "container_100 cn"})
         self.fields["name"].required = True
         self.fields["user_id"].required = False
 

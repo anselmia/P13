@@ -15,6 +15,7 @@ urlpatterns = [
     ),
     path("add_city/", views.add_city, name="add_city"),
     path("add_panel/", views.add_panel, name="add_panel"),
+    path("add_inverter/", views.add_inverter, name="add_inverter"),
     path("save_roof/", views.save_roof, name="save_roof"),
     path("valid_project/", views.valid_project, name="valid_project"),
     path("valid_roof/", views.valid_roof, name="valid_roof"),

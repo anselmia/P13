@@ -3,7 +3,7 @@
 {% load widget_tweaks %}
 {% block body %}
 
-<div class="container">
+<div class="container design_template">
     <div id="smartwizard" class="design col-lg-10 mx-auto draw-border">
         <ul class="nav">
             <li class="nav-item">
@@ -121,7 +121,7 @@
                                         </div>
                                         <div class="row form_errors">
                                         </div>
-                                        <div class="row w-100 tag_error roof_length">
+                                        <div class="row w-100 tag_error roof_bottom_length">
                                             <label class="w-100">{{ form_roof.bottom_length.label_tag }}
                                                 <div class="row cn">
                                                     <div class="col-11 px-0">{{ form_roof.bottom_length }}</div>
@@ -588,15 +588,19 @@
                                         <div class="col-lg-6 col-sm-12 mx-0">
                                             <form id="config_1" class="form_config config_1" method="POST" action="">
                                                 {% csrf_token %}
-                                                <div class="index1" style="display: none;">{{ form_config.index }}
+                                                <div class="index1" style="display: none;">{{ form_config1.index }}
                                                 </div>
                                                 <div class="row w-100 tag_error">
-                                                    <label class="w-100">{{ form_config.inverter_id.label_tag }}
+                                                    <label class="w-100">{{ form_config1.inverter_id.label_tag }}
                                                         <div class="row cn">
-                                                            <div class="col-11 px-0">{{ form_config.inverter_id }}
+                                                            <div class="col-6 px-0">{{ form_config1.inverter_id }}
                                                             </div>
-                                                            <div class="col-1 pr-0">
-                                                                <p></p>
+                                                            <div class="col-5 pr-0">
+                                                                <button id="add_inverter_button1" type="button"
+                                                                    class="btn btn-primary" data-toggle="modal"
+                                                                    data-target="#InverterModal">
+                                                                    Ajouter
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </label>
@@ -604,12 +608,12 @@
                                                 <div class=" row form_errors">
                                                 </div>
                                                 <div class="row w-100 tag_error">
-                                                    <label class="w-100">{{ form_config.inverter_quantity.label_tag }}
+                                                    <label class="w-100">{{ form_config1.inverter_quantity.label_tag }}
                                                         <div class="row cn">
-                                                            <div class="col-11 px-0">
-                                                                {{ form_config.inverter_quantity }}
+                                                            <div class="col-6 px-0">
+                                                                {{ form_config1.inverter_quantity }}
                                                             </div>
-                                                            <div class="col-1 pr-0">
+                                                            <div class="col-5 pr-0">
                                                                 <p></p>
                                                             </div>
                                                         </div>
@@ -677,22 +681,22 @@
                                 <div class="inner-wrap mb-0">
                                     <div class="row">
                                         <div class="col-lg-4 col-sm-12 inverter1_mpp1 cn">
-                                            <div class="form-style-10">
+                                            <div class="form-style-10 h-100">
                                                 <h1 class="cn">MPP 1<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
                                                 <div class="inner-wrap">
                                                     <form id="mpp1" class="form_mpp" method="POST" action="">
                                                         {% csrf_token %}
                                                         <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp.serial.label_tag }}
-                                                                {{ form_mpp.serial }}
+                                                            <label class="w-100">{{ form_mpp11.serial.label_tag }}
+                                                                {{ form_mpp11.serial }}
                                                             </label>
                                                         </div>
                                                         <div class=" row form_errors">
                                                         </div>
                                                         <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp.parallel.label_tag }}
-                                                                {{ form_mpp.parallel }}
+                                                            <label class="w-100">{{ form_mpp11.parallel.label_tag }}
+                                                                {{ form_mpp11.parallel }}
                                                             </label>
                                                         </div>
                                                         <div class=" row form_errors">
@@ -763,22 +767,22 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-sm-12 inverter1_mpp2 cn">
-                                            <div class="form-style-10">
+                                            <div class="form-style-10 h-100">
                                                 <h1 class="cn">MPP 2<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
                                                 <div class="inner-wrap">
                                                     <form id="mpp2" class="form_mpp" method="POST" action="">
                                                         {% csrf_token %}
                                                         <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp.serial.label_tag }}
-                                                                {{ form_mpp.serial }}
+                                                            <label class="w-100">{{ form_mpp12.serial.label_tag }}
+                                                                {{ form_mpp12.serial }}
                                                             </label>
                                                         </div>
                                                         <div class=" row form_errors">
                                                         </div>
                                                         <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp.parallel.label_tag }}
-                                                                {{ form_mpp.parallel }}
+                                                            <label class="w-100">{{ form_mpp12.parallel.label_tag }}
+                                                                {{ form_mpp12.parallel }}
                                                             </label>
                                                         </div>
                                                         <div class=" row form_errors">
@@ -847,22 +851,22 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-sm-12 inverter1_mpp3 cn">
-                                            <div class="form-style-10">
+                                            <div class="form-style-10 h-100">
                                                 <h1 class="cn">MPP 3<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
                                                 <div class="inner-wrap">
                                                     <form id="mpp3" class="form_mpp" method="POST" action="">
                                                         {% csrf_token %}
                                                         <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp.serial.label_tag }}
-                                                                {{ form_mpp.serial }}
+                                                            <label class="w-100">{{ form_mpp13.serial.label_tag }}
+                                                                {{ form_mpp13.serial }}
                                                             </label>
                                                         </div>
                                                         <div class=" row form_errors">
                                                         </div>
                                                         <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp.parallel.label_tag }}
-                                                                {{ form_mpp.parallel }}
+                                                            <label class="w-100">{{ form_mpp13.parallel.label_tag }}
+                                                                {{ form_mpp13.parallel }}
                                                             </label>
                                                         </div>
                                                         <div class=" row form_errors">
@@ -982,15 +986,19 @@
                                         <div class="col-lg-6 col-sm-12 mx-0">
                                             <form id="config_2" class="form_config config_2" method="POST" action="">
                                                 {% csrf_token %}
-                                                <div class="index2" style="display: none;">{{ form_config.index }}
+                                                <div class="index2" style="display: none;">{{ form_config2.index }}
                                                 </div>
                                                 <div class="row w-100 tag_error">
-                                                    <label class="w-100">{{ form_config.inverter_id.label_tag }}
+                                                    <label class="w-100">{{ form_config2.inverter_id.label_tag }}
                                                         <div class="row cn">
-                                                            <div class="col-11 px-0">{{ form_config.inverter_id }}
+                                                            <div class="col-6 px-0">{{ form_config2.inverter_id }}
                                                             </div>
-                                                            <div class="col-1 pr-0">
-                                                                <p></p>
+                                                            <div class="col-5 pr-0">
+                                                                <button id="add_inverter_button2" type="button"
+                                                                    class="btn btn-primary" data-toggle="modal"
+                                                                    data-target="#InverterModal">
+                                                                    Ajouter
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </label>
@@ -998,12 +1006,12 @@
                                                 <div class=" row form_errors">
                                                 </div>
                                                 <div class="row w-100 tag_error">
-                                                    <label class="w-100">{{ form_config.inverter_quantity.label_tag }}
+                                                    <label class="w-100">{{ form_config2.inverter_quantity.label_tag }}
                                                         <div class="row cn">
-                                                            <div class="col-11 px-0">
-                                                                {{ form_config.inverter_quantity }}
+                                                            <div class="col-6 px-0">
+                                                                {{ form_config2.inverter_quantity }}
                                                             </div>
-                                                            <div class="col-1 pr-0">
+                                                            <div class="col-5 pr-0">
                                                                 <p></p>
                                                             </div>
                                                         </div>
@@ -1071,22 +1079,22 @@
                                 <div class="inner-wrap mb-0">
                                     <div class="row">
                                         <div class="col-lg-4 col-sm-12 inverter2_mpp1 cn">
-                                            <div class="form-style-10">
+                                            <div class="form-style-10 h-100">
                                                 <h1 class="cn">MPP 1<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
                                                 <div class="inner-wrap">
                                                     <form id="mpp1" class="form_mpp" method="POST" action="">
                                                         {% csrf_token %}
                                                         <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp.serial.label_tag }}
-                                                                {{ form_mpp.serial }}
+                                                            <label class="w-100">{{ form_mpp21.serial.label_tag }}
+                                                                {{ form_mpp21.serial }}
                                                             </label>
                                                         </div>
                                                         <div class=" row form_errors">
                                                         </div>
                                                         <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp.parallel.label_tag }}
-                                                                {{ form_mpp.parallel }}
+                                                            <label class="w-100">{{ form_mpp21.parallel.label_tag }}
+                                                                {{ form_mpp21.parallel }}
                                                             </label>
                                                         </div>
                                                         <div class=" row form_errors">
@@ -1160,22 +1168,22 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-sm-12 inverter2_mpp2 cn">
-                                            <div class="form-style-10">
+                                            <div class="form-style-10 h-100">
                                                 <h1 class="cn">MPP 2<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
                                                 <div class="inner-wrap">
                                                     <form id="mpp2" class="form_mpp" method="POST" action="">
                                                         {% csrf_token %}
                                                         <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp.serial.label_tag }}
-                                                                {{ form_mpp.serial }}
+                                                            <label class="w-100">{{ form_mpp22.serial.label_tag }}
+                                                                {{ form_mpp22.serial }}
                                                             </label>
                                                         </div>
                                                         <div class=" row form_errors">
                                                         </div>
                                                         <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp.parallel.label_tag }}
-                                                                {{ form_mpp.parallel }}
+                                                            <label class="w-100">{{ form_mpp22.parallel.label_tag }}
+                                                                {{ form_mpp22.parallel }}
                                                             </label>
                                                         </div>
                                                         <div class=" row form_errors">
@@ -1244,22 +1252,22 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-sm-12 inverter2_mpp3 cn">
-                                            <div class="form-style-10">
+                                            <div class="form-style-10 h-100">
                                                 <h1 class="cn">MPP 3<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
                                                 <div class="inner-wrap">
                                                     <form id="mpp3" class="form_mpp" method="POST" action="">
                                                         {% csrf_token %}
                                                         <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp.serial.label_tag }}
-                                                                {{ form_mpp.serial }}
+                                                            <label class="w-100">{{ form_mpp23.serial.label_tag }}
+                                                                {{ form_mpp23.serial }}
                                                             </label>
                                                         </div>
                                                         <div class=" row form_errors">
                                                         </div>
                                                         <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp.parallel.label_tag }}
-                                                                {{ form_mpp.parallel }}
+                                                            <label class="w-100">{{ form_mpp23.parallel.label_tag }}
+                                                                {{ form_mpp23.parallel }}
                                                             </label>
                                                         </div>
                                                         <div class=" row form_errors">
@@ -1379,15 +1387,19 @@
                                         <div class="col-lg-6 col-sm-12 mx-0">
                                             <form id="config_3" class="form_config config_3" method="POST" action="">
                                                 {% csrf_token %}
-                                                <div class="index3" style="display: none;">{{ form_config.index }}
+                                                <div class="index3" style="display: none;">{{ form_config3.index }}
                                                 </div>
                                                 <div class="row w-100 tag_error">
-                                                    <label class="w-100">{{ form_config.inverter_id.label_tag }}
+                                                    <label class="w-100">{{ form_config3.inverter_id.label_tag }}
                                                         <div class="row cn">
-                                                            <div class="col-11 px-0">{{ form_config.inverter_id }}
+                                                            <div class="col-6 px-0">{{ form_config3.inverter_id }}
                                                             </div>
-                                                            <div class="col-1 pr-0">
-                                                                <p></p>
+                                                            <div class="col-5 pr-0">
+                                                                <button id="add_inverter_button3" type="button"
+                                                                    class="btn btn-primary" data-toggle="modal"
+                                                                    data-target="#InverterModal">
+                                                                    Ajouter
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </label>
@@ -1395,12 +1407,12 @@
                                                 <div class=" row form_errors">
                                                 </div>
                                                 <div class="row w-100 tag_error">
-                                                    <label class="w-100">{{ form_config.inverter_quantity.label_tag }}
+                                                    <label class="w-100">{{ form_config3.inverter_quantity.label_tag }}
                                                         <div class="row cn">
-                                                            <div class="col-11 px-0">
-                                                                {{ form_config.inverter_quantity }}
+                                                            <div class="col-6 px-0">
+                                                                {{ form_config3.inverter_quantity }}
                                                             </div>
-                                                            <div class="col-1 pr-0">
+                                                            <div class="col-5 pr-0">
                                                                 <p></p>
                                                             </div>
                                                         </div>
@@ -1466,22 +1478,22 @@
                                 <div class="inner-wrap mb-0">
                                     <div class="row">
                                         <div class="col-lg-4 col-sm-12 inverter3_mpp1 cn">
-                                            <div class="form-style-10">
+                                            <div class="form-style-10 h-100">
                                                 <h1 class="cn">MPP 1<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
                                                 <div class="inner-wrap">
                                                     <form id="mpp1" class="form_mpp" method="POST" action="">
                                                         {% csrf_token %}
                                                         <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp.serial.label_tag }}
-                                                                {{ form_mpp.serial }}
+                                                            <label class="w-100">{{ form_mpp31.serial.label_tag }}
+                                                                {{ form_mpp31.serial }}
                                                             </label>
                                                         </div>
                                                         <div class=" row form_errors">
                                                         </div>
                                                         <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp.parallel.label_tag }}
-                                                                {{ form_mpp.parallel }}
+                                                            <label class="w-100">{{ form_mpp31.parallel.label_tag }}
+                                                                {{ form_mpp31.parallel }}
                                                             </label>
                                                         </div>
                                                         <div class=" row form_errors">
@@ -1550,22 +1562,22 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-sm-12 inverter3_mpp2 cn">
-                                            <div class="form-style-10">
+                                            <div class="form-style-10 h-100">
                                                 <h1 class="cn">MPP 2<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
                                                 <div class="inner-wrap">
                                                     <form id="mpp2" class="form_mpp" method="POST" action="">
                                                         {% csrf_token %}
                                                         <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp.serial.label_tag }}
-                                                                {{ form_mpp.serial }}
+                                                            <label class="w-100">{{ form_mpp32.serial.label_tag }}
+                                                                {{ form_mpp32.serial }}
                                                             </label>
                                                         </div>
                                                         <div class=" row form_errors">
                                                         </div>
                                                         <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp.parallel.label_tag }}
-                                                                {{ form_mpp.parallel }}
+                                                            <label class="w-100">{{ form_mpp32.parallel.label_tag }}
+                                                                {{ form_mpp32.parallel }}
                                                             </label>
                                                         </div>
                                                         <div class=" row form_errors">
@@ -1634,22 +1646,22 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-sm-12 inverter3_mpp3 cn">
-                                            <div class="form-style-10">
+                                            <div class="form-style-10 h-100">
                                                 <h1 class="cn">MPP 3<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
                                                 <div class="inner-wrap">
                                                     <form id="mpp3" class="form_mpp" method="POST" action="">
                                                         {% csrf_token %}
                                                         <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp.serial.label_tag }}
-                                                                {{ form_mpp.serial }}
+                                                            <label class="w-100">{{ form_mpp33.serial.label_tag }}
+                                                                {{ form_mpp33.serial }}
                                                             </label>
                                                         </div>
                                                         <div class=" row form_errors">
                                                         </div>
                                                         <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp.parallel.label_tag }}
-                                                                {{ form_mpp.parallel }}
+                                                            <label class="w-100">{{ form_mpp33.parallel.label_tag }}
+                                                                {{ form_mpp33.parallel }}
                                                             </label>
                                                         </div>
                                                         <div class=" row form_errors">

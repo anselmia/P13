@@ -77,9 +77,9 @@ class EnergyData:
                     monthly_irrad[month] = datas[month]["H(i)_m"]
                     monthly_prod[month] = datas[month]["E_m"]
 
-                yearly_prod = sum(monthly_prod)
-                yearly_irrad = sum(monthly_irrad)
-                ratio = round(yearly_prod / installation_power, 1)
+                yearly_prod = int(sum(monthly_prod))
+                yearly_irrad = int(sum(monthly_irrad))
+                ratio = round(yearly_prod / installation_power)
 
                 return {
                     "monthly_irrad": monthly_irrad,

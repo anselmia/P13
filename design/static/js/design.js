@@ -62,6 +62,13 @@
       }
     });
 
+    if ($(".design_template").length > 0) {
+      if ($("#id_name").val() != "")
+        $(".save_prod").hide();
+      else
+        $(".save_prod").show();
+    }
+
     startWizard();
   });
 
@@ -170,9 +177,8 @@
         callback(resp.responseJSON);
       });
     } else if (stepIndex == 2 && stepDirection == "forward") {
-      ajax_post('/valid_implantation/', $(".form_implantation").serialize(), function (resp) {
-        callback(resp.responseJSON);
-      });
+      var response = valid_implantation();
+      callback(response);
     } else if (stepIndex == 3 && stepDirection == "forward") {
       var response = valid_configuration();
       callback(response);
@@ -316,8 +322,13 @@
     $("[name='comment']").val('');
   };
 
-  // Panel  Functions
+  // Inverter  Functions
   //###################################################################
+  var inverter_add_clicked_button;
+  $('#inverter-form').on('click', function (event) {
+    inverter_add_clicked_button = $(this);
+  });
+
   $('#inverter-form').on('submit', function (event) {
     event.preventDefault();
     add_inverter($(this));
@@ -327,11 +338,12 @@
     ajax_post('/add_inverter/', form.serialize(), function (resp) {
       if (resp.responseJSON["success"]) {
         $("#inverter_errors").html();
-        $('#inverter_id_id').val('');
-        $('#inverter_id_id').append('<option value="' + resp.responseJSON["id"] + '">' + resp.responseJSON["model"] + '</option>')
-        $('#inverter_id_id option').filter(function () {
-          return ($(this).text() == resp.responseJSON["name"]);
-        }).prop('selected', true);
+        var inverter_select = inverter_add_clicked_button.closest('.tag_error').find('#id_inverter_id');
+        inverter_select.val('');
+        $('[id=id_inverter_id]').append('<option value="' + resp.responseJSON["id"] + '">' + resp.responseJSON["model"] + '</option>')
+        // $('#inverter_id_id option').filter(function () {
+        //   return ($(this).text() == resp.responseJSON["name"]);
+        // }).prop('selected', true);
         $('#InverterModal').hide();
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
@@ -361,7 +373,6 @@
     $("[name='efficiency']").val('');
     $("[name='mpp_string_max']").val('');
     $("[name='mpp']").val('');
-    $("[name='ac_cabling']").val('');
     $("[name='comment']").val('');
   };
 
@@ -389,11 +400,6 @@
         $(".roof_height").hide();
       }
 
-      $("#id_width").val(0);
-      $("#id_bottom_length").val(0);
-      $("id_top_length").val(0);
-      $("#id_height").val(0);
-
       // Add correct roof src image
       var old_src = $('.roof').find('img').attr("src");
       var temp_split_left = old_src.split("_")[0];
@@ -407,11 +413,7 @@
 
   function init_roof() {
     form_roof = $('.form_roof');
-    $(".roof-img").hide();
-    $(".vertical_spacing").hide();
-    $(".horizontal_spacing").hide();
-    $(".vertical_overlapping").hide();
-    $(".horizontal_overlapping").hide();
+    $('#id_roof_type_id').trigger('change');
   }
 
   // Implantation Functions
@@ -420,6 +422,18 @@
     form_implantation = $('.form_implantation');
     context.clearRect(0, 0, canvas.width, canvas.height);
     $('.infos_implantation').hide();
+  }
+
+  function valid_implantation() {
+    var nb_pan_tot = parseInt($('.tot_pan_value').text());
+    if (nb_pan_tot > 0)
+      return {
+        "success": true
+      };
+    else
+      return {
+        "errors": true
+      };
   }
 
   $('#id_panel_implantation').on('change', function () {
@@ -616,12 +630,22 @@
 
   function init_config() {
     $('.save_prod').show();
-    $('.index1').find('#id_index').val(1);
-    $('.index2').find('#id_index').val(2);
-    $('.index3').find('#id_index').val(3);
+
     tot_pan = $('.tot_pan_value').text();
-    $('#nav-Configuration2-tab').hide();
-    $('#nav-Configuration3-tab').hide();
+    if (!($('.config_2').find('#id_inverter_quantity').val() > 0))
+      $('#nav-Configuration2-tab').hide();
+    else
+      $('#nav-Configuration2-tab').show();
+    if (!($('.config_3').find('#id_inverter_quantity').val() > 0))
+      $('#nav-Configuration3-tab').hide();
+    else
+      $('#nav-Configuration3-tab').show();
+    if ($("#nav-Configuration3-tab").is(":hidden") && $("#nav-Configuration2-tab").is(":hidden"))
+      $('#add-tab').show();
+    else
+      $('#add-tab').hide();
+    $('#nav-Configuration1-tab').trigger('click');
+
     $('.tot_panel_value').text(tot_pan);
     $('.rest_panel_value').text(0);
     $('.rest_panel_value').text(tot_pan);
@@ -896,8 +920,8 @@
       }
 
       var errors = config["errors"];
-      for (var i = 0; i < errors.length; i++) {
-        var error = errors[i]
+      for (var k = 0; k < errors.length; k++) {
+        var error = errors[k]
         if (error.length == 2)
           $(error[0]).find(error[1]).css('color', 'red');
         else

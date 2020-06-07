@@ -13,12 +13,22 @@ from django.contrib.auth.decorators import login_required
 from design.api import Localisation
 from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.contrib import messages
-from design.models import Panel, Inverter, Roof, Config, Implantation, City, Project
+from design.models import (
+    Panel,
+    Inverter,
+    Roof,
+    Config,
+    Implantation,
+    City,
+    Project,
+    MPP,
+)
 from design.implantation_calculation import Implantation_calculation
 from design.configuration_calculation import Calculation
 from design.energy_calculation import Production
 from .informations import Informations
 from django.core import serializers
+from django.forms import formset_factory
 import json
 
 # Create your views here.
@@ -31,10 +41,155 @@ def index(request, project_name=""):
     :param request:
     :return render home.html:
     """
+    config1 = None
+    config2 = None
+    config3 = None
+    mpp11 = None
+    mpp12 = None
+    mpp13 = None
+    mpp21 = None
+    mpp22 = None
+    mpp23 = None
+    mpp31 = None
+    mpp32 = None
+    mpp33 = None
+
     if request.method == "GET" and project_name != "":
         project = Project.objects.get(name=project_name, user_id=request.user.id)
         roof = Roof.objects.get(project_id=project.id)
         implantation = Implantation.objects.get(roof_id=roof.id)
+        configs = Config.objects.filter(project_id=project.id)
+        for config in configs:
+            if config.index == 1:
+                config1 = ConfigForm(
+                    initial={
+                        "inverter_id": config.inverter_id.id,
+                        "inverter_quantity": config.inverter_quantity,
+                        "index": config.index,
+                    }
+                )
+                mpps_in_conf = MPP.objects.filter(config_id=config.id)
+                for mpp in mpps_in_conf:
+                    if mpp.index == 1:
+                        mpp11 = MPPForm(
+                            initial={
+                                "serial": mpp.serial,
+                                "parallel": mpp.parallel,
+                                "index": 1,
+                            }
+                        )
+                    elif mpp.index == 2:
+                        mpp12 = MPPForm(
+                            initial={
+                                "serial": mpp.serial,
+                                "parallel": mpp.parallel,
+                                "index": 2,
+                            }
+                        )
+                    elif mpp.index == 3:
+                        mpp13 = MPPForm(
+                            initial={
+                                "serial": mpp.serial,
+                                "parallel": mpp.parallel,
+                                "index": 3,
+                            }
+                        )
+
+            elif config.index == 2:
+                config2 = ConfigForm(
+                    initial={
+                        "inverter_id": config.inverter_id.id,
+                        "inverter_quantity": config.inverter_quantity,
+                        "index": config.index,
+                    }
+                )
+                mpps_in_conf = MPP.objects.filter(config_id=config.id)
+                for mpp in mpps_in_conf:
+                    if mpp.index == 1:
+                        mpp21 = MPPForm(
+                            initial={
+                                "serial": mpp.serial,
+                                "parallel": mpp.parallel,
+                                "index": 1,
+                            }
+                        )
+                    elif mpp.index == 2:
+                        mpp22 = MPPForm(
+                            initial={
+                                "serial": mpp.serial,
+                                "parallel": mpp.parallel,
+                                "index": 2,
+                            }
+                        )
+                    elif mpp.index == 3:
+                        mpp23 = MPPForm(
+                            initial={
+                                "serial": mpp.serial,
+                                "parallel": mpp.parallel,
+                                "index": 3,
+                            }
+                        )
+
+            elif config.index == 3:
+                config3 = ConfigForm(
+                    initial={
+                        "inverter_id": config.inverter_id.id,
+                        "inverter_quantity": config.inverter_quantity,
+                        "index": config.index,
+                    }
+                )
+                mpps_in_conf = MPP.objects.filter(config_id=config.id)
+                for mpp in mpps_in_conf:
+                    if mpp.index == 1:
+                        mpp31 = MPPForm(
+                            initial={
+                                "serial": mpp.serial,
+                                "parallel": mpp.parallel,
+                                "index": 1,
+                            }
+                        )
+                    elif mpp.index == 2:
+                        mpp32 = MPPForm(
+                            initial={
+                                "serial": mpp.serial,
+                                "parallel": mpp.parallel,
+                                "index": 2,
+                            }
+                        )
+                    elif mpp.index == 3:
+                        mpp33 = MPPForm(
+                            initial={
+                                "serial": mpp.serial,
+                                "parallel": mpp.parallel,
+                                "index": 3,
+                            }
+                        )
+
+        if config1 == None:
+            config1 = ConfigForm()
+        if config2 == None:
+            config2 = ConfigForm()
+        if config3 == None:
+            config3 = ConfigForm()
+        if mpp11 == None:
+            mpp11 = MPPForm()
+        if mpp12 == None:
+            mpp12 = MPPForm()
+        if mpp13 == None:
+            mpp13 = MPPForm()
+        if mpp21 == None:
+            mpp21 = MPPForm()
+        if mpp22 == None:
+            mpp22 = MPPForm()
+        if mpp23 == None:
+            mpp23 = MPPForm()
+        if mpp31 == None:
+            mpp31 = MPPForm()
+        if mpp32 == None:
+            mpp32 = MPPForm()
+        if mpp33 == None:
+            mpp33 = MPPForm()
+
         project = ProjectForm(
             initial={
                 "name": project.name,
@@ -72,15 +227,27 @@ def index(request, project_name=""):
                 "abergement_right": implantation.abergement_right,
             }
         )
+
     else:
         project = ProjectForm()
         roof = RoofForm()
         implantation = ImplantationForm()
+        config1 = ConfigForm(initial={"index": 1,})
+        config2 = ConfigForm(initial={"index": 2,})
+        config3 = ConfigForm(initial={"index": 3,})
+        mpp11 = MPPForm(initial={"index": 1,})
+        mpp12 = MPPForm(initial={"index": 2,})
+        mpp13 = MPPForm(initial={"index": 3,})
+        mpp21 = MPPForm(initial={"index": 1,})
+        mpp22 = MPPForm(initial={"index": 2,})
+        mpp23 = MPPForm(initial={"index": 3,})
+        mpp31 = MPPForm(initial={"index": 1,})
+        mpp32 = MPPForm(initial={"index": 2,})
+        mpp33 = MPPForm(initial={"index": 3,})
 
     city = CityForm()
     panel = PanelForm()
-    config = ConfigForm()
-    mpp = MPPForm()
+    inverter = InverterForm()
 
     return render(
         request,
@@ -89,10 +256,21 @@ def index(request, project_name=""):
             "form_project": project,
             "form_city": city,
             "form_panel": panel,
+            "form_inverter": inverter,
             "form_roof": roof,
             "form_implantation": implantation,
-            "form_config": config,
-            "form_mpp": mpp,
+            "form_config1": config1,
+            "form_config2": config2,
+            "form_config3": config3,
+            "form_mpp11": mpp11,
+            "form_mpp12": mpp12,
+            "form_mpp13": mpp13,
+            "form_mpp21": mpp21,
+            "form_mpp22": mpp22,
+            "form_mpp23": mpp23,
+            "form_mpp31": mpp31,
+            "form_mpp32": mpp32,
+            "form_mpp33": mpp33,
         },
     )
 

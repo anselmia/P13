@@ -24,9 +24,9 @@ class Production:
         ]
         self.panel = Panel.objects.get(id=int(datas["panel_id"]))
         self.site = City.objects.get(id=int(datas["site_id"]))
-        self.orientation = int(datas["orientation"])
-        self.tilt = int(datas["tilt"])
-        self.tot_panel = int(datas["tot_panel"])
+        self.orientation = float(datas["orientation"])
+        self.tilt = float(datas["tilt"])
+        self.tot_panel = float(datas["tot_panel"])
         self.tot_power = self.tot_panel * self.panel.power / 1000
         self.lat = float(self.site.lat)
         self.lon = float(self.site.lon)

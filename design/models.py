@@ -99,7 +99,7 @@ class AC_connexion(models.Model):
     ac_type = models.CharField(max_length=100, unique=True, verbose_name="Raccordement")
 
     def __str__(self):
-        return self.value
+        return self.ac_type
 
 
 class Inverter(models.Model):
@@ -380,6 +380,7 @@ class MPP(models.Model):
     )
     serial = models.IntegerField(blank=True, verbose_name="En série")
     parallel = models.IntegerField(blank=True, verbose_name="En parallèle")
+    index = models.IntegerField(blank=True, verbose_name="Index MPP")
 
     class Meta:
         verbose_name = "MPP"
