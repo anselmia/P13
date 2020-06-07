@@ -2967,5 +2967,230 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="InverterModal" tabindex="-1" role="dialog" aria-labelledby="add_inverter_modal"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="{% url 'design:add_inverter' %}" method="POST" id="inverter-form">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="add_inverter_modal">Ajouter un onduleur</h5>
+                    <button type="button" class="close cancel_inverter" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="add_inverter" class="container p-1">
+                        <div class="container inverter">
+                            <div class="row w-100">
+                                <div class="inverter_errors form_errors">
+                                </div>
+                            </div>
+                            <br>
+                            <p><b><i><u>Informations de l'onduleur :</u></i></b></p>
+                            <div class="inverter_values">
+                                <div class="row tag_error">
+                                    <div class="col-5">
+                                        <label>{{ form_inverter.model.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 inverter_data">
+                                        {{ form_inverter.model }}
+                                    </div>
+                                </div>
+                                <div class="row form_errors">
+                                </div>
+                                <div class="row tag_error">
+                                    <div class="col-5">
+                                        <label>{{ form_inverter.manufacturer_id.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 inverter_data">
+                                        {{ form_inverter.manufacturer_id }}
+                                    </div>
+                                </div>
+                                <div class="row form_errors">
+                                </div>
+                                <div class="row tag_error">
+                                    <div class="col-5">
+                                        <label>{{ form_inverter.mpp_voltage_min.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 inverter_data">
+                                        {{ form_inverter.mpp_voltage_min }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>V</p>
+                                    </div>
+                                </div>
+                                <div class="row form_errors">
+                                </div>
+                                <div class="row tag_error">
+                                    <div class="col-5">
+                                        <label>{{ form_inverter.mpp_voltage_max.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 inverter_data">
+                                        {{ form_inverter.mpp_voltage_max }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>V</p>
+                                    </div>
+                                </div>
+                                <div class="row form_errors">
+                                </div>
+                                <div class="row tag_error">
+                                    <div class="col-5">
+                                        <label>{{ form_inverter.dc_voltage_max.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 inverter_data">
+                                        {{ form_inverter.dc_voltage_max }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>V</p>
+                                    </div>
+                                </div>
+                                <div class="row form_errors">
+                                </div>
+                                <div class="row tag_error">
+                                    <div class="col-5">
+                                        <label>{{ form_inverter.dc_current_max.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 inverter_data">
+                                        {{ form_inverter.dc_current_max }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>A</p>
+                                    </div>
+                                </div>
+                                <div class="row form_errors">
+                                </div>
+                                <div class="row tag_error">
+                                    <div class="col-5">
+                                        <label>{{ form_inverter.dc_power_max.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 inverter_data">
+                                        {{ form_inverter.dc_power_max }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>W</p>
+                                    </div>
+                                </div>
+                                <div class="row form_errors">
+                                </div>
+                                <div class="row tag_error">
+                                    <div class="col-5">
+                                        <label>{{ form_inverter.ac_power_nominal.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 inverter_data">
+                                        {{ form_inverter.ac_power_nominal }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>W</p>
+                                    </div>
+                                </div>
+                                <div class="row form_errors">
+                                </div>
+                                <div class="row tag_error">
+                                    <div class="col-5">
+                                        <label>{{ form_inverter.ac_power_max.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 inverter_data">
+                                        {{ form_inverter.ac_power_max }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>W</p>
+                                    </div>
+                                </div>
+                                <div class="row form_errors">
+                                </div>
+                                <div class="row tag_error">
+                                    <div class="col-5">
+                                        <label>{{ form_inverter.ac_current_max.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 inverter_data">
+                                        {{ form_inverter.ac_current_max }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>A</p>
+                                    </div>
+                                </div>
+                                <div class="row form_errors">
+                                </div>
+                                <div class="row tag_error">
+                                    <div class="col-5">
+                                        <label>{{ form_inverter.efficiency.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 inverter_data">
+                                        {{ form_inverter.efficiency }}
+                                    </div>
+                                    <div class="col-1 px-0">
+                                        <p>%</p>
+                                    </div>
+                                </div>
+                                <div class="row form_errors">
+                                </div>
+                                <div class="row tag_error">
+                                    <div class="col-5">
+                                        <label>{{ form_inverter.mpp_string_max.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 inverter_data">
+                                        {{ form_inverter.mpp_string_max }}
+                                    </div>
+                                    <div class="col-1 px-0">
+
+                                    </div>
+                                </div>
+                                <div class="row form_errors">
+                                </div>
+                                <div class="row tag_error">
+                                    <div class="col-5">
+                                        <label>{{ form_inverter.mpp.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 inverter_data">
+                                        {{ form_inverter.mpp }}
+                                    </div>
+                                    <div class="col-1 px-0">
+
+                                    </div>
+                                </div>
+                                <div class="row form_errors">
+                                </div>
+                                <div class="row tag_error">
+                                    <div class="col-5">
+                                        <label>{{ form_inverter.ac_cabling.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 inverter_data">
+                                        {{ form_inverter.ac_cabling }}
+                                    </div>
+                                    <div class="col-1 px-0">
+
+                                    </div>
+                                </div>
+                                <div class="row form_errors">
+                                </div>
+                                <div class="row tag_error">
+                                    <div class="col-5">
+                                        <label>{{ form_inverter.comment.label_tag }}</label>
+                                    </div>
+                                    <div class="col-6 inverter_data">
+                                        {{ form_inverter.comment }}
+                                    </div>
+                                    <div class="col-1 px-0">
+
+                                    </div>
+                                </div>
+                                <div class="row form_errors">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary cancel_inverter"
+                        data-dismiss="modal">Annuler</button>
+                    <input id="valid_inverte_button" type="submit" class="btn btn btn-success"
+                        value="Ajouter un onduleur" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <br />
 {% endblock %}

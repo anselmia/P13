@@ -93,6 +93,15 @@ class Temperature_coefficient(models.Model):
         return self.value
 
 
+class AC_connexion(models.Model):
+    """ Technology """
+
+    ac_type = models.CharField(max_length=100, unique=True, verbose_name="Raccordement")
+
+    def __str__(self):
+        return self.value
+
+
 class Inverter(models.Model):
     """ Inverter """
 
@@ -111,9 +120,15 @@ class Inverter(models.Model):
     efficiency = models.DecimalField(max_digits=4, decimal_places=2)
     mpp_string_max = models.IntegerField(blank=True, null=True)
     mpp = models.IntegerField(blank=True)
-    ac_cabling = models.IntegerField(blank=True, null=True)
+    ac_cabling = models.ForeignKey(
+        AC_connexion,
+        related_name="Raccordement",
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
     comment = models.CharField(
-        max_length=1000, unique=True, verbose_name="Commentaire", blank=True, null=True
+        max_length=1000, verbose_name="Commentaire", blank=True, null=True
     )
 
     class Meta:
@@ -190,7 +205,9 @@ class Panel(models.Model):
     cell_surface = models.DecimalField(
         max_digits=5, decimal_places=2, null=True, verbose_name="Surface d'une Cell."
     )
-    comment = models.CharField(max_length=1000, verbose_name="Commentaire")
+    comment = models.CharField(
+        max_length=1000, verbose_name="Commentaire", blank=True, null=True
+    )
 
     class Meta:
         verbose_name = "Panneau"

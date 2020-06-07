@@ -7,6 +7,7 @@ from .forms import (
     ImplantationForm,
     ConfigForm,
     MPPForm,
+    InverterForm,
 )
 from django.contrib.auth.decorators import login_required
 from design.api import Localisation
@@ -143,6 +144,29 @@ def add_panel(request):
                 return JsonResponse({"errors": panel.errors})
         except Exception as E:  # pragma: no cover
             return JsonResponse({"errors": panel.errors})
+
+    return HttpResponse()
+
+
+@login_required
+def add_inverter(request):
+    if request.method == "POST":
+        inverter = InverterForm(request.POST)
+        try:
+            if inverter.is_valid():
+                inverter.save()
+                inverter_added = Inverter.objects.get(model=request.POST["model"])
+                return JsonResponse(
+                    {
+                        "success": True,
+                        "model": inverter_added.model,
+                        "id": inverter_added.id,
+                    }
+                )
+            else:
+                return JsonResponse({"errors": inverter_added.errors})
+        except Exception as E:  # pragma: no cover
+            return JsonResponse({"errors": inverter_added.errors})
 
     return HttpResponse()
 

@@ -316,6 +316,55 @@
     $("[name='comment']").val('');
   };
 
+  // Panel  Functions
+  //###################################################################
+  $('#inverter-form').on('submit', function (event) {
+    event.preventDefault();
+    add_inverter($(this));
+  });
+
+  function add_inverter(form) {
+    ajax_post('/add_inverter/', form.serialize(), function (resp) {
+      if (resp.responseJSON["success"]) {
+        $("#inverter_errors").html();
+        $('#inverter_id_id').val('');
+        $('#inverter_id_id').append('<option value="' + resp.responseJSON["id"] + '">' + resp.responseJSON["model"] + '</option>')
+        $('#inverter_id_id option').filter(function () {
+          return ($(this).text() == resp.responseJSON["name"]);
+        }).prop('selected', true);
+        $('#InverterModal').hide();
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+      }
+
+      check_forms_errors(resp.responseJSON, ".inverter_errors");
+      $('#smartwizard').smartWizard("loader", "hide");
+    });
+  }
+
+  $("#InverterModal").on('hide.bs.modal', function () {
+    $("#inverter_errors").html("");
+    clear_inverter_val();
+  });
+
+  function clear_inverter_val() {
+    $("[name='model']").val('');
+    $("[name='manufacturer_id']").val('');
+    $("[name='mpp_voltage_min']").val('');
+    $("[name='mpp_voltage_max']").val('');
+    $("[name='dc_voltage_max']").val('');
+    $("[name='dc_current_max']").val('');
+    $("[name='dc_power_max']").val('');
+    $("[name='ac_power_nominal']").val('');
+    $("[name='ac_power_max']").val('');
+    $("[name='ac_current_max']").val('');
+    $("[name='efficiency']").val('');
+    $("[name='mpp_string_max']").val('');
+    $("[name='mpp']").val('');
+    $("[name='ac_cabling']").val('');
+    $("[name='comment']").val('');
+  };
+
   // Roof Functions
   //###################################################################
 

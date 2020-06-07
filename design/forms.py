@@ -14,6 +14,7 @@ from .models import (
     Inverter,
     City,
     Project,
+    AC_connexion,
 )
 from user.models import User
 from django.forms import ModelForm
@@ -137,6 +138,36 @@ class PanelForm(ModelForm):
         queryset=Temperature_coefficient.objects.all(), label="", required=True
     )
     temperature_factor_power_type.widget.attrs["class"] = "round_input container_100"
+
+
+class InverterForm(ModelForm):
+    class Meta:
+        model = Inverter
+        fields = (
+            "model",
+            "manufacturer_id",
+            "mpp_voltage_min",
+            "mpp_voltage_max",
+            "dc_voltage_max",
+            "dc_current_max",
+            "dc_power_max",
+            "ac_power_nominal",
+            "ac_power_max",
+            "ac_current_max",
+            "efficiency",
+            "mpp_string_max",
+            "mpp",
+            "ac_cabling",
+            "comment",
+        )
+
+    def __init__(self, *args, **kwargs):
+        super(InverterForm, self).__init__(*args, **kwargs)
+
+    ac_cabling = forms.ModelChoiceField(
+        queryset=AC_connexion.objects.all(), label="Raccordement", required=False
+    )
+    ac_cabling.widget.attrs["class"] = "round_input container_100"
 
 
 class RoofForm(ModelForm):
