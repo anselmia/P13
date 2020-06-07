@@ -203,7 +203,7 @@ class Panel(models.Model):
 class Project(models.Model):
     """ Projects """
 
-    name = models.CharField(max_length=100, unique=True, verbose_name="Nom")
+    name = models.CharField(max_length=100, verbose_name="Nom")
     user_id = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="project_user"
     )
@@ -218,6 +218,9 @@ class Project(models.Model):
     )
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["name", "user_id"], name="unique_relation",)
+        ]
         verbose_name = "Projet"
         verbose_name_plural = "Projets"
 

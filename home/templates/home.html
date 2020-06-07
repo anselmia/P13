@@ -5,11 +5,18 @@
 {% load widget_tweaks %}
 
 <header class="masthead p-0">
-    <div class="row mx-auto align-items-center justify-content-center text-center ">
-        <div class="col-lg-10 align-self-end">
+</header>
+<section class="masthead page-section intro cn">
+    <div class="row mx-auto align-items-center justify-content-center text-center">
+        <div class="orange_bloc cn">
             <h1 class="text-uppercase font-weight-bold maintitle">Designez votre installation photovoltaïque</h1>
+        </div>
+        <div class="col-lg-10 align-self-end pt-0">
+
             <br>
-            <h2 class="text-uppercase font-weight-bold maintitle">Définissez le projet adapté à votre besoin pour une
+            <br>
+            <h2 class="text-uppercase font-weight-bold maintitle">Définissez le projet adapté à votre besoin pour
+                une
                 autonomie énergétique ou un projet économique photovoltaïque !</h2>
             <br>
             <br>
@@ -31,10 +38,10 @@
                 ?</a>
         </div>
     </div>
-</header>
+</section>
 
 <!-- About section-->
-<section class="page-section" id="about">
+<section class="page-section cn" id="about">
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-10 col-sm-10 col-md-8 col-lg-8 text-center about">
@@ -57,19 +64,166 @@
                                 data-feedback="https://frontify.typeform.com/to/Dj3Utn?block=Rich%20Text%20Block"
                                 data-ready="true">
                                 <div class="js-b-text__text b-text__text co-editor co-editor--default">
+                                    <h5>Origine du projet :</h5>
                                     <p>
                                         SolarProject est le fruit d'un projet réalisé dans le cadre de la formation
                                         "développeur d'applications python" chez OpenClassroom&nbsp;
-                                        Notre moteur de conception de projet photovoltaïque vous permettra de designer
+                                        Notre moteur de conception de projet photovoltaïque vous permettra de
+                                        designer
                                         votre projet en partant de la puissance photovolta¨que admissible sur votre
-                                        toiture, jusqu'au calcul de production de votre système. Il vous permettra de
+                                        toiture, jusqu'au calcul de production de votre système. Il vous permettra
+                                        de
                                         comparer différentes configuration afin d'optimiser votre installation.
                                         <br><br><br>
-                                        <b>Arnaud</b> : "<i>Ingénieur industriel de formation j'ai travaillé durant 3
-                                            ans dans le domaine du photovoltaïque et accompagné de nombreux clients dans
+                                    </p>
+                                    <hr class="divider my-4" />
+                                    <h5>Présentation des outils :</h5>
+                                    <p>
+                                        A travers de notre application de conception, vous trouverez différents outils
+                                        qui permettront de concevoir votre installation photovoltaïque.
+                                        Cet outil est réservé pour les installations en France intégrées au bâti. Une
+                                        évolution futur permettra de plus amples configuration comme l'autoconsommation
+                                        ou l'élargissement des territoires applicables, mais nous n'en sommes qu'à la V1
+                                        !
+                                        <br>
+                                        <br>
+                                        Attention :<br>
+                                        Afin de permettre à la base de données de s'enrichir, les données saisies dans
+                                        la base de donées sont communes à tous les utilisateurs (sauf les données
+                                        propore à son projet).
+                                        Merci de ne pas détériorer la qualité des données enregistrées en base. En cas
+                                        de besoin, merci de m'envoyer un mail.
+                                    </p>
+                                    <a class="btn btn-primary btn-xl js-scroll-trigger mt-4" href="#contact"
+                                        title="Contact">Contact</a>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <h6><b>Etape 1 : Définition du projet</b></h6>
+                                    <p>
+                                        La conception du projet démarre en fournissant la localisation du projet et le
+                                        modèle de panneau solaire a utiliser. Il est possible d'ajouter de nouvelles
+                                        entrées pour ces deux paramètres.
+                                        En fournissant le nom d'un ville et à l'aide de l'API d'<a
+                                            href="https://opencagedata.com/api">Opencagedata</a> nous pouvons retrouver
+                                        la latitude et longitude d'une ville.<br>
+                                        Ces données nous serviront lors du calcul de production du système.
+                                    </p>
+                                    <br>
+                                    <h6><b>Etape 2 : Définition de la toîture</b></h6>
+                                    <p>
+                                        Cette étape nous permet de définir la toîture dans laquelle seront intégrés les
+                                        panneaux solaires. L'outil permet de sélectionner 3 types de toît :</p>
+                                    <ul>
+                                        <li>rectangulaire</li>
+                                        <li>trapézoïdal</li>
+                                        <li>triangulaire</li>
+                                    </ul>
+                                    <br>
+                                    <p>Enfin, il faudra définir la pente et l'orientation du système.
+                                        Ces données nous permettront d'affiner le calcul de la production énergétique du
+                                        système.
+                                    </p>
+                                    <br>
+                                    <h6><b>Etape 3 : Implantation du système</b></h6>
+                                    <p>
+                                        Maintenant que la surface disponible a été définie, l'outils permet alors de
+                                        définir l'implantation du système dans la toîture.<br>
+                                        Cette étape consiste a définir de quelle manière les panneaux solaires vont
+                                        s'intégrer dans la toîture et quelle puissance peut-être installée.<br>
+                                        <br>
+                                        L'outils permet nottament de définir :
+                                    </p>
+                                    <ul class="left">
+                                        <li>La pose : paysage ou portrait</li>
+                                        <li>L'implantation : côtes à côtes, espacés ou recouverts</li>
+                                        <li>La distance du systéme par rapport aux bords de la toîture</li>
+                                        <li>Les dimmensions des abergements (éléments d'étanchéité)</li>
+                                    </ul>
+                                    <br>
+                                    <p>
+                                        Cette étape permet de définir la quantité de panneaux solaires qui vont être
+                                        utilisés pour ce projet, et donc la puissance du système photovoltaïque.<br>
+                                        <br>
+                                        Un plan de calepinage permet de suivre tout au long de cette étape la
+                                        représentation du système installé.
+                                    </p>
+                                    <br>
+                                    <h6><b>Etape 4 : Configuration du système</b></h6>
+                                    <p>
+                                        La configuration du système consiste au mapping du système photovoltaïque avec
+                                        les onduleurs qui vont nous permettre de convertir l'énergie continue en
+                                        énerergie alternative.<br>
+                                        L'outils propose la possibilité d'utiliser jusqu'à 3 configurations qui
+                                        correspondent chacune à un modèle d'onduleur. Il est possible d'ajouté
+                                        l'onduleur désiré si celui-ci n'existe pas dans le
+                                        système.
+                                        <br>
+                                        Pour chaque configuration, il faut alors définir le nombre de panneaux connectés
+                                        en séries et le nombre de string que l'on souhaite connecter à une entrée de
+                                        l'onduleur (appelée MPP).<br>
+                                        <br>
+                                        L'outils vérifient alors les paramêtres suivant en fonction d'une plage de
+                                        température de fonctionnement du système (entre -10°C et 70°C) par entrée de
+                                        l'onduleur :
+                                    </p>
+                                    <ul class="left">
+                                        <li>Icc : Courant de court-circuit</li>
+                                        <li>Vco : Tension de circuit ouvert</li>
+                                        <li>Vmpp : Tension aux bornes d'une entrée de l'onduleur</li>
+                                    </ul>
+                                    <p>
+                                        Le système vérifie également le ratio entre la puissance DC connecté à
+                                        l'onduleur et sa puissance AC. Sa valeur doit être comprise entre 80% et
+                                        120%.<br>
+                                        <br>
+                                        Tout au long de cette étape, un code couleur (rouge: danger et vert: ok)
+                                        permettra à l'utilisateur de savoir si la configuration souhaitée est
+                                        viable.<br>
+                                        Afin de passer à l'étape suivante il faudra avoir configuré l'ensemble des
+                                        panneaux à un/des onduleur(s).
+                                    </p>
+                                    <br>
+                                    <h6><b>Etape 5 : Calcul de la production</b></h6>
+                                    <p>
+                                        Maintenant que le système est défini, il est possible de calculer sa production
+                                        énergétique.
+                                        Pour celà, l'application fait appel à l'API de <a
+                                            href="https://re.jrc.ec.europa.eu/pvg_tools/fr/tools.html">PVGIS</a>.<br>
+                                        Cette organisme mondialement connu permet d'obtenir des résultats très précis
+                                        quant aux modèles météorologiques utilisés pour définir l'irradiation d'une
+                                        localisation.
+                                        Cet API permet également de calculer la production énergétique d'un système
+                                        photovoltaïque.<br>
+                                        Grâce aux données qui ont été définie au cours de la conception, nous pourrons
+                                        donc obtenir avec précision l'irradiation mensuelle moyenne d'un site (kWh/m2)
+                                        et la production mensuelle du système que l'on a conçu (kWh).
+
+                                        Les pertes liées au rendement du système s'élèvent à 14%. Ce choix est
+                                        arbitraire mais proche de la réalité de l'ensemble des pertes dans un système
+                                        photovoltaïque.
+                                    </p>
+                                    <hr class="divider my-4" />
+                                    <p>
+                                        Les données fournies par le site ne peuvent être prises comme garanties et en
+                                        aucun cas je ne peux être tenu responsable d'événements survenus suite à
+                                        l'utilisation de cet outils.
+                                        En revanche, vous pouvez me contacter en cas de doute sur l'utilisation ou si
+                                        vous avez relevé une erreur.
+                                    </p>
+                                    <hr class="divider my-4" />
+                                    <h5>La conception :</h5>
+                                    <p>
+                                        <b>Arnaud</b> : "<i>Ingénieur industriel de formation j'ai travaillé durant
+                                            3
+                                            ans dans le domaine du photovoltaïque et accompagné de nombreux clients
+                                            dans
                                             la réalisation de leur projet en tant que résponsable de bureau d'étude.
-                                            Aujourd'hui en quête de renouvellement, je me lance dans le monde virtuel à
-                                            travers de cette formation et vous propose de mettre à profit mon expérience
+                                            Aujourd'hui en quête de renouvellement, je me lance dans le monde
+                                            virtuel à
+                                            travers de cette formation et vous propose de mettre à profit mon
+                                            expérience
                                             pour partager avec vous mes connaissances et vous accompagner dans votre
                                             projet</i>"
                                         <br><br>
@@ -78,56 +232,47 @@
                             </div>
                         </section>
                     </div>
-                    <div class="h-100 align-items-center justify-content-center text-center foto portfolio"
-                        id="portfolio">
-                        <div class="align-self-end mt-3">
-                            <div class="fotorama" data-width="100%">
-                                <img src="{% static 'images/portfolio/port-folio2.jpg' %}"
-                                    alt="Photo énergie solaire 2">
-                                <img src="{% static 'images/portfolio/port-folio1.jpg' %}"
-                                    alt="Photo énergie solaire 1">
-                                <img src="{% static 'images/portfolio/port-folio3.jpg' %}"
-                                    alt="Photo énergie solaire 3">
-                                <img src="{% static 'images/portfolio/port-folio4.jpg' %}"
-                                    alt="Photo énergie solaire 4">
-                                <img src="{% static 'images/portfolio/port-folio5.jpg' %}"
-                                    alt="Photo énergie solaire 5">
-                                <img src="{% static 'images/portfolio/port-folio6.jpg' %}"
-                                    alt="Photo énergie solaire 6">
-                                <img src="{% static 'images/portfolio/port-folio7.jpg' %}"
-                                    alt="Photo énergie solaire 7">
-                            </div>
-                        </div>
-                    </div>
                 </div>
-
             </div>
         </div>
     </div>
 </section>
 
+<div class="w-100 align-items-center justify-content-center text-center foto portfolio" id="portfolio">
+
+    <div class="align-self-end mt-3">
+        <div class="fotorama" data-width="100%">
+            <img src="{% static 'images/portfolio/port-folio2.jpg' %}" alt="Photo énergie solaire 2">
+            <img src="{% static 'images/portfolio/port-folio1.jpg' %}" alt="Photo énergie solaire 1">
+            <img src="{% static 'images/portfolio/port-folio3.jpg' %}" alt="Photo énergie solaire 3">
+            <img src="{% static 'images/portfolio/port-folio4.jpg' %}" alt="Photo énergie solaire 4">
+            <img src="{% static 'images/portfolio/port-folio5.jpg' %}" alt="Photo énergie solaire 5">
+            <img src="{% static 'images/portfolio/port-folio6.jpg' %}" alt="Photo énergie solaire 6">
+            <img src="{% static 'images/portfolio/port-folio7.jpg' %}" alt="Photo énergie solaire 7">
+        </div>
+    </div>
+</div>
+
 <!-- Contact section-->
 <section class="page-section" id="contact">
+
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-10 col-sm-10 col-md-8 col-lg-8 text-center about">
+            <div class="col-10 col-sm-10 col-md-8 col-lg-8 text-center about2">
                 <div class="page-content">
                     <h2 class="mt-0">Nous somme là pour vous servir !</h2>
                     <hr class="divider my-4" />
                     <p class="mb-5">Besoins d'informations ou de nous faire part de vos idées ? Contactez nous !</p>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4 ml-auto text-center mb-5 mb-lg-0">
-                        <i class="fas fa-phone fa-3x mb-3 text-muted"></i>
-                        <div>+33 0405060708</div>
-                    </div>
-                    <div class="col-lg-4 mr-auto text-center">
+                    <div class="offset-lg-4 col-lg-4 mr-auto text-center">
                         <i class="fas fa-envelope fa-3x mb-3 text-muted"></i>
-                        <a class="d-block" href="mailto:aai@bienmanger.fr" title="email">aai@bienmanger.fr</a>
+                        <a class="d-block" href="mailto:aai@bienmanger.fr" title="email">anselmi.arnaud@yahoo.fr</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 {% endblock %}

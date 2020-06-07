@@ -1,11 +1,13 @@
 """Contains the application’s url."""
 from django.urls import path
+from django.conf.urls import url
 from . import views
 
 app_name = "design"
 
 urlpatterns = [
     path("design/", views.index, name="index"),
+    path("design/<slug:project_name>/", views.index, name="index_project",),
     path(
         "get_localisation_data/",
         views.get_localisation_data,

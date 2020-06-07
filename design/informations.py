@@ -1,9 +1,9 @@
-from .models import Panel, Inverter
-from project.models import City
+from .models import Panel, Inverter, City, Roof, Implantation, Config, MPP, Project
+from design.energy_calculation import Production
 
 
 class Informations:
-    def get_information(self, datas):
+    def get_production_information(self, datas):
         panel = Panel.objects.get(id=int(datas["panel_id"]))
         pv_data = [
             panel.model,
@@ -30,3 +30,44 @@ class Informations:
             "site_data": site_data,
             "inverters_datas": inverters_datas,
         }
+
+    def get_projects_informations(self, projects):
+        datas = []
+
+        for project in projects:
+            try:
+                site = City.objects.get(id=project.city_id.id)
+                panel = Panel.objects.get(id=project.panel_id.id)
+                roof = Roof.objects.get(project_id=project.id)
+                implantation = Implantation.objects.get(roof_id=roof.id)
+                configs = Config.objects.filter(project_id=project.id)
+                tot_panel = 0
+
+                for config in configs:
+                    mpp_in_config = MPP.objects.filter(config_id=config.id)
+                    for mpp in mpp_in_config:
+                        tot_panel += (
+                            config.inverter_quantity * mpp.serial * mpp.parallel
+                        )
+
+                data = {
+                    "panel_id": panel.id,
+                    "site_id": site.id,
+                    "orientation": roof.orientation,
+                    "tilt": roof.tilt,
+                    "tot_panel": tot_panel,
+                }
+                project_prod = Production(data).datas
+
+                datas.append(
+                    {
+                        "name": project.name,
+                        "site": site.name,
+                        "yearly_irrad": project_prod["yearly_irrad"],
+                        "yearly_prod": project_prod["yearly_prod"],
+                    }
+                )
+            except Exception as e:
+                pass
+
+        return datas

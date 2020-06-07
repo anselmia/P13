@@ -123,6 +123,7 @@
     } else if (stepIndex == 3) {
       form_implantation = $('.form_implantation');
       init_config();
+      calculate_configuration();
     } else if (stepIndex == 4) {
       init_infos_prod();
       calculate_prod();
@@ -482,10 +483,10 @@
   }
 
   function draw_roof(datas) {
-    if (original_datas["roof_type"] == 1) {
+    if (original_datas["roof_type_id"] == 1) {
       context.beginPath();
       context.rect(0, 0, original_datas["bottom_length"] * scale, original_datas["width"] * scale);
-    } else if (original_datas["roof_type"] == 2) {
+    } else if (original_datas["roof_type_id"] == 2) {
       context.beginPath();
       context.moveTo(0, original_datas["height"] * scale);
       context.lineTo(original_datas["bottom_length"] * scale, original_datas["height"] * scale);

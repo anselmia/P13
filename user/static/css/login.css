@@ -4,10 +4,15 @@
 }
 
 body .login {
-  background: #007bff;
-  background: linear-gradient(to right, #0062E6, #33AEFF);
-  border: #007bff;
-  border: linear-gradient(to right, #0062E6, #33AEFF);
+  background: #f0f0f0;
+}
+
+.login_height {
+  height: 50vh;
+}
+
+.log {
+  height: 80%;
 }
 
 .card-signin {
@@ -30,7 +35,12 @@ body .login {
   width: 100%;
 }
 
+.align_center {
+  text-align: center;
+}
+
 .form-signin .btn {
+  width: auto;
   font-size: 80%;
   border-radius: 5rem;
   letter-spacing: .1rem;

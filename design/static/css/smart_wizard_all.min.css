@@ -331,13 +331,13 @@
 
 .sw-theme-arrows>.nav .nav-link.active {
     color: #fff !important;
-    border-color: #2A88AD !important;
-    background: #2A88AD !important;
+    border-color: #243b4d !important;
+    background: #243b4d !important;
     cursor: pointer
 }
 
 .sw-theme-arrows>.nav .nav-link.active::after {
-    border-left-color: #2A88AD !important
+    border-left-color: #243b4d !important;
 }
 
 .sw-theme-arrows>.nav .nav-link.done {

@@ -6,11 +6,119 @@
 <body>
     <div class="container-fluid align-items-center justify-content-center login" id="register-user">
         <div class="justify-content-center innerlogin">
-            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto mt-5">
-                <div class="card card-signin my-5">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto mt-5 cn login_height">
+                <div class="h-100 form-style-10 mb-0 pb-0">
+                    <h1>S'enregistrer<span></span></h1>
+                    <div class="log row w-100 m-0">
+                        <div class="inner-wrap w-100 col-12 my-auto h-100">
+                            <form class="form-signin" method="POST" action="{% url 'user:register' %}">
+                                {% csrf_token %}
+                                {{ form.non_field_errors }}
+                                {% if user.is_authenticated %}
+                                Vous êtes connecté, {{ user.username }} !
+                                {% else %}
+                                <div class="row w-100 tag_error">
+                                    <label class="w-100">{{form.username.label_tag }}
+                                        <div class="row cn">
+                                            <div class="col-11 px-0">{{ form.username }}
+                                            </div>
+                                            {{ form.username.errors }}
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="row w-100 tag_error">
+                                    <label class="w-100">{{form.email.label_tag }}
+                                        <div class="row cn">
+                                            <div class="col-11 px-0">{{ form.email }}
+                                            </div>
+                                            {{ form.email.errors }}
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="row w-100 tag_error">
+                                    <label class="w-100">{{form.password1.label_tag }}
+                                        <div class="row cn">
+                                            <div class="col-11 px-0">{{ form.password1 }}
+                                            </div>
+                                            {{ form.password1.errors }}
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="row w-100 tag_error">
+                                    <label class="w-100">{{form.password2.label_tag }}
+                                        <div class="row cn">
+                                            <div class="col-11 px-0">{{ form.password2 }}
+                                            </div>
+                                            {{ form.password2.errors }}
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="align_center">
+                                    <label>{{ form.robot }} Je ne suis pas un robot</label>
+                                    {{ form.robot.errors }}
+                                    <br>
+                                    <button id='submit' class="btn btn-lg btn-primary text-uppercase"
+                                        type="submit">S'enregitrer</button>
+                                    <br>
+                                    <div>
+                                        <p>Déjà un compte ? <a href="{% url 'user:login' %}" title="se connecter"><i
+                                                    class="fa fa-user" style="font-size:32px;color:orange"></i></a></p>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="card card-signin my-5">
                     <div class="card-body">
-                        <h5 class="card-title text-center">S'enregistrer</h5>
                         <br>
+                        <div class="h-100 form-style-10 mb-0 pb-0">
+                            <h1>Connexion<span></span></h1>
+                            <div class="log row w-100 m-0">
+                                <div class="inner-wrap w-100 col-12 my-auto h-100">
+                                    <form class="form-signin" method="POST" action="{% url 'user:login' %}">
+                                        {% csrf_token %}
+                                        {{ form.non_field_errors }}
+                                        {% if not user.is_authenticated %}
+                                        <div class="row w-100 tag_error">
+                                            <label class="w-100">{{form.username.label_tag }}
+                                                <div class="row cn">
+                                                    <div class="col-11 px-0">{{ form.username }}
+                                                    </div>
+                                                    {{ form.username.errors }}
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <div class="row w-100 tag_error">
+                                            <label class="w-100">{{form.password.label_tag }}
+                                                <div class="row cn">
+                                                    <div class="col-11 px-0">{{ form.password }}
+                                                    </div>
+                                                    {{ form.password.errors }}
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <button name="submit" class="btn btn-lg btn-primary text-uppercase"
+                                            type="submit">Connexion</button>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <div>
+                                            <p>Pas encore enregistré ? <a href="{% url 'user:register' %}"
+                                                    title="s'enregistrer" id="register"><i class="fa fa-user-plus"
+                                                        style="font-size:32px;color:orange"></i></a></p>
+                                        </div>
+                                        {% endif %}
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                         <form class="form-signin" method="POST" action="{% url 'user:register' %}">
                             {% csrf_token %}
                             {{ form.non_field_errors }}
@@ -50,7 +158,7 @@
                             {% endif %}
                         </form>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

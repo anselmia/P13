@@ -1,6 +1,5 @@
 import math
-from .models import Panel
-from project.models import City
+from .models import Panel, City
 from calendar import monthrange
 from datetime import date
 from .api import EnergyData

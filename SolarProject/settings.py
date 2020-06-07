@@ -30,7 +30,6 @@ ALLOWED_HOSTS = ["SolarProject-aa.herokuapp.com", "127.0.0.1"]
 
 INSTALLED_APPS = [
     "widget_tweaks",
-    "component.apps.ComponentConfig",
     "design.apps.DesignConfig",
     "user.apps.UserConfig",
     "home.apps.HomeConfig",

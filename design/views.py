@@ -24,24 +24,66 @@ import json
 
 
 @login_required
-def index(request):
+def index(request, project_name=""):
     """
     Views for home
     :param request:
     :return render home.html:
     """
+    if request.method == "GET" and project_name != "":
+        project = Project.objects.get(name=project_name, user_id=request.user.id)
+        roof = Roof.objects.get(project_id=project.id)
+        implantation = Implantation.objects.get(roof_id=roof.id)
+        project = ProjectForm(
+            initial={
+                "name": project.name,
+                "city_id": project.city_id.id,
+                "panel_id": project.panel_id.id,
+                "user_id": project.user_id.id,
+            }
+        )
+        roof = RoofForm(
+            initial={
+                "roof_type_id": roof.roof_type_id.id,
+                "top_length": roof.top_length,
+                "bottom_length": roof.bottom_length,
+                "width": roof.width,
+                "height": roof.height,
+                "orientation": roof.orientation,
+                "tilt": roof.tilt,
+            }
+        )
+        implantation = ImplantationForm(
+            initial={
+                "panel_orientation": implantation.panel_orientation.id,
+                "panel_implantation": implantation.panel_implantation.id,
+                "vertical_overlapping": implantation.vertical_overlapping,
+                "horizontal_overlapping": implantation.horizontal_overlapping,
+                "vertical_spacing": implantation.vertical_spacing,
+                "horizontal_spacing": implantation.horizontal_spacing,
+                "distance_top": implantation.distance_top,
+                "distance_bottom": implantation.distance_bottom,
+                "distance_left": implantation.distance_left,
+                "distance_right": implantation.distance_right,
+                "abergement_top": implantation.abergement_top,
+                "abergement_bottom": implantation.abergement_bottom,
+                "abergement_left": implantation.abergement_left,
+                "abergement_right": implantation.abergement_right,
+            }
+        )
+    else:
+        project = ProjectForm()
+        roof = RoofForm()
+        implantation = ImplantationForm()
 
-    project = ProjectForm()
     city = CityForm()
     panel = PanelForm()
-    roof = RoofForm()
-    implantation = ImplantationForm()
     config = ConfigForm()
     mpp = MPPForm()
 
     return render(
         request,
-        "index.html",
+        "index_design.html",
         {
             "form_project": project,
             "form_city": city,
@@ -107,15 +149,15 @@ def add_panel(request):
 
 @login_required
 def valid_project(request):
-    # if request.method == "POST":
-    #     project = ProjectForm(request.POST)
-    #     try:
-    #         if project.is_valid():
-    return JsonResponse({"success": True})
-    #         else:
-    #             return JsonResponse({"errors": project.errors})
-    #     except Exception as e:
-    #         return JsonResponse({"errors": project.errors})
+    if request.method == "POST":
+        project = ProjectForm(request.POST)
+        try:
+            if project.is_valid():
+                return JsonResponse({"success": True})
+            else:
+                return JsonResponse({"errors": project.errors})
+        except Exception as e:
+            return JsonResponse({"errors": project.errors})
 
 
 @login_required
@@ -123,15 +165,17 @@ def save_project(request):
     if request.method == "POST":
         project = ProjectForm(request.POST)
         try:
-            # if project.is_valid():
-            # project = project.save(commit=False)
-            # project.user_id = request.user
-            # #         project.save()
-            # saved_project = Project.objects.get(name=project.name, user_id=request.user)
-            request.session["project_id"] = 14  # saved_project.id
-            return JsonResponse({"success": True})
-            # else:
-            #     return JsonResponse({"errors": project.errors})
+            if project.is_valid():
+                project = project.save(commit=False)
+                project.user_id = request.user
+                project.save()
+                saved_project = Project.objects.get(
+                    name=project.name, user_id=request.user
+                )
+                request.session["project_id"] = saved_project.id
+                return JsonResponse({"success": True})
+            else:
+                return JsonResponse({"errors": project.errors})
         except Exception as e:
             return JsonResponse({"errors": project.errors})
 
@@ -154,16 +198,16 @@ def save_roof(request):
     if request.method == "POST":
         roof = RoofForm(request.POST)
         try:
-            # if roof.is_valid() and request.session["project_id"]:
-            #     roof = roof.save(commit=False)
-            #     project = Project.objects.get(id=request.session["project_id"])
-            #     roof.project_id = project
-            #     roof.save()
-            #     saved_roof = Roof.objects.get(project_id=project.id)
-            request.session["roof_id"] = 4  # saved_roof
-            return JsonResponse({"success": True})
-            # else:
-            #     return JsonResponse({"errors": roof.errors})
+            if roof.is_valid() and request.session["project_id"]:
+                roof = roof.save(commit=False)
+                project = Project.objects.get(id=request.session["project_id"])
+                roof.project_id = project
+                roof.save()
+                saved_roof = Roof.objects.get(project_id=project.id)
+                request.session["roof_id"] = saved_roof.id
+                return JsonResponse({"success": True})
+            else:
+                return JsonResponse({"errors": roof.errors})
         except Exception as E:
             return JsonResponse({"errors": roof.errors})
 
@@ -186,14 +230,15 @@ def save_implantation(request):
     if request.method == "POST":
         implantation = ImplantationForm(request.POST)
         try:
-            # if implantation.is_valid():
-            #     implantation = implantation.save(commit=False)
-            #     roof_id = request.session["roof_id"]
-            #     roof = Roof.objects.get(id=roof_id)
-            #     implantation.roof_id = roof
-            return JsonResponse({"success": True})
-            # else:
-            #     return JsonResponse({"errors": implantation.errors})
+            if implantation.is_valid():
+                implantation = implantation.save(commit=False)
+                roof_id = request.session["roof_id"]
+                roof = Roof.objects.get(id=roof_id)
+                implantation.roof_id = roof
+                implantation.save()
+                return JsonResponse({"success": True})
+            else:
+                return JsonResponse({"errors": implantation.errors})
         except Exception as E:
             return JsonResponse({"errors": implantation.errors})
 
@@ -307,7 +352,7 @@ def production_data(request):
         data = json.loads(request.POST.get("data", ""))
         try:
             information = Informations()
-            infos = information.get_information(data)
+            infos = information.get_production_information(data)
             return JsonResponse({"success": True, "infos": infos})
         except Exception as E:
             return JsonResponse({"errors": True})

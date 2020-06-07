@@ -1,0 +1,83 @@
+{% extends 'layouts/default.html' %}
+{% load static %}
+{% block body %}
+<header class="masthead p-0">
+</header>
+
+<div class="col-md-8 col-xl-6 container card favorites shadow-lg pt-3">
+    <div class="card-header msg_head d-flex mx-auto font-weight-bold">
+        <div class="mx-auto bd-highlight">
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <h4{% if message.tags %} class="{{ message.tags }} font-weight-bold" {% endif %}>{{ message }}</h4>
+                    {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+    <div class="card-body" id="msg_card_body">
+        <div class="favorite justify-content-start">
+            <div class="form-style-10">
+                <h1>Mes projets<span></span></h1>
+                <div
+                    class="w-100 table-responsive-md my-auto w-75 mx-auto align-items-center justify-content-center text-center">
+                    <table
+                        class="table table-md table-striped table-bordered align-items-center justify-content-center text-center">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Ville</th>
+                                <th scope="col">Irradiation annuelle</th>
+                                <th scope="col">Production annuelle</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for project in projects %}
+                            <form class="form_implantation" method="POST" action="">
+                                {% csrf_token %}
+                                {{ project.non_field_errors }}
+                                <tr>
+                                    <th scope="row">{{ project.name }}</th>
+                                    <td class="align-items-center justify-content-center text-center">
+                                        {{ project.site }}
+                                    </td>
+                                    <td class="align-items-center justify-content-center text-center">
+                                        <div class="row">
+                                            <div class="col-10">
+                                                {{ project.yearly_irrad }}
+                                            </div>
+                                            <div>
+                                                <p>
+                                                    kWh/m²
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="align-items-center justify-content-center text-center">
+                                        <div class="row">
+                                            <div class="col-10">
+                                                {{ project.yearly_prod }}
+                                            </div>
+                                            <div>
+                                                <p>
+                                                    kWh
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="align-items-center justify-content-center text-center"><a
+                                            href="{% url 'design:index_project' project_name=project.name.value %}"
+                                            title="Détails du projet" name="{{ project.name.value }}"> Voir</a></td>
+                                </tr>
+                            </form>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

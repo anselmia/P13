@@ -1625,12 +1625,7 @@ class Roof_implantation_Calculation:
 
     def plot_data(self, roof, implantation):
         # region toit 1
-        M = 0
-        N = 0
-        A = 0
-        B = 0
-        C = 0
-        D = 0
+
         pan_num = 0
         j = [0] * (
             self.nb_panel_length
@@ -1641,143 +1636,57 @@ class Roof_implantation_Calculation:
         abergement_height = 0
 
         if roof.roof_type_id_id == 1:
-            for i in range(0, self.nb_panel_length):
-                for i1 in range(0, self.nb_panel_width):
-                    if i1 == self.nb_panel_width - 1:
-                        if i == 0:
-                            x = (
-                                self.left_rest
-                                - self.abergement_left
-                                + N * (self.panel_length + self.horizontal_pose)
-                            )
-                            abergement_length = (
-                                self.panel_length
-                                + self.abergement_left
-                                + self.horizontal_pose
-                            )
-                        else:
-                            x = self.left_rest + N * (
-                                self.panel_length + self.horizontal_pose
-                            )
-                            if i == self.nb_panel_length - 1:
-                                abergement_length = (
-                                    self.panel_length + self.abergement_right
-                                )
-                            else:
-                                abergement_length = (
-                                    self.panel_length + self.horizontal_pose
-                                )
-                        y = (
-                            self.top_rest
-                            + M * (self.panel_width + self.vertical_pose)
-                            + self.panel_width
-                        )
-                        self.abergement.append(
-                            [x, y, abergement_length, self.abergement_bottom]
-                        )
-                        A += 1
-                    if i1 == 0:
-                        if i == 0:
-                            x = (
-                                self.left_rest
-                                - self.abergement_left
-                                + N * (self.panel_length + self.horizontal_pose)
-                            )
-                            abergement_length = (
-                                self.panel_length
-                                + self.abergement_left
-                                + self.horizontal_pose
-                            )
-                        else:
-                            x = self.left_rest + N * (
-                                self.panel_length + self.horizontal_pose
-                            )
-                            if i == self.nb_panel_length - 1:
-                                abergement_length = (
-                                    self.panel_length + self.abergement_right
-                                )
-                            else:
-                                abergement_length = (
-                                    self.panel_length + self.horizontal_pose
-                                )
-                        y = (
-                            self.top_rest
-                            - self.abergement_top
-                            + M * (self.panel_width + self.vertical_pose)
-                        )
-                        self.abergement.append(
-                            [x, y, abergement_length, self.abergement_top,]
-                        )
-                        B += 1
-                    if i == 0:
-                        x = self.left_rest - self.abergement_left
-                        y = self.top_rest + M * (self.panel_width + self.vertical_pose)
-                        abergement_height = self.panel_width + self.vertical_pose
-                        if i1 == self.nb_panel_width - 1:
-                            abergement_height = self.panel_width
-                        self.abergement.append(
-                            [x, y, self.abergement_left, abergement_height,]
-                        )
-                        C += 1
-                    if i == (self.nb_panel_length - 1):
-                        x = (
-                            self.left_rest
-                            + N * (self.panel_length + self.horizontal_pose)
-                            + self.panel_length
-                        )
-                        y = self.top_rest + M * (self.panel_width + self.vertical_pose)
-                        abergement_height = self.panel_width + self.vertical_pose
-                        if i1 == self.nb_panel_width - 1:
-                            abergement_height = self.panel_width
-                        self.abergement.append(
-                            [x, y, self.abergement_right, abergement_height,]
-                        )
-                        D += 1
-
+            for column in range(0, self.nb_panel_length):
+                for ligne in range(0, self.nb_panel_width):
+                    self.set_abergement(column, ligne)
                     self.panel.append(
                         [
                             self.left_rest
-                            + N * (self.panel_length + self.horizontal_pose),
-                            self.top_rest + M * (self.panel_width + self.vertical_pose),
+                            + column * (self.panel_length + self.horizontal_pose),
+                            self.top_rest
+                            + ligne * (self.panel_width + self.vertical_pose),
                             self.panel_length,
                             self.panel_width,
                         ]
                     )
-                    M += 1
-                M = 0
-                N += 1
+                    ligne += 1
+                ligne = 0
+                column += 1
         # endregion
 
         # region toit 2 & 3
         if roof.roof_type_id_id == 2 or roof.roof_type_id_id == 3:
-            for i in range(
+            for column in range(
                 0,
                 self.nb_panel_length
                 + self.nb_pan_lentgh_right_triangle
                 + self.nb_pan_lentgh_left_triangle,
             ):
-                if i < self.nb_pan_lentgh_left_triangle:
-                    j[i] = self.panel_left_triangle[i + 1]
-                if i >= self.nb_pan_lentgh_left_triangle:
-                    j[i] = self.nb_panel_width
-                if i >= (self.nb_pan_lentgh_left_triangle + self.nb_panel_length):
-                    j[i] = self.panel_right_triangle[
-                        i - self.nb_pan_lentgh_left_triangle - self.nb_panel_length + 1
+                if column < self.nb_pan_lentgh_left_triangle:
+                    j[column] = self.panel_left_triangle[column + 1]
+                if column >= self.nb_pan_lentgh_left_triangle:
+                    j[column] = self.nb_panel_width
+                if column >= (self.nb_pan_lentgh_left_triangle + self.nb_panel_length):
+                    j[column] = self.panel_right_triangle[
+                        column
+                        - self.nb_pan_lentgh_left_triangle
+                        - self.nb_panel_length
+                        + 1
                     ]
 
-                for i1 in range(0, j[i]):
-                    if i1 == 0:
-                        x = self.centering + N * (
+                for ligne in range(0, j[column]):
+                    if ligne == 0:
+                        x = self.centering + column * (
                             self.panel_length + self.horizontal_pose
                         )
-                        if i == 0:
+                        if column == 0:
                             x -= implantation.abergement_left
                         y = roof.height - self.bottom_rest
                         abergement_length = self.panel_length + self.horizontal_pose
-                        if i == 0:
+                        if column == 0:
                             abergement_length += implantation.abergement_left
                         elif (
-                            i
+                            column
                             == self.nb_panel_length
                             + self.nb_pan_lentgh_right_triangle
                             + self.nb_pan_lentgh_left_triangle
@@ -1794,7 +1703,7 @@ class Roof_implantation_Calculation:
                                 implantation.abergement_bottom,
                             ]
                         )
-                        if i == 0:
+                        if column == 0:
                             x = self.centering - self.abergement_left
                             y = (
                                 roof.height
@@ -1810,21 +1719,18 @@ class Roof_implantation_Calculation:
                                     self.panel_width + self.vertical_pose,
                                 ]
                             )
-                            C += 1
 
-                        A += 1
-
-                    if i > 0 and i < self.nb_pan_lentgh_left_triangle:
-                        if i1 >= j[i - 1]:
+                    if column > 0 and column < self.nb_pan_lentgh_left_triangle:
+                        if ligne >= j[column - 1]:
                             x = (
                                 self.centering
-                                + N * (self.panel_length + self.horizontal_pose)
+                                + column * (self.panel_length + self.horizontal_pose)
                                 - self.abergement_left
                             )
                             y = roof.height - (
                                 self.panel_width
                                 + self.bottom_rest
-                                + M * (self.panel_width + self.vertical_pose)
+                                + ligne * (self.panel_width + self.vertical_pose)
                             )
                             self.abergement.append(
                                 [
@@ -1834,15 +1740,14 @@ class Roof_implantation_Calculation:
                                     self.panel_width + self.vertical_pose,
                                 ]
                             )
-                            C += 1
 
-                    if i == 0:
-                        if i1 > 0:
+                    if column == 0:
+                        if ligne > 0:
                             x = self.centering - self.abergement_left
                             y = roof.height - (
                                 self.panel_width
                                 + self.bottom_rest
-                                + M * (self.panel_width + self.vertical_pose)
+                                + ligne * (self.panel_width + self.vertical_pose)
                             )
                             self.abergement.append(
                                 [
@@ -1852,22 +1757,21 @@ class Roof_implantation_Calculation:
                                     self.panel_width + self.vertical_pose,
                                 ]
                             )
-                            C += 1
 
                     if (
-                        i == self.nb_pan_lentgh_left_triangle
+                        column == self.nb_pan_lentgh_left_triangle
                         and self.nb_pan_lentgh_left_triangle != 0
                     ):
-                        if i1 >= j[self.nb_pan_lentgh_left_triangle - 1]:
+                        if ligne >= j[self.nb_pan_lentgh_left_triangle - 1]:
                             x = (
                                 self.centering
-                                + N * (self.panel_length + self.horizontal_pose)
+                                + column * (self.panel_length + self.horizontal_pose)
                                 - self.abergement_left
                             )
                             y = roof.height - (
                                 self.panel_width
                                 + self.bottom_rest
-                                + M * (self.panel_width + self.vertical_pose)
+                                + ligne * (self.panel_width + self.vertical_pose)
                             )
                             self.abergement.append(
                                 [
@@ -1877,19 +1781,22 @@ class Roof_implantation_Calculation:
                                     self.panel_width + self.vertical_pose,
                                 ]
                             )
-                            C += 1
 
-                    if i1 == (j[i] - 1):
-                        if i >= self.nb_pan_lentgh_left_triangle + self.nb_panel_length:
+                    if ligne == (j[column] - 1):
+                        if (
+                            column
+                            >= self.nb_pan_lentgh_left_triangle + self.nb_panel_length
+                        ):
                             x = (
                                 self.centering
-                                + (N - 1) * (self.panel_length + self.horizontal_pose)
+                                + (column - 1)
+                                * (self.panel_length + self.horizontal_pose)
                                 + self.panel_length
                             )
                             y = roof.height - (
                                 self.panel_width
                                 + self.bottom_rest
-                                + M * (self.panel_width + self.vertical_pose)
+                                + ligne * (self.panel_width + self.vertical_pose)
                                 + implantation.abergement_top
                             )
                             self.abergement.append(
@@ -1906,12 +1813,12 @@ class Roof_implantation_Calculation:
                             x = (
                                 self.centering
                                 - self.abergement_left
-                                + N * (self.panel_length + self.horizontal_pose)
+                                + column * (self.panel_length + self.horizontal_pose)
                             )
                             y = roof.height - (
                                 self.panel_width
                                 + self.bottom_rest
-                                + M * (self.panel_width + self.vertical_pose)
+                                + ligne * (self.panel_width + self.vertical_pose)
                                 + implantation.abergement_top
                             )
                             self.abergement.append(
@@ -1925,34 +1832,36 @@ class Roof_implantation_Calculation:
                                 ]
                             )
 
-                        B += 1
-
                     if (
-                        i - self.nb_pan_lentgh_left_triangle - self.nb_panel_length + 1
+                        column
+                        - self.nb_pan_lentgh_left_triangle
+                        - self.nb_panel_length
+                        + 1
                     ) >= 0:
-                        if i1 >= (
+                        if ligne >= (
                             self.panel_right_triangle[
-                                i
+                                column
                                 - self.nb_pan_lentgh_left_triangle
                                 - self.nb_panel_length
                                 + 2
                             ]
                         ):
                             if (
-                                i
+                                column
                                 >= self.nb_pan_lentgh_left_triangle
                                 + self.nb_panel_length
                                 - 1
                             ):
                                 x = (
                                     self.centering
-                                    + N * (self.panel_length + self.horizontal_pose)
+                                    + column
+                                    * (self.panel_length + self.horizontal_pose)
                                     + self.panel_length
                                 )
                                 y = roof.height - (
                                     self.panel_width
                                     + self.bottom_rest
-                                    + M * (self.panel_width + self.vertical_pose)
+                                    + ligne * (self.panel_width + self.vertical_pose)
                                 )
                                 self.abergement.append(
                                     [
@@ -1962,24 +1871,96 @@ class Roof_implantation_Calculation:
                                         self.panel_width + self.vertical_pose,
                                     ]
                                 )
-                                D += 1
 
                     self.panel.append(
                         [
                             self.centering
-                            + N * (self.panel_length + self.horizontal_pose),
+                            + column * (self.panel_length + self.horizontal_pose),
                             roof.height
                             - (
                                 self.panel_width
                                 + self.bottom_rest
-                                + M * (self.panel_width + self.vertical_pose)
+                                + ligne * (self.panel_width + self.vertical_pose)
                             ),
                             self.panel_length,
                             self.panel_width,
                         ]
                     )
 
-                    M += 1
-                M = 0
-                N += 1
+                    ligne += 1
+                ligne = 0
+                column += 1
         # endregion
+
+    def set_abergement(self, column, ligne):
+        if ligne == self.nb_panel_width - 1:
+            if column == 0:
+                x = (
+                    self.left_rest
+                    - self.abergement_left
+                    + column * (self.panel_length + self.horizontal_pose)
+                )
+                abergement_length = (
+                    self.panel_length + self.abergement_left + self.horizontal_pose
+                )
+            else:
+                x = self.left_rest + column * (self.panel_length + self.horizontal_pose)
+                if column == self.nb_panel_length - 1:
+                    abergement_length = self.panel_length + self.abergement_right
+                else:
+                    abergement_length = self.panel_length + self.horizontal_pose
+            y = (
+                self.top_rest
+                + ligne * (self.panel_width + self.vertical_pose)
+                + self.panel_width
+            )
+            self.abergement.append([x, y, abergement_length, self.abergement_bottom])
+
+        if ligne == 0:
+            if column == 0:
+                x = (
+                    self.left_rest
+                    - self.abergement_left
+                    + column * (self.panel_length + self.horizontal_pose)
+                )
+                abergement_length = (
+                    self.panel_length + self.abergement_left + self.horizontal_pose
+                )
+            else:
+                x = self.left_rest + column * (self.panel_length + self.horizontal_pose)
+                if column == self.nb_panel_length - 1:
+                    abergement_length = self.panel_length + self.abergement_right
+                else:
+                    abergement_length = self.panel_length + self.horizontal_pose
+            y = (
+                self.top_rest
+                - self.abergement_top
+                + ligne * (self.panel_width + self.vertical_pose)
+            )
+            self.abergement.append(
+                [x, y, abergement_length, self.abergement_top,]
+            )
+
+        if column == 0:
+            x = self.left_rest - self.abergement_left
+            y = self.top_rest + ligne * (self.panel_width + self.vertical_pose)
+            abergement_height = self.panel_width + self.vertical_pose
+            if ligne == self.nb_panel_width - 1:
+                abergement_height = self.panel_width
+            self.abergement.append(
+                [x, y, self.abergement_left, abergement_height,]
+            )
+
+        if column == (self.nb_panel_length - 1):
+            x = (
+                self.left_rest
+                + column * (self.panel_length + self.horizontal_pose)
+                + self.panel_length
+            )
+            y = self.top_rest + ligne * (self.panel_width + self.vertical_pose)
+            abergement_height = self.panel_width + self.vertical_pose
+            if ligne == self.nb_panel_width - 1:
+                abergement_height = self.panel_width
+            self.abergement.append(
+                [x, y, self.abergement_right, abergement_height,]
+            )

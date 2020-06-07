@@ -215,7 +215,7 @@
             <div id="step-3" class="tab-pane size_auto" role="tabpanel" aria-labelledby="step-3">
                 <br>
                 <div class="row container size_auto m-0 px-0 cn">
-                    <div class="col-4 size_auto mx-0">
+                    <div class="col-lg-4 col-md-12 size_auto mx-0">
                         <div class="form-style-10">
                             <h1>Plan de calepinage<span></span></h1>
                             <form class="form_implantation" method="POST" action="">
@@ -226,7 +226,8 @@
                                     <div class="row w-100 tag_error">
                                         <label class="w-100">{{ form_implantation.panel_orientation.label_tag }}
                                             <div class="row cn">
-                                                <div class="col-11 px-0">{{ form_implantation.panel_orientation }}</div>
+                                                <div class="col-11 px-0">{{ form_implantation.panel_orientation }}
+                                                </div>
                                                 <div class="col-1 pr-0">
                                                     <p></p>
                                                 </div>
@@ -251,7 +252,8 @@
                                     <div class="row w-100 tag_error vertical_overlapping">
                                         <label class="w-100">{{ form_implantation.vertical_overlapping.label_tag }}
                                             <div class="row cn">
-                                                <div class="col-11 px-0">{{ form_implantation.vertical_overlapping }}
+                                                <div class="col-11 px-0">
+                                                    {{ form_implantation.vertical_overlapping }}
                                                 </div>
                                                 <div class="col-1 pr-0">
                                                     <p>mm</p>
@@ -264,7 +266,8 @@
                                     <div class="row w-100 tag_error horizontal_overlapping">
                                         <label class="w-100">{{ form_implantation.horizontal_overlapping.label_tag }}
                                             <div class="row cn">
-                                                <div class="col-11 px-0">{{ form_implantation.horizontal_overlapping }}
+                                                <div class="col-11 px-0">
+                                                    {{ form_implantation.horizontal_overlapping }}
                                                 </div>
                                                 <div class="col-1 pr-0">
                                                     <p>mm</p>
@@ -277,7 +280,8 @@
                                     <div class="row w-100 tag_error vertical_spacing">
                                         <label class="w-100">{{ form_implantation.vertical_spacing.label_tag }}
                                             <div class="row cn">
-                                                <div class="col-11 px-0">{{ form_implantation.vertical_spacing }}</div>
+                                                <div class="col-11 px-0">{{ form_implantation.vertical_spacing }}
+                                                </div>
                                                 <div class="col-1 pr-0">
                                                     <p>mm</p>
                                                 </div>
@@ -317,7 +321,8 @@
                                     <div class="row w-100 tag_error">
                                         <label class="w-100">{{ form_implantation.distance_bottom.label_tag }}
                                             <div class="row cn">
-                                                <div class="col-11 px-0">{{ form_implantation.distance_bottom }}</div>
+                                                <div class="col-11 px-0">{{ form_implantation.distance_bottom }}
+                                                </div>
                                                 <div class="col-1 pr-0">
                                                     <p>mm</p>
                                                 </div>
@@ -341,7 +346,8 @@
                                     <div class="row w-100 tag_error">
                                         <label class="w-100">{{ form_implantation.distance_right.label_tag }}
                                             <div class="row cn">
-                                                <div class="col-11 px-0">{{ form_implantation.distance_right }}</div>
+                                                <div class="col-11 px-0">{{ form_implantation.distance_right }}
+                                                </div>
                                                 <div class="col-1 pr-0">
                                                     <p>mm</p>
                                                 </div>
@@ -356,7 +362,8 @@
                                     <div class="row w-100 tag_error">
                                         <label class="w-100">{{ form_implantation.abergement_top.label_tag }}
                                             <div class="row cn">
-                                                <div class="col-11 px-0">{{ form_implantation.abergement_top }}</div>
+                                                <div class="col-11 px-0">{{ form_implantation.abergement_top }}
+                                                </div>
                                                 <div class="col-1 pr-0">
                                                     <p>mm</p>
                                                 </div>
@@ -368,7 +375,8 @@
                                     <div class="row w-100 tag_error">
                                         <label class="w-100">{{ form_implantation.abergement_bottom.label_tag }}
                                             <div class="row cn">
-                                                <div class="col-11 px-0">{{ form_implantation.abergement_bottom }}</div>
+                                                <div class="col-11 px-0">{{ form_implantation.abergement_bottom }}
+                                                </div>
                                                 <div class="col-1 pr-0">
                                                     <p>mm</p>
                                                 </div>
@@ -380,7 +388,8 @@
                                     <div class="row w-100 tag_error">
                                         <label class="w-100">{{ form_implantation.abergement_left.label_tag }}
                                             <div class="row cn">
-                                                <div class="col-11 px-0">{{ form_implantation.abergement_left }}</div>
+                                                <div class="col-11 px-0">{{ form_implantation.abergement_left }}
+                                                </div>
                                                 <div class="col-1 pr-0">
                                                     <p>mm</p>
                                                 </div>
@@ -392,7 +401,8 @@
                                     <div class="row w-100 tag_error">
                                         <label class="w-100">{{ form_implantation.abergement_right.label_tag }}
                                             <div class="row cn">
-                                                <div class="col-11 px-0">{{ form_implantation.abergement_right }}</div>
+                                                <div class="col-11 px-0">{{ form_implantation.abergement_right }}
+                                                </div>
                                                 <div class="col-1 pr-0">
                                                     <p>mm</p>
                                                 </div>
@@ -408,7 +418,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="col-8 size_auto cn block">
+                    <div class="col-lg-8 col-md-12 size_auto cn block">
                         <div class="row container">
                             <canvas id="myCanvas">
 
@@ -418,7 +428,7 @@
                             <div class="form-style-10">
                                 <h1>Informations<span></span></h1>
                                 <div class="row">
-                                    <div class="col-4 mx-0">
+                                    <div class="col-lg-4 col-sm-12 mx-0">
                                         <div class="section">Toîture</div>
                                         <div class="inner-wrap px-0">
                                             <div class="row rectangle trapeze triangle">
@@ -467,7 +477,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-4 mx-0">
+                                    <div class="col-lg-4 col-sm-12 mx-0">
                                         <div class="section">Distance des bords</div>
                                         <div class="inner-wrap px-0">
                                             <div class="row rectangle trapeze triangle">
@@ -516,7 +526,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-4 mx-0">
+                                    <div class="col-lg-4 col-sm-12 mx-0">
                                         <div class="section">Panneaux installés</div>
                                         <div class="inner-wrap px-0">
                                             <div class="row rectangle trapeze triangle">
@@ -575,10 +585,11 @@
                                 <div class="px-4 section"><span>1</span>Choix de l'onduleur</div>
                                 <div class="inner-wrap">
                                     <div class="row cn">
-                                        <div class="col-6 mx-0">
+                                        <div class="col-lg-6 col-sm-12 mx-0">
                                             <form id="config_1" class="form_config config_1" method="POST" action="">
                                                 {% csrf_token %}
-                                                <div class="index1" style="display: none;">{{ form_config.index }}</div>
+                                                <div class="index1" style="display: none;">{{ form_config.index }}
+                                                </div>
                                                 <div class="row w-100 tag_error">
                                                     <label class="w-100">{{ form_config.inverter_id.label_tag }}
                                                         <div class="row cn">
@@ -595,7 +606,8 @@
                                                 <div class="row w-100 tag_error">
                                                     <label class="w-100">{{ form_config.inverter_quantity.label_tag }}
                                                         <div class="row cn">
-                                                            <div class="col-11 px-0">{{ form_config.inverter_quantity }}
+                                                            <div class="col-11 px-0">
+                                                                {{ form_config.inverter_quantity }}
                                                             </div>
                                                             <div class="col-1 pr-0">
                                                                 <p></p>
@@ -607,7 +619,7 @@
                                                 </div>
                                             </form>
                                         </div>
-                                        <div class="col-6 mx-0">
+                                        <div class="col-lg-6 col-sm-12 mx-0">
                                             <div class="row">
                                                 <div class="col-6">
                                                     <p>Puissance :</p>
@@ -664,7 +676,7 @@
                                 <div class="px-4 section"><span>2</span>Connections</div>
                                 <div class="inner-wrap mb-0">
                                     <div class="row">
-                                        <div class="col-4 inverter1_mpp1 cn">
+                                        <div class="col-lg-4 col-sm-12 inverter1_mpp1 cn">
                                             <div class="form-style-10">
                                                 <h1 class="cn">MPP 1<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
@@ -707,7 +719,8 @@
                                                         <div class="col-4 mx-auto">
                                                             <div class="row">
                                                                 <p>
-                                                                    <p class="mpp_voltage_min_value"></p>&nbsp; - &nbsp;
+                                                                    <p class="mpp_voltage_min_value"></p>&nbsp; -
+                                                                    &nbsp;
                                                                     <p class="mpp_voltage_max_value"></p>
                                                                 </p>
                                                             </div>
@@ -749,7 +762,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-4 inverter1_mpp2 cn">
+                                        <div class="col-lg-4 col-sm-12 inverter1_mpp2 cn">
                                             <div class="form-style-10">
                                                 <h1 class="cn">MPP 2<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
@@ -833,7 +846,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-4 inverter1_mpp3 cn">
+                                        <div class="col-lg-4 col-sm-12 inverter1_mpp3 cn">
                                             <div class="form-style-10">
                                                 <h1 class="cn">MPP 3<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
@@ -922,7 +935,7 @@
                                 <div class="px-4 section"><span>3</span>Vérifications</div>
                                 <div class="inner-wrap mb-2 py-1">
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-lg-6 col-sm-12">
                                             <div class="row">
                                                 <div class="col-6">
                                                     <p>Itot :</p>
@@ -939,7 +952,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-lg-6 col-sm-12">
                                             <div class="row">
                                                 <div class="col-6">
                                                     <p>Pdc/Pac :</p>
@@ -966,10 +979,11 @@
                                 <div class="px-4 section"><span>1</span>Choix de l'onduleur</div>
                                 <div class="inner-wrap">
                                     <div class="row cn">
-                                        <div class="col-6 mx-0">
+                                        <div class="col-lg-6 col-sm-12 mx-0">
                                             <form id="config_2" class="form_config config_2" method="POST" action="">
                                                 {% csrf_token %}
-                                                <div class="index2" style="display: none;">{{ form_config.index }}</div>
+                                                <div class="index2" style="display: none;">{{ form_config.index }}
+                                                </div>
                                                 <div class="row w-100 tag_error">
                                                     <label class="w-100">{{ form_config.inverter_id.label_tag }}
                                                         <div class="row cn">
@@ -986,7 +1000,8 @@
                                                 <div class="row w-100 tag_error">
                                                     <label class="w-100">{{ form_config.inverter_quantity.label_tag }}
                                                         <div class="row cn">
-                                                            <div class="col-11 px-0">{{ form_config.inverter_quantity }}
+                                                            <div class="col-11 px-0">
+                                                                {{ form_config.inverter_quantity }}
                                                             </div>
                                                             <div class="col-1 pr-0">
                                                                 <p></p>
@@ -998,7 +1013,7 @@
                                                 </div>
                                             </form>
                                         </div>
-                                        <div class="col-6 mx-0">
+                                        <div class="col-lg-6 col-sm-12 mx-0">
                                             <div class="row">
                                                 <div class="col-6">
                                                     <p>Puissance :</p>
@@ -1055,7 +1070,7 @@
                                 <div class="px-4 section"><span>2</span>Connections</div>
                                 <div class="inner-wrap mb-0">
                                     <div class="row">
-                                        <div class="col-4 inverter2_mpp1 cn">
+                                        <div class="col-lg-4 col-sm-12 inverter2_mpp1 cn">
                                             <div class="form-style-10">
                                                 <h1 class="cn">MPP 1<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
@@ -1098,7 +1113,8 @@
                                                         <div class="col-4 mx-auto">
                                                             <div class="row">
                                                                 <p>
-                                                                    <p class="mpp_voltage_min_value"></p>&nbsp; - &nbsp;
+                                                                    <p class="mpp_voltage_min_value"></p>&nbsp; -
+                                                                    &nbsp;
                                                                     <p class="mpp_voltage_max_value"></p>
                                                                 </p>
                                                             </div>
@@ -1114,7 +1130,8 @@
                                                         <div class="col-4 mx-auto">
                                                             <div class="row">
                                                                 <p>
-                                                                    <p class="vco_voltage_min_value"></p>&nbsp; - &nbsp;
+                                                                    <p class="vco_voltage_min_value"></p>&nbsp; -
+                                                                    &nbsp;
                                                                     <p class="vco_voltage_max_value"></p>
                                                                 </p>
                                                             </div>
@@ -1142,7 +1159,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-4 inverter2_mpp2 cn">
+                                        <div class="col-lg-4 col-sm-12 inverter2_mpp2 cn">
                                             <div class="form-style-10">
                                                 <h1 class="cn">MPP 2<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
@@ -1226,7 +1243,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-4 inverter2_mpp3 cn">
+                                        <div class="col-lg-4 col-sm-12 inverter2_mpp3 cn">
                                             <div class="form-style-10">
                                                 <h1 class="cn">MPP 3<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
@@ -1359,10 +1376,11 @@
                                 <div class="px-4 section"><span>1</span>Choix de l'onduleur</div>
                                 <div class="inner-wrap">
                                     <div class="row cn">
-                                        <div class="col-6 mx-0">
+                                        <div class="col-lg-6 col-sm-12 mx-0">
                                             <form id="config_3" class="form_config config_3" method="POST" action="">
                                                 {% csrf_token %}
-                                                <div class="index3" style="display: none;">{{ form_config.index }}</div>
+                                                <div class="index3" style="display: none;">{{ form_config.index }}
+                                                </div>
                                                 <div class="row w-100 tag_error">
                                                     <label class="w-100">{{ form_config.inverter_id.label_tag }}
                                                         <div class="row cn">
@@ -1392,7 +1410,7 @@
                                                 </div>
                                             </form>
                                         </div>
-                                        <div class="col-6 mx-0">
+                                        <div class="col-lg-6 col-sm-12 mx-0">
                                             <div class="row">
                                                 <div class="col-6">
                                                     <p>Puissance :</p>
@@ -1447,7 +1465,7 @@
                                 <div class="px-4 section"><span>2</span>Connections</div>
                                 <div class="inner-wrap mb-0">
                                     <div class="row">
-                                        <div class="col-4 inverter3_mpp1 cn">
+                                        <div class="col-lg-4 col-sm-12 inverter3_mpp1 cn">
                                             <div class="form-style-10">
                                                 <h1 class="cn">MPP 1<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
@@ -1531,7 +1549,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-4 inverter3_mpp2 cn">
+                                        <div class="col-lg-4 col-sm-12 inverter3_mpp2 cn">
                                             <div class="form-style-10">
                                                 <h1 class="cn">MPP 2<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
@@ -1615,7 +1633,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-4 inverter3_mpp3 cn">
+                                        <div class="col-lg-4 col-sm-12 inverter3_mpp3 cn">
                                             <div class="form-style-10">
                                                 <h1 class="cn">MPP 3<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
@@ -1745,7 +1763,7 @@
                     <h1 class="cn">Vérifications<span></span></h1>
                     <div class="inner-wrap">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-lg-6 col-sm-12">
                                 <div class="row">
                                     <div class="col-6">
                                         <p>Pdc :</p>
@@ -1758,7 +1776,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-lg-6 col-sm-12">
                                 <div class="row">
                                     <div class="col-6">
                                         <p>Pac :</p>
@@ -1773,7 +1791,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4">
+                            <div class="col-lg-4 col-sm-12">
                                 <div class="row">
                                     <div class="col-6">
                                         <p>Total panneaux :</p>
@@ -1783,7 +1801,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-4">
+                            <div class="col-lg-4 col-sm-12">
                                 <div class="row">
                                     <div class="col-6">
                                         <p>Panneaux configurés :</p>
@@ -1793,7 +1811,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-4">
+                            <div class="col-lg-4 col-sm-12">
                                 <div class="row">
                                     <div class="col-6">
                                         <p>Reste :</p>
@@ -1815,7 +1833,7 @@
                         <div class="section"><span>1</span>Installation photovoltaïque</div>
                         <div class="inner-wrap">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-lg-6 col-sm-12">
                                     <div class="row energy_panel_model">
                                         <div class="col-6">
                                             <p>Modèle :</p>
@@ -1827,7 +1845,7 @@
                                         </div>
                                     </div>
                                     <div class="row energy_panel_power">
-                                        <div class="col-6">
+                                        <div class="col-6 ">
                                             <p>Puissance :</p>
                                         </div>
                                         <div class="col-4 mx-auto">
@@ -1838,7 +1856,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-lg-6 col-sm-12">
                                     <div class="row energy_tot_panel">
                                         <div class="col-6">
                                             <p>Nombre total :</p>
@@ -1877,7 +1895,10 @@
                         <div class="section"><span>2</span>Configuration</div>
                         <div class="inner-wrap">
                             <div class="row">
-                                <div class="col-4 energy_inverter1">
+                                <div class="col-lg-4 col-sm-12 energy_inverter1">
+                                    <div>
+                                        <p><b>Onduleur 1</b></p>
+                                    </div>
                                     <div class="row energy_inverter_model1">
                                         <div class="col-6">
                                             <p>Modèle :</p>
@@ -1979,7 +2000,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-4 energy_inverter2">
+                                <div class="col-lg-4 col-sm-12 energy_inverter2">
+                                    <div>
+                                        <p><b>Onduleur 2</b></p>
+                                    </div>
                                     <div class="row energy_inverter_model2">
                                         <div class="col-6">
                                             <p>Modèle :</p>
@@ -2081,7 +2105,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-4 energy_inverter3">
+                                <div class="col-lg-4 col-sm-12 energy_inverter3">
+                                    <div>
+                                        <p><b>Onduleur 3</b></p>
+                                    </div>
                                     <div class="row energy_inverter_model3">
                                         <div class="col-6">
                                             <p>Modèle :</p>
@@ -2189,7 +2216,7 @@
                         </div>
                         <div class="inner-wrap">
                             <div class="row">
-                                <div class="col-4">
+                                <div class="col-4 col-sm-12">
                                     <div class="row energy_site_name">
                                         <div class="col-6">
                                             <p>Nom :</p>
@@ -2199,7 +2226,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-4 col-sm-12">
                                     <div class="row energy_latitude">
                                         <div class="col-6">
                                             <p>Latitude :</p>
@@ -2212,7 +2239,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-4 col-sm-12">
                                     <div class="row energy_longitude">
                                         <div class="col-6">
                                             <p>Longitude :</p>
@@ -2231,7 +2258,7 @@
                         </div>
                         <div class="inner-wrap">
                             <div class="row">
-                                <div class="form-style-10 col-5">
+                                <div class="form-style-10 col-lg-5 col-sm-10">
                                     <h1>Irradiations Moyennes Mensuelles<span></span></h1>
                                     <br>
                                     <div class="row energy_irrad_jan">
@@ -2367,7 +2394,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-style-10 col-5">
+                                <div class="form-style-10 col-lg-5 col-sm-10">
                                     <h1>Production Mensuelle<span></span></h1>
                                     <br>
                                     <div class="row energy_prod_jan">
@@ -2505,7 +2532,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-6 offset-3">
+                                <div class="col-lg-6 col-sm-10 offset-lg-3 mx-auto">
                                     <div class="form-style-10">
                                         <h1>Résultats<span></span></h1>
                                         <br>
@@ -2559,6 +2586,7 @@
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="CityModal" tabindex="-1" role="dialog" aria-labelledby="add_city_modal" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -2617,7 +2645,7 @@
                                         <div class="row cn">
                                             <div class="col-11 px-0 find_lat find_city_data">{{ form_city.lat }}</div>
                                             <div class="col-1 pr-0">
-                                                <p>°C</p>
+                                                <p>°</p>
                                             </div>
                                         </div>
                                     </label>
@@ -2629,7 +2657,7 @@
                                         <div class="row cn">
                                             <div class="col-11 px-0 find_lon find_city_data">{{ form_city.lon }}</div>
                                             <div class="col-1 pr-0">
-                                                <p>°C</p>
+                                                <p>°</p>
                                             </div>
                                         </div>
                                     </label>

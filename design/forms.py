@@ -35,14 +35,11 @@ class ProjectForm(ModelForm):
         self.fields["user_id"].required = False
 
     city_id = forms.ModelChoiceField(
-        queryset=City.objects.all(), label="Ville", required=True, initial=1,
+        queryset=City.objects.all(), label="Ville", required=True,
     )
     city_id.widget.attrs["class"] = "round_input container_100 cn"
     panel_id = forms.ModelChoiceField(
-        queryset=Panel.objects.all(),
-        label="Type de panneaux",
-        required=True,
-        initial=1,
+        queryset=Panel.objects.all(), label="Type de panneaux", required=True,
     )
     panel_id.widget.attrs["class"] = "round_input container_100 cn"
 
@@ -158,13 +155,13 @@ class RoofForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(RoofForm, self).__init__(*args, **kwargs)
         self.fields["bottom_length"].required = True
-        self.fields["bottom_length"].widget.attrs.update({"value": 41})
+        self.fields["bottom_length"].widget.attrs.update({"value": 0})
         self.fields["top_length"].required = False
         self.fields["top_length"].widget.attrs.update({"value": 0})
         self.fields["height"].required = False
         self.fields["height"].widget.attrs.update({"value": 0})
         self.fields["width"].required = False
-        self.fields["width"].widget.attrs.update({"value": 5})
+        self.fields["width"].widget.attrs.update({"value": 0})
         self.fields["orientation"].required = True
         self.fields["orientation"].widget.attrs.update({"value": 0})
         self.fields["tilt"].required = True
@@ -185,10 +182,7 @@ class RoofForm(ModelForm):
         self.fields["tilt"].widget.attrs.update({"class": "container_100 round_input "})
 
     roof_type_id = forms.ModelChoiceField(
-        queryset=Roof_type.objects.all(),
-        label="Type de toîture",
-        required=True,
-        initial=1,
+        queryset=Roof_type.objects.all(), label="Type de toîture", required=True,
     )
     roof_type_id.widget.attrs["class"] = "round_input container_100"
 
@@ -329,13 +323,10 @@ class ImplantationForm(ModelForm):
         )
 
     panel_orientation = forms.ModelChoiceField(
-        queryset=Orientation.objects.all(),
-        label="Orientation",
-        required=True,
-        initial=1,
+        queryset=Orientation.objects.all(), label="Orientation", required=True,
     )
     panel_implantation = forms.ModelChoiceField(
-        queryset=Pose.objects.all(), label="Pose", required=True, initial=1,
+        queryset=Pose.objects.all(), label="Pose", required=True,
     )
 
     def clean(self):
@@ -407,7 +398,7 @@ class ConfigForm(ModelForm):
         )
 
     inverter_id = forms.ModelChoiceField(
-        queryset=Inverter.objects.all(), label="Onduleur", required=True, initial=1,
+        queryset=Inverter.objects.all(), label="Onduleur", required=True
     )
 
 

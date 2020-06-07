@@ -34,22 +34,23 @@
     padding-inline-start: 40px;
 }
 
-.foto {
-    margin: 1.5rem;
-    padding: 5px;
-}
-
-.fotorama {
-    border-radius: 40px;
-}
 
 .bg-primary {
     background-color: rgba(222, 148, 64, 0.8) !important;
 }
 
 .about {
+    background-color: rgba(255, 255, 255, 1);
     padding: 8rem;
+    border: 3 px solid rgb(251, 113, 13);
     border-radius: 40px;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.about p {
+    text-align: justify;
+    text-justify: inter-word;
 }
 
 .about-title {
@@ -57,14 +58,51 @@
     opacity: 0.8;
 }
 
+.about2 {
+    background-color: rgba(255, 255, 255, 1);
+    padding: 8rem;
+    border: 3 px solid rgb(251, 113, 13);
+    border-radius: 40px;
+}
+
+.about h1,
+.about h2 {
+    color: rgb(251, 113, 13);
+    text-transform: uppercase;
+}
+
+.about h5 {
+    font-weight: bold;
+    text-align: left;
+    color: #702151;
+}
+
+.about p {
+    font-size: 1.2rem;
+}
+
+.about li {
+    list-style: none;
+}
+
+.about ul.left {
+    text-align: left;
+}
+
+.about ul.left li {
+    list-style-type: disc;
+}
+
+
+.about2-title {
+    color: var(--Caramel_mou);
+    opacity: 0.8;
+}
+
 #about {
     position: relative;
-    background: url(../images/index/about.jpg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: scroll;
-    background-size: cover;
     min-height: 100vh;
+    background-color: rgb(36, 59, 77);
 }
 
 #about .ampoule {

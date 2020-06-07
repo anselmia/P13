@@ -2,10 +2,14 @@
 
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from .forms import ConnexionForm, UserUpdateForm, SignUpForm
+from design.models import Project
+from design.informations import Informations
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.forms import formset_factory
+from .forms import Project_information
 
 
 @login_required
@@ -108,6 +112,37 @@ def register(request):
         form = SignUpForm(None)
 
     return render(request, "register.html", {"form": form,})
+
+
+@login_required
+def project(request):
+    """
+    @require login
+    Views for projects
+    :param request:
+    :return render projects.html:
+    """
+    projects = Project.objects.filter(user_id=request.user)
+    projects = list(projects)
+    info = Informations()
+    projects_informations = info.get_projects_informations(projects)
+
+    projectsFormSet = formset_factory(Project_information, extra=len(projects) - 1)
+    formset = projectsFormSet(
+        initial=[
+            {
+                "name": project_informations["name"],
+                "site": project_informations["site"],
+                "yearly_irrad": project_informations["yearly_irrad"],
+                "yearly_prod": project_informations["yearly_prod"],
+            }
+            for project_informations in projects_informations
+        ]
+    )
+
+    return render(
+        request, "projects.html", {"title": "Mes Projets", "projects": formset,},
+    )
 
 
 @login_required
