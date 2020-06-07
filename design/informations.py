@@ -3,7 +3,8 @@ from design.energy_calculation import Production
 
 
 class Informations:
-    """ Class used to retrieved informations from models and make calculation
+    """ 
+        Class used to retrieved informations from models and make calculation
         to be used in design.js script to avoid client side calculation.
     """
 
