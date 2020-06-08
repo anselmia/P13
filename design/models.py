@@ -1,5 +1,4 @@
 from django.db import models
-from user.models import User
 from django.conf import settings
 
 # Create your models here.
@@ -9,8 +8,12 @@ class City(models.Model):
     """ Projects """
 
     name = models.CharField(max_length=100, unique=True, verbose_name="Nom")
-    lat = models.DecimalField(max_digits=9, decimal_places=7, verbose_name="Latitude")
-    lon = models.DecimalField(max_digits=10, decimal_places=7, verbose_name="Longitude")
+    lat = models.DecimalField(
+        max_digits=9, decimal_places=7, verbose_name="Latitude"
+    )
+    lon = models.DecimalField(
+        max_digits=10, decimal_places=7, verbose_name="Longitude"
+    )
 
     class Meta:
         verbose_name = "Ville"
@@ -49,7 +52,9 @@ class Technology(models.Model):
 class Roof_type(models.Model):
     """ Roof Type """
 
-    value = models.CharField(max_length=30, unique=True, verbose_name="Type de toît")
+    value = models.CharField(
+        max_length=30, unique=True, verbose_name="Type de toît"
+    )
 
     class Meta:
         verbose_name = "Type de Toît"
@@ -61,7 +66,9 @@ class Roof_type(models.Model):
 class Orientation(models.Model):
     """ Orientation Type """
 
-    value = models.CharField(max_length=30, unique=True, verbose_name="Orientation")
+    value = models.CharField(
+        max_length=30, unique=True, verbose_name="Orientation"
+    )
 
     class Meta:
         verbose_name = "Orientation"
@@ -96,7 +103,9 @@ class Temperature_coefficient(models.Model):
 class AC_connexion(models.Model):
     """ Technology """
 
-    ac_type = models.CharField(max_length=100, unique=True, verbose_name="Raccordement")
+    ac_type = models.CharField(
+        max_length=100, unique=True, verbose_name="Raccordement"
+    )
 
     def __str__(self):
         return self.ac_type
@@ -105,9 +114,13 @@ class AC_connexion(models.Model):
 class Inverter(models.Model):
     """ Inverter """
 
-    model = models.CharField(max_length=100, unique=True, verbose_name="Modèle")
+    model = models.CharField(
+        max_length=100, unique=True, verbose_name="Modèle"
+    )
     manufacturer_id = models.ForeignKey(
-        Manufacturer, related_name="fabricant_onduleur", on_delete=models.CASCADE
+        Manufacturer,
+        related_name="fabricant_onduleur",
+        on_delete=models.CASCADE,
     )
     mpp_voltage_min = models.IntegerField(blank=True)
     mpp_voltage_max = models.IntegerField(blank=True)
@@ -115,7 +128,9 @@ class Inverter(models.Model):
     dc_current_max = models.DecimalField(max_digits=5, decimal_places=2)
     dc_power_max = models.DecimalField(max_digits=5, decimal_places=2)
     ac_power_nominal = models.DecimalField(max_digits=5, decimal_places=2)
-    ac_power_max = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    ac_power_max = models.DecimalField(
+        max_digits=5, decimal_places=2, null=True
+    )
     ac_current_max = models.DecimalField(max_digits=5, decimal_places=2)
     efficiency = models.DecimalField(max_digits=4, decimal_places=2)
     mpp_string_max = models.IntegerField(blank=True, null=True)
@@ -142,18 +157,26 @@ class Inverter(models.Model):
 class Panel(models.Model):
     """ Panel """
 
-    model = models.CharField(max_length=100, unique=True, verbose_name="Modèle")
+    model = models.CharField(
+        max_length=100, unique=True, verbose_name="Modèle"
+    )
     manufacturer_id = models.ForeignKey(
-        Manufacturer, related_name="fabricant_panneau", on_delete=models.CASCADE
+        Manufacturer,
+        related_name="fabricant_panneau",
+        on_delete=models.CASCADE,
     )
     technology_id = models.ForeignKey(
-        Technology, related_name="technologie_panneau", on_delete=models.CASCADE
+        Technology,
+        related_name="technologie_panneau",
+        on_delete=models.CASCADE,
     )
     power = models.IntegerField(blank=True, verbose_name="Puissance")
     tolerance = models.DecimalField(
         max_digits=3, decimal_places=2, null=True, verbose_name="Tolérance"
     )
-    radiation = models.IntegerField(blank=True, verbose_name="Rayonnement de référence")
+    radiation = models.IntegerField(
+        blank=True, verbose_name="Rayonnement de référence"
+    )
     temperature = models.IntegerField(
         blank=True, verbose_name="Température de référence"
     )
@@ -164,7 +187,10 @@ class Panel(models.Model):
         max_digits=4, decimal_places=2, null=True, verbose_name="Vco"
     )
     temperature_factor_current = models.DecimalField(
-        max_digits=6, decimal_places=3, null=True, verbose_name="Coeff. de Temp. I"
+        max_digits=6,
+        decimal_places=3,
+        null=True,
+        verbose_name="Coeff. de Temp. I",
     )
     temperature_factor_current_type = models.ForeignKey(
         Temperature_coefficient,
@@ -172,7 +198,10 @@ class Panel(models.Model):
         on_delete=models.CASCADE,
     )
     temperature_factor_voltage = models.DecimalField(
-        max_digits=6, decimal_places=3, null=True, verbose_name="Coeff. de Temp. V"
+        max_digits=6,
+        decimal_places=3,
+        null=True,
+        verbose_name="Coeff. de Temp. V",
     )
     temperature_factor_voltage_type = models.ForeignKey(
         Temperature_coefficient,
@@ -180,7 +209,10 @@ class Panel(models.Model):
         on_delete=models.CASCADE,
     )
     temperature_factor_power = models.DecimalField(
-        max_digits=6, decimal_places=3, null=True, verbose_name="Coeff. de Temp. P"
+        max_digits=6,
+        decimal_places=3,
+        null=True,
+        verbose_name="Coeff. de Temp. P",
     )
     temperature_factor_power_type = models.ForeignKey(
         Temperature_coefficient,
@@ -203,7 +235,10 @@ class Panel(models.Model):
         blank=True, verbose_name="Cell. en Parallèle"
     )
     cell_surface = models.DecimalField(
-        max_digits=5, decimal_places=2, null=True, verbose_name="Surface d'une Cell."
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        verbose_name="Surface d'une Cell.",
     )
     comment = models.CharField(
         max_length=1000, verbose_name="Commentaire", blank=True, null=True
@@ -222,10 +257,15 @@ class Project(models.Model):
 
     name = models.CharField(max_length=100, verbose_name="Nom")
     user_id = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="project_user"
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="project_user",
     )
     city_id = models.ForeignKey(
-        City, related_name="ville", on_delete=models.CASCADE, verbose_name="Ville",
+        City,
+        related_name="ville",
+        on_delete=models.CASCADE,
+        verbose_name="Ville",
     )
     panel_id = models.ForeignKey(
         "design.Panel",
@@ -236,7 +276,9 @@ class Project(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["name", "user_id"], name="unique_relation",)
+            models.UniqueConstraint(
+                fields=["name", "user_id"], name="unique_relation",
+            )
         ]
         verbose_name = "Projet"
         verbose_name_plural = "Projets"
@@ -257,7 +299,10 @@ class Roof(models.Model):
     )
 
     bottom_length = models.DecimalField(
-        max_digits=5, decimal_places=2, null=True, verbose_name="Longueur goutière (b)"
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        verbose_name="Longueur goutière (b)",
     )
     top_length = models.DecimalField(
         max_digits=5, decimal_places=2, verbose_name="Longueur faîtage (d)"
@@ -287,10 +332,16 @@ class Element(models.Model):
     """ Element """
 
     name = models.CharField(max_length=100, unique=True, verbose_name="Nom")
-    roof_id = models.ForeignKey(Roof, related_name="roof", on_delete=models.CASCADE)
+    roof_id = models.ForeignKey(
+        Roof, related_name="roof", on_delete=models.CASCADE
+    )
 
-    left_distance = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    bottom_distance = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    left_distance = models.DecimalField(
+        max_digits=5, decimal_places=2, null=True
+    )
+    bottom_distance = models.DecimalField(
+        max_digits=5, decimal_places=2, null=True
+    )
     length = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     width = models.DecimalField(max_digits=5, decimal_places=2, null=True)
 
@@ -328,14 +379,30 @@ class Implantation(models.Model):
     horizontal_spacing = models.IntegerField(
         blank=True, verbose_name="Espacement horizontal"
     )
-    distance_top = models.IntegerField(blank=True, verbose_name="Distance haut")
-    distance_bottom = models.IntegerField(blank=True, verbose_name="Distance bas")
-    distance_left = models.IntegerField(blank=True, verbose_name="Distance gauche")
-    distance_right = models.IntegerField(blank=True, verbose_name="Distance droite")
-    abergement_top = models.IntegerField(blank=True, verbose_name="Abergement Haut")
-    abergement_bottom = models.IntegerField(blank=True, verbose_name="Abergement bas")
-    abergement_left = models.IntegerField(blank=True, verbose_name="Abergement gauche")
-    abergement_right = models.IntegerField(blank=True, verbose_name="Abergement droit")
+    distance_top = models.IntegerField(
+        blank=True, verbose_name="Distance haut"
+    )
+    distance_bottom = models.IntegerField(
+        blank=True, verbose_name="Distance bas"
+    )
+    distance_left = models.IntegerField(
+        blank=True, verbose_name="Distance gauche"
+    )
+    distance_right = models.IntegerField(
+        blank=True, verbose_name="Distance droite"
+    )
+    abergement_top = models.IntegerField(
+        blank=True, verbose_name="Abergement Haut"
+    )
+    abergement_bottom = models.IntegerField(
+        blank=True, verbose_name="Abergement bas"
+    )
+    abergement_left = models.IntegerField(
+        blank=True, verbose_name="Abergement gauche"
+    )
+    abergement_right = models.IntegerField(
+        blank=True, verbose_name="Abergement droit"
+    )
 
     class Meta:
         verbose_name = "Implémentation"

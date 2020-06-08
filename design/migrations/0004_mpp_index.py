@@ -6,14 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('design', '0003_auto_20200607_0642'),
+        ("design", "0003_auto_20200607_0642"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='mpp',
-            name='index',
-            field=models.IntegerField(blank=True, default=1, verbose_name='Index MPP'),
+            model_name="mpp",
+            name="index",
+            field=models.IntegerField(
+                blank=True, default=1, verbose_name="Index MPP"
+            ),
             preserve_default=False,
         ),
     ]

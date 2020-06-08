@@ -6,18 +6,28 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('design', '0002_auto_20200607_0619'),
+        ("design", "0002_auto_20200607_0619"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='inverter',
-            name='comment',
-            field=models.CharField(blank=True, max_length=1000, null=True, verbose_name='Commentaire'),
+            model_name="inverter",
+            name="comment",
+            field=models.CharField(
+                blank=True,
+                max_length=1000,
+                null=True,
+                verbose_name="Commentaire",
+            ),
         ),
         migrations.AlterField(
-            model_name='panel',
-            name='comment',
-            field=models.CharField(blank=True, max_length=1000, null=True, verbose_name='Commentaire'),
+            model_name="panel",
+            name="comment",
+            field=models.CharField(
+                blank=True,
+                max_length=1000,
+                null=True,
+                verbose_name="Commentaire",
+            ),
         ),
     ]

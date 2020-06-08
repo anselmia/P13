@@ -1,7 +1,4 @@
-import math
 from .models import Panel, City
-from calendar import monthrange
-from datetime import date
 from .api import EnergyData
 
 
@@ -9,7 +6,7 @@ class Production:
     """ Class to process necessary datas to use with the PVGis api """
 
     def __init__(self, datas):
-        """ 
+        """
         init expect : panel's id, site's id, roof orientation and tilt, total installed panel
         """
         self.monthly_prod = [0] * 12

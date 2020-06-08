@@ -1,9 +1,16 @@
-from .models import Panel, Inverter, City, Roof, Implantation, Config, MPP, Project
+from .models import (
+    Panel,
+    Inverter,
+    City,
+    Roof,
+    Config,
+    MPP,
+)
 from design.energy_calculation import Production
 
 
 class Informations:
-    """ 
+    """
         Class used to retrieved informations from models and make calculation
         to be used in design.js script to avoid client side calculation.
     """
@@ -14,7 +21,9 @@ class Informations:
         pv_data = [
             panel.model,
             panel.power,
-            round(panel.width * panel.length * int(datas["tot_pan"]) / 1000000, 1),
+            round(
+                panel.width * panel.length * int(datas["tot_pan"]) / 1000000, 1
+            ),
         ]
         site = City.objects.get(id=int(datas["site_id"]))
         site_data = [site.name, float(site.lat), float(site.lon)]
@@ -46,7 +55,6 @@ class Informations:
                 site = City.objects.get(id=project.city_id.id)
                 panel = Panel.objects.get(id=project.panel_id.id)
                 roof = Roof.objects.get(project_id=project.id)
-                implantation = Implantation.objects.get(roof_id=roof.id)
                 configs = Config.objects.filter(project_id=project.id)
                 tot_panel = 0
 
@@ -54,7 +62,9 @@ class Informations:
                     mpp_in_config = MPP.objects.filter(config_id=config.id)
                     for mpp in mpp_in_config:
                         tot_panel += (
-                            config.inverter_quantity * mpp.serial * mpp.parallel
+                            config.inverter_quantity
+                            * mpp.serial
+                            * mpp.parallel
                         )
 
                 data = {
@@ -74,7 +84,7 @@ class Informations:
                         "yearly_prod": project_prod["yearly_prod"],
                     }
                 )
-            except Exception as e:
+            except:
                 pass
 
         return datas

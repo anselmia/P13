@@ -17,7 +17,6 @@ from .models import (
     Project,
     AC_connexion,
 )
-from user.models import User
 from django.forms import ModelForm
 import math
 
@@ -63,9 +62,13 @@ class CityForm(ModelForm):
             {"class": "find_city", "readonly": True}
         )
         self.fields["name"].required = True
-        self.fields["lat"].widget.attrs.update({"class": "find_lat", "readonly": True})
+        self.fields["lat"].widget.attrs.update(
+            {"class": "find_lat", "readonly": True}
+        )
         self.fields["lat"].required = True
-        self.fields["lon"].widget.attrs.update({"class": "find_lon", "readonly": True})
+        self.fields["lon"].widget.attrs.update(
+            {"class": "find_lon", "readonly": True}
+        )
         self.fields["lon"].required = True
 
 
@@ -134,15 +137,21 @@ class PanelForm(ModelForm):
     temperature_factor_current_type = forms.ModelChoiceField(
         queryset=Temperature_coefficient.objects.all(), label="", required=True
     )
-    temperature_factor_current_type.widget.attrs["class"] = "round_input container_100"
+    temperature_factor_current_type.widget.attrs[
+        "class"
+    ] = "round_input container_100"
     temperature_factor_voltage_type = forms.ModelChoiceField(
         queryset=Temperature_coefficient.objects.all(), label="", required=True
     )
-    temperature_factor_voltage_type.widget.attrs["class"] = "round_input container_100"
+    temperature_factor_voltage_type.widget.attrs[
+        "class"
+    ] = "round_input container_100"
     temperature_factor_power_type = forms.ModelChoiceField(
         queryset=Temperature_coefficient.objects.all(), label="", required=True
     )
-    temperature_factor_power_type.widget.attrs["class"] = "round_input container_100"
+    temperature_factor_power_type.widget.attrs[
+        "class"
+    ] = "round_input container_100"
 
 
 class InverterForm(ModelForm):
@@ -172,7 +181,9 @@ class InverterForm(ModelForm):
         super(InverterForm, self).__init__(*args, **kwargs)
 
     ac_cabling = forms.ModelChoiceField(
-        queryset=AC_connexion.objects.all(), label="Raccordement", required=False
+        queryset=AC_connexion.objects.all(),
+        label="Raccordement",
+        required=False,
     )
     ac_cabling.widget.attrs["class"] = "round_input container_100"
 
@@ -212,17 +223,23 @@ class RoofForm(ModelForm):
         self.fields["top_length"].widget.attrs.update(
             {"class": "container_100 round_input"}
         )
-        self.fields["width"].widget.attrs.update({"class": "container_100 round_input"})
+        self.fields["width"].widget.attrs.update(
+            {"class": "container_100 round_input"}
+        )
         self.fields["height"].widget.attrs.update(
             {"class": "container_100 round_input"}
         )
         self.fields["orientation"].widget.attrs.update(
             {"class": "container_100 round_input"}
         )
-        self.fields["tilt"].widget.attrs.update({"class": "container_100 round_input "})
+        self.fields["tilt"].widget.attrs.update(
+            {"class": "container_100 round_input "}
+        )
 
     roof_type_id = forms.ModelChoiceField(
-        queryset=Roof_type.objects.all(), label="Type de toîture", required=True,
+        queryset=Roof_type.objects.all(),
+        label="Type de toîture",
+        required=True,
     )
     roof_type_id.widget.attrs["class"] = "round_input container_100"
 
@@ -238,7 +255,11 @@ class RoofForm(ModelForm):
 
         if roof_type_id is not None:
             if roof_type_id.id == 1 or roof_type_id.id == 3:
-                if bottom_length is None or bottom_length == "" or bottom_length <= 0:
+                if (
+                    bottom_length is None
+                    or bottom_length == ""
+                    or bottom_length <= 0
+                ):
                     self._errors["bottom_length"] = self.error_class(
                         ["Veuillez vérifier la valeur"]
                     )
@@ -268,7 +289,11 @@ class RoofForm(ModelForm):
                                 ["Veuillez vérifier la valeur"]
                             )
             elif roof_type_id.id == 2:
-                if bottom_length is None or bottom_length == "" or bottom_length <= 0:
+                if (
+                    bottom_length is None
+                    or bottom_length == ""
+                    or bottom_length <= 0
+                ):
                     self._errors["bottom_length"] = self.error_class(
                         ["Veuillez vérifier la valeur"]
                     )
@@ -333,29 +358,45 @@ class ImplantationForm(ModelForm):
             {"value": 0, "class": "cn"}
         )
         self.fields["vertical_spacing"].required = False
-        self.fields["vertical_spacing"].widget.attrs.update({"value": 0, "class": "cn"})
+        self.fields["vertical_spacing"].widget.attrs.update(
+            {"value": 0, "class": "cn"}
+        )
         self.fields["horizontal_spacing"].required = False
         self.fields["horizontal_spacing"].widget.attrs.update(
             {"value": 0, "class": "cn"}
         )
         self.fields["distance_top"].required = True
-        self.fields["distance_top"].widget.attrs.update({"value": 0, "class": "cn"})
+        self.fields["distance_top"].widget.attrs.update(
+            {"value": 0, "class": "cn"}
+        )
         self.fields["distance_bottom"].required = True
-        self.fields["distance_bottom"].widget.attrs.update({"value": 0, "class": "cn"})
+        self.fields["distance_bottom"].widget.attrs.update(
+            {"value": 0, "class": "cn"}
+        )
         self.fields["distance_left"].required = True
-        self.fields["distance_left"].widget.attrs.update({"value": 0, "class": "cn"})
+        self.fields["distance_left"].widget.attrs.update(
+            {"value": 0, "class": "cn"}
+        )
         self.fields["distance_right"].required = True
-        self.fields["distance_right"].widget.attrs.update({"value": 0, "class": "cn"})
+        self.fields["distance_right"].widget.attrs.update(
+            {"value": 0, "class": "cn"}
+        )
         self.fields["abergement_top"].required = True
-        self.fields["abergement_top"].widget.attrs.update({"value": 0, "class": "cn"})
+        self.fields["abergement_top"].widget.attrs.update(
+            {"value": 0, "class": "cn"}
+        )
         self.fields["abergement_bottom"].required = True
         self.fields["abergement_bottom"].widget.attrs.update(
             {"value": 0, "class": "cn"}
         )
         self.fields["abergement_left"].required = True
-        self.fields["abergement_left"].widget.attrs.update({"value": 0, "class": "cn"})
+        self.fields["abergement_left"].widget.attrs.update(
+            {"value": 0, "class": "cn"}
+        )
         self.fields["abergement_right"].required = True
-        self.fields["abergement_right"].widget.attrs.update({"value": 0, "class": "cn"})
+        self.fields["abergement_right"].widget.attrs.update(
+            {"value": 0, "class": "cn"}
+        )
 
         self.fields["panel_orientation"].widget.attrs.update(
             {"class": "container_100 round_input cn"}
@@ -376,7 +417,9 @@ class ImplantationForm(ModelForm):
         super(ImplantationForm, self).clean()
 
         vertical_overlapping = self.cleaned_data.get("vertical_overlapping")
-        horizontal_overlapping = self.cleaned_data.get("horizontal_overlapping")
+        horizontal_overlapping = self.cleaned_data.get(
+            "horizontal_overlapping"
+        )
         vertical_spacing = self.cleaned_data.get("vertical_spacing")
         horizontal_spacing = self.cleaned_data.get("horizontal_spacing")
         panel_implantation = self.cleaned_data.get("panel_implantation")
@@ -454,11 +497,16 @@ class MPPForm(ModelForm):
         fields = (
             "serial",
             "parallel",
+            "index",
         )
 
     def __init__(self, *args, **kwargs):
         super(MPPForm, self).__init__(*args, **kwargs)
         self.fields["serial"].required = True
-        self.fields["serial"].widget.attrs.update({"value": 0, "class": "cn config"})
+        self.fields["serial"].widget.attrs.update(
+            {"value": 0, "class": "cn config"}
+        )
         self.fields["parallel"].required = True
-        self.fields["parallel"].widget.attrs.update({"value": 0, "class": "cn config"})
+        self.fields["parallel"].widget.attrs.update(
+            {"value": 0, "class": "cn config"}
+        )

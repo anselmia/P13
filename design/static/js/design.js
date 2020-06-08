@@ -63,10 +63,13 @@
     });
 
     if ($(".design_template").length > 0) {
-      if ($("#id_name").val() != "")
-        $(".save_prod").hide();
-      else
-        $(".save_prod").show();
+      if ($("#id_name").val() != "") {
+        $("#prod_save_button").css("display", "none");
+        console.log(1);
+      } else {
+        $("#prod_save_button").css("display", "block");
+        console.log(2);
+      }
     }
 
     startWizard();
@@ -438,7 +441,7 @@
 
   $('#id_panel_implantation').on('change', function () {
     var type = $("#id_panel_implantation option:selected").text();
-    if (type == "---------" || type == "côte à côtes") {
+    if (type == "---------" || type == "Côte à côtes") {
       $(".vertical_spacing").hide();
       $(".horizontal_spacing").hide();
       $(".vertical_overlapping").hide();

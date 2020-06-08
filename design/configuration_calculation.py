@@ -4,7 +4,7 @@ import json
 
 
 class Calculation:
-    """ 
+    """
         Class to realize calculation regarding sizing of PVsystem connected to a given inverter.
         User is allowed to build up to 3 differents configurations.
 
@@ -37,7 +37,9 @@ class Calculation:
         """ Calculate total configured panel to inverter """
         self.tot_configured_panel = 0
         for config in self.configs:
-            self.tot_configured_panel += config.tot_panel * config.inverter_quantity
+            self.tot_configured_panel += (
+                config.tot_panel * config.inverter_quantity
+            )
 
     def calculate_tot_ac_nom_power(self):
         """ Calculate total inverter power """
@@ -47,11 +49,13 @@ class Calculation:
 
     def toJSON(self):
         """ From self instance, return a json format of the attributes """
-        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+        return json.dumps(
+            self, default=lambda o: o.__dict__, sort_keys=True, indent=4
+        )
 
 
 class Configuration:
-    """ 
+    """
     A configuration represent an amout of inverters and panels connected together.
     Target is to verify electrical matching of both systems using various calculations at
     a working temperature between -10 to 70°C
@@ -98,21 +102,29 @@ class Configuration:
         for mpp in self.mpps:
             if not (
                 mpp.mpp_string_voltage_at_70 > self.inverter.mpp_voltage_min
-                and mpp.mpp_string_voltage_at_70 < self.inverter.mpp_voltage_max
+                and mpp.mpp_string_voltage_at_70
+                < self.inverter.mpp_voltage_max
             ):
                 self.errors.append(
                     [
-                        ".inverter" + str(self.index) + "_mpp" + str(mpp.index),
+                        ".inverter"
+                        + str(self.index)
+                        + "_mpp"
+                        + str(mpp.index),
                         ".mpp_voltage_min_value",
                     ]
                 )
             if not (
                 mpp.mpp_string_voltage_at__10 > self.inverter.mpp_voltage_min
-                and mpp.mpp_string_voltage_at__10 < self.inverter.mpp_voltage_max
+                and mpp.mpp_string_voltage_at__10
+                < self.inverter.mpp_voltage_max
             ):
                 self.errors.append(
                     [
-                        ".inverter" + str(self.index) + "_mpp" + str(mpp.index),
+                        ".inverter"
+                        + str(self.index)
+                        + "_mpp"
+                        + str(mpp.index),
                         ".mpp_voltage_max_value",
                     ]
                 )
@@ -122,7 +134,10 @@ class Configuration:
             ):
                 self.errors.append(
                     [
-                        ".inverter" + str(self.index) + "_mpp" + str(mpp.index),
+                        ".inverter"
+                        + str(self.index)
+                        + "_mpp"
+                        + str(mpp.index),
                         ".vco_voltage_min_value",
                     ]
                 )
@@ -132,21 +147,30 @@ class Configuration:
             ):
                 self.errors.append(
                     [
-                        ".inverter" + str(self.index) + "_mpp" + str(mpp.index),
+                        ".inverter"
+                        + str(self.index)
+                        + "_mpp"
+                        + str(mpp.index),
                         ".vco_voltage_max_value",
                     ]
                 )
             if not (mpp.icc_at__10 < self.inverter.dc_current_max):
                 self.errors.append(
                     [
-                        ".inverter" + str(self.index) + "_mpp" + str(mpp.index),
+                        ".inverter"
+                        + str(self.index)
+                        + "_mpp"
+                        + str(mpp.index),
                         ".i_min_value",
                     ]
                 )
             if not (mpp.icc_at_70 < self.inverter.dc_current_max):
                 self.errors.append(
                     [
-                        ".inverter" + str(self.index) + "_mpp" + str(mpp.index),
+                        ".inverter"
+                        + str(self.index)
+                        + "_mpp"
+                        + str(mpp.index),
                         ".i_max_value",
                     ]
                 )
@@ -160,8 +184,8 @@ class Configuration:
 
 
 class MPP:
-    """ 
-    Maximum Power Point tracking 
+    """
+    Maximum Power Point tracking
     Related to an individual input of the inverter, this one 
     will track the best power curve to achieve the maximum output power.
     An mpp instance is a set of serial connected panel and parallel connection quantity.
@@ -176,11 +200,19 @@ class MPP:
         self.serial = int(mpp["serial"])
         self.parallel = int(mpp["parallel"])
 
-        self.mpp_string_voltage_at_70 = self.string_mpp_voltage_at_temp(70, panel)
-        self.mpp_string_voltage_at__10 = self.string_mpp_voltage_at_temp(-10, panel)
+        self.mpp_string_voltage_at_70 = self.string_mpp_voltage_at_temp(
+            70, panel
+        )
+        self.mpp_string_voltage_at__10 = self.string_mpp_voltage_at_temp(
+            -10, panel
+        )
 
-        self.vco_string_voltage_at_70 = self.string_vco_voltage_at_temp(70, panel)
-        self.vco_string_voltage_at__10 = self.string_vco_voltage_at_temp(-10, panel)
+        self.vco_string_voltage_at_70 = self.string_vco_voltage_at_temp(
+            70, panel
+        )
+        self.vco_string_voltage_at__10 = self.string_vco_voltage_at_temp(
+            -10, panel
+        )
 
         self.icc_at__10 = self.icc_at_temp(-10, panel)
         self.icc_at_70 = self.icc_at_temp(70, panel)

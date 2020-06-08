@@ -311,10 +311,6 @@ label {
   display: inline-block;
 }
 
-button {
-  C;
-}
-
 button:focus {
   outline: 1px dotted;
   outline: 5px auto -webkit-focus-ring-color;
@@ -6642,6 +6638,7 @@ a.text-dark:focus {
 
 body,
 html {
+  overflow-x: hidden;
   width: 100%;
   min-height: 100%;
   position: relative;

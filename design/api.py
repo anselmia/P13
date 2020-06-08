@@ -96,5 +96,5 @@ class EnergyData:
                     "yearly_irrad": yearly_irrad,
                     "ratio": ratio,
                 }
-            except Exception as e:
+            except:
                 return []

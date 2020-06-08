@@ -11,7 +11,7 @@ from .forms import (
 )
 from django.contrib.auth.decorators import login_required
 from design.api import Localisation
-from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponse
 from django.contrib import messages
 from design.models import (
     Panel,
@@ -28,7 +28,6 @@ from design.configuration_calculation import Calculation
 from design.energy_calculation import Production
 from .informations import Informations
 from django.core import serializers
-from django.forms import formset_factory
 import json
 
 # Create your views here.
@@ -55,7 +54,9 @@ def index(request, project_name=""):
     mpp33 = None
 
     if request.method == "GET" and project_name != "":
-        project = Project.objects.get(name=project_name, user_id=request.user.id)
+        project = Project.objects.get(
+            name=project_name, user_id=request.user.id
+        )
         roof = Roof.objects.get(project_id=project.id)
         implantation = Implantation.objects.get(roof_id=roof.id)
         configs = Config.objects.filter(project_id=project.id)
@@ -165,29 +166,29 @@ def index(request, project_name=""):
                             }
                         )
 
-        if config1 == None:
+        if config1 is None:
             config1 = ConfigForm()
-        if config2 == None:
+        if config2 is None:
             config2 = ConfigForm()
-        if config3 == None:
+        if config3 is None:
             config3 = ConfigForm()
-        if mpp11 == None:
+        if mpp11 is None:
             mpp11 = MPPForm()
-        if mpp12 == None:
+        if mpp12 is None:
             mpp12 = MPPForm()
-        if mpp13 == None:
+        if mpp13 is None:
             mpp13 = MPPForm()
-        if mpp21 == None:
+        if mpp21 is None:
             mpp21 = MPPForm()
-        if mpp22 == None:
+        if mpp22 is None:
             mpp22 = MPPForm()
-        if mpp23 == None:
+        if mpp23 is None:
             mpp23 = MPPForm()
-        if mpp31 == None:
+        if mpp31 is None:
             mpp31 = MPPForm()
-        if mpp32 == None:
+        if mpp32 is None:
             mpp32 = MPPForm()
-        if mpp33 == None:
+        if mpp33 is None:
             mpp33 = MPPForm()
 
         project = ProjectForm(
@@ -287,7 +288,7 @@ def get_localisation_data(request):
         try:
             loc = Localisation(search_text).data
             return JsonResponse({"status": True, "loc": loc,})
-        except Exception as E:
+        except:
             return JsonResponse({"status": False})
     return JsonResponse({"status": False})
 
@@ -307,11 +308,15 @@ def add_city(request):
                 city_added = City.objects.get(name=request.POST["name"])
                 messages.success(request, "La ville a été créée")
                 return JsonResponse(
-                    {"success": True, "name": city_added.name, "id": city_added.id}
+                    {
+                        "success": True,
+                        "name": city_added.name,
+                        "id": city_added.id,
+                    }
                 )
             else:
                 return JsonResponse({"errors": city.errors})
-        except Exception as E:  # pragma: no cover
+        except:  # pragma: no cover
             return JsonResponse({"errors": city.errors})
 
     return HttpResponse()
@@ -331,11 +336,15 @@ def add_panel(request):
                 panel.save()
                 panel_added = Panel.objects.get(model=request.POST["model"])
                 return JsonResponse(
-                    {"success": True, "model": panel_added.model, "id": panel_added.id}
+                    {
+                        "success": True,
+                        "model": panel_added.model,
+                        "id": panel_added.id,
+                    }
                 )
             else:
                 return JsonResponse({"errors": panel.errors})
-        except Exception as E:  # pragma: no cover
+        except:  # pragma: no cover
             return JsonResponse({"errors": panel.errors})
 
     return HttpResponse()
@@ -353,7 +362,9 @@ def add_inverter(request):
         try:
             if inverter.is_valid():
                 inverter.save()
-                inverter_added = Inverter.objects.get(model=request.POST["model"])
+                inverter_added = Inverter.objects.get(
+                    model=request.POST["model"]
+                )
                 return JsonResponse(
                     {
                         "success": True,
@@ -363,7 +374,7 @@ def add_inverter(request):
                 )
             else:
                 return JsonResponse({"errors": inverter_added.errors})
-        except Exception as E:  # pragma: no cover
+        except:  # pragma: no cover
             return JsonResponse({"errors": inverter_added.errors})
 
     return HttpResponse()
@@ -383,7 +394,7 @@ def valid_project(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": project.errors})
-        except Exception as e:
+        except:
             return JsonResponse({"errors": project.errors})
 
 
@@ -408,7 +419,7 @@ def save_project(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": project.errors})
-        except Exception as e:
+        except:
             return JsonResponse({"errors": project.errors})
 
 
@@ -426,7 +437,7 @@ def valid_roof(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": roof.errors})
-        except Exception as E:
+        except:
             return JsonResponse({"errors": roof.errors})
 
 
@@ -450,7 +461,7 @@ def save_roof(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": roof.errors})
-        except Exception as E:
+        except:
             return JsonResponse({"errors": roof.errors})
 
 
@@ -468,7 +479,7 @@ def valid_implantation(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": implantation.errors})
-        except Exception as E:
+        except:
             return JsonResponse({"errors": implantation.errors})
 
 
@@ -491,7 +502,7 @@ def save_implantation(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": implantation.errors})
-        except Exception as E:
+        except:
             return JsonResponse({"errors": implantation.errors})
 
 
@@ -509,7 +520,7 @@ def valid_configuration(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": configuration.errors})
-        except Exception as E:
+        except:
             return JsonResponse({"errors": configuration.errors})
 
 
@@ -535,7 +546,7 @@ def save_configuration(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": configuration.errors})
-        except Exception as E:
+        except:
             return JsonResponse({"errors": configuration.errors})
 
 
@@ -553,7 +564,7 @@ def valid_mpp(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": mpp.errors})
-        except Exception as E:
+        except:
             return JsonResponse({"errors": mpp.errors})
 
 
@@ -593,7 +604,7 @@ def calcul_implantation(request):
             return JsonResponse(
                 {"success": True, "implantation_values": implantation.data}
             )
-        except Exception as E:
+        except:
             return JsonResponse({"errors": True})
 
 
@@ -611,7 +622,7 @@ def calcul_configuration(request):
             return JsonResponse(
                 {"success": True, "configuration_values": configuration.data}
             )
-        except Exception as E:
+        except:
             return JsonResponse({"errors": True})
 
 
@@ -627,16 +638,19 @@ def inverter_data(request):
         try:
             inverter = Inverter.objects.get(id=int(data["inverter_id"]))
             return JsonResponse(
-                {"success": True, "data": serializers.serialize("json", [inverter,]),}
+                {
+                    "success": True,
+                    "data": serializers.serialize("json", [inverter,]),
+                }
             )
-        except Exception as E:
+        except:
             return JsonResponse({"errors": True})
 
 
 @login_required
 def production_data(request):
     """
-        Views to retrieve production datas from models and calculation 
+        Views to retrieve production datas from models and calculation
         :param request:
         :return JsonResponse with status and informations values if ok:
     """
@@ -646,7 +660,7 @@ def production_data(request):
             information = Informations()
             infos = information.get_production_information(data)
             return JsonResponse({"success": True, "infos": infos})
-        except Exception as E:
+        except:
             return JsonResponse({"errors": True})
 
 
@@ -662,5 +676,5 @@ def calculate_production(request):
         try:
             datas = Production(data).datas
             return JsonResponse({"success": True, "datas": datas})
-        except Exception as E:
+        except Exception:
             return JsonResponse({"errors": True})
