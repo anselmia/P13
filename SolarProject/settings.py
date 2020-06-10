@@ -103,9 +103,15 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
 ]
 
 AUTH_USER_MODEL = "user.User"
@@ -114,6 +120,7 @@ LOGIN_URL = "user:login"
 
 LOGIN_REDIRECT_URL = "home:index"
 
+SESSION_COOKIE_AGE = 600
 # LOGOUT_URL= 'account:logout'
 
 # Internationalization
@@ -158,7 +165,9 @@ if os.environ.get("ENV") == "PRODUCTION":  # pragma: no cover
     # Extra places for collectstatic to find static files.
     STATICFILES_DIRS = (os.path.join(PROJECT_ROOT, "static"),)
 
-    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    STATICFILES_STORAGE = (
+        "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    )
 
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES["default"].update(db_from_env)

@@ -1,6 +1,10 @@
 """ Imports """
 
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth import (
+    authenticate,
+    login as auth_login,
+    logout as auth_logout,
+)
 from .forms import ConnexionForm, UserUpdateForm, SignUpForm
 from design.models import Project
 from design.informations import Informations
@@ -68,13 +72,19 @@ def login(request):
                         if user:
                             auth_login(request, user)
                             request.session.set_expiry(900)
-                            return HttpResponseRedirect(request.session["previous"])
+                            return HttpResponseRedirect(
+                                request.session["previous"]
+                            )
                         else:
-                            messages.error(request, "Mauvais login/mot de passe.")
-                            return render(request, "login.html", {"form": form})
+                            messages.error(
+                                request, "Mauvais login/mot de passe."
+                            )
+                            return render(
+                                request, "login.html", {"form": form}
+                            )
                     except:  # pragma: no cover
                         redirect(reverse("home:index"))
-            except Exception as e:  # pragma: no cover
+            except:  # pragma: no cover
                 messages.error(request, "Erreur de login.")
                 return render(request, "login.html", {"form": form})
         else:
@@ -106,7 +116,7 @@ def register(request):
                 auth_login(request, user)
                 return redirect(reverse("home:index"))
 
-        except Exception as e:
+        except:
             messages.error(request, "Votre compte n'a pas été crée.")
     else:
         form = SignUpForm(None)
@@ -127,11 +137,13 @@ def project(request):
     info = Informations()
     projects_informations = info.get_projects_informations(projects)
 
-    projectsFormSet = formset_factory(Project_information, extra=len(projects) - 1)
+    projectsFormSet = formset_factory(
+        Project_information, extra=len(projects) - 1
+    )
     formset = projectsFormSet(
         initial=[
             {
-                "name": project_informations["name"],
+                "name": project_informations["name"].replace(" ", "__"),
                 "site": project_informations["site"],
                 "yearly_irrad": project_informations["yearly_irrad"],
                 "yearly_prod": project_informations["yearly_prod"],
@@ -141,7 +153,9 @@ def project(request):
     )
 
     return render(
-        request, "projects.html", {"title": "Mes Projets", "projects": formset,},
+        request,
+        "projects.html",
+        {"title": "Mes Projets", "projects": formset,},
     )
 
 

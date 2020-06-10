@@ -40,156 +40,57 @@ def index(request, project_name=""):
         :param request, project_name if using existing project:
         :return render index_design.html:
     """
-    config1 = None
-    config2 = None
-    config3 = None
-    mpp11 = None
-    mpp12 = None
-    mpp13 = None
-    mpp21 = None
-    mpp22 = None
-    mpp23 = None
-    mpp31 = None
-    mpp32 = None
-    mpp33 = None
 
+    configs = {}
     if request.method == "GET" and project_name != "":
         project = Project.objects.get(
-            name=project_name, user_id=request.user.id
+            name=project_name.replace("__", " "), user_id=request.user.id
         )
         roof = Roof.objects.get(project_id=project.id)
         implantation = Implantation.objects.get(roof_id=roof.id)
-        configs = Config.objects.filter(project_id=project.id)
-        for config in configs:
-            if config.index == 1:
-                config1 = ConfigForm(
+        configs_queryset = Config.objects.filter(project_id=project.id)
+        for config in configs_queryset:
+            configs["config" + str(config.index)] = ConfigForm(
+                initial={
+                    "inverter_id": config.inverter_id.id,
+                    "inverter_quantity": config.inverter_quantity,
+                    "index": config.index,
+                }
+            )
+
+            mpps_in_conf = MPP.objects.filter(config_id=config.id)
+            for mpp in mpps_in_conf:
+                configs[
+                    "config" + str(config.index) + "_mpp" + str(mpp.index)
+                ] = MPPForm(
                     initial={
-                        "inverter_id": config.inverter_id.id,
-                        "inverter_quantity": config.inverter_quantity,
-                        "index": config.index,
+                        "serial": mpp.serial,
+                        "parallel": mpp.parallel,
+                        "index": mpp.index,
                     }
                 )
-                mpps_in_conf = MPP.objects.filter(config_id=config.id)
-                for mpp in mpps_in_conf:
-                    if mpp.index == 1:
-                        mpp11 = MPPForm(
-                            initial={
-                                "serial": mpp.serial,
-                                "parallel": mpp.parallel,
-                                "index": 1,
-                            }
-                        )
-                    elif mpp.index == 2:
-                        mpp12 = MPPForm(
-                            initial={
-                                "serial": mpp.serial,
-                                "parallel": mpp.parallel,
-                                "index": 2,
-                            }
-                        )
-                    elif mpp.index == 3:
-                        mpp13 = MPPForm(
-                            initial={
-                                "serial": mpp.serial,
-                                "parallel": mpp.parallel,
-                                "index": 3,
-                            }
-                        )
 
-            elif config.index == 2:
-                config2 = ConfigForm(
-                    initial={
-                        "inverter_id": config.inverter_id.id,
-                        "inverter_quantity": config.inverter_quantity,
-                        "index": config.index,
-                    }
+        configs_index = [config.index for config in configs_queryset]
+        for config_index in range(1, 4):
+            if config_index not in configs_index:
+                configs["config" + str(config_index)] = ConfigForm(
+                    initial={"index": config_index,}
                 )
+                for mpp_index in range(1, 4):
+                    configs[
+                        "config" + str(config_index) + "_mpp" + str(mpp_index)
+                    ] = MPPForm(initial={"index": mpp_index,})
+            else:
                 mpps_in_conf = MPP.objects.filter(config_id=config.id)
-                for mpp in mpps_in_conf:
-                    if mpp.index == 1:
-                        mpp21 = MPPForm(
-                            initial={
-                                "serial": mpp.serial,
-                                "parallel": mpp.parallel,
-                                "index": 1,
-                            }
-                        )
-                    elif mpp.index == 2:
-                        mpp22 = MPPForm(
-                            initial={
-                                "serial": mpp.serial,
-                                "parallel": mpp.parallel,
-                                "index": 2,
-                            }
-                        )
-                    elif mpp.index == 3:
-                        mpp23 = MPPForm(
-                            initial={
-                                "serial": mpp.serial,
-                                "parallel": mpp.parallel,
-                                "index": 3,
-                            }
-                        )
-
-            elif config.index == 3:
-                config3 = ConfigForm(
-                    initial={
-                        "inverter_id": config.inverter_id.id,
-                        "inverter_quantity": config.inverter_quantity,
-                        "index": config.index,
-                    }
-                )
-                mpps_in_conf = MPP.objects.filter(config_id=config.id)
-                for mpp in mpps_in_conf:
-                    if mpp.index == 1:
-                        mpp31 = MPPForm(
-                            initial={
-                                "serial": mpp.serial,
-                                "parallel": mpp.parallel,
-                                "index": 1,
-                            }
-                        )
-                    elif mpp.index == 2:
-                        mpp32 = MPPForm(
-                            initial={
-                                "serial": mpp.serial,
-                                "parallel": mpp.parallel,
-                                "index": 2,
-                            }
-                        )
-                    elif mpp.index == 3:
-                        mpp33 = MPPForm(
-                            initial={
-                                "serial": mpp.serial,
-                                "parallel": mpp.parallel,
-                                "index": 3,
-                            }
-                        )
-
-        if config1 is None:
-            config1 = ConfigForm()
-        if config2 is None:
-            config2 = ConfigForm()
-        if config3 is None:
-            config3 = ConfigForm()
-        if mpp11 is None:
-            mpp11 = MPPForm()
-        if mpp12 is None:
-            mpp12 = MPPForm()
-        if mpp13 is None:
-            mpp13 = MPPForm()
-        if mpp21 is None:
-            mpp21 = MPPForm()
-        if mpp22 is None:
-            mpp22 = MPPForm()
-        if mpp23 is None:
-            mpp23 = MPPForm()
-        if mpp31 is None:
-            mpp31 = MPPForm()
-        if mpp32 is None:
-            mpp32 = MPPForm()
-        if mpp33 is None:
-            mpp33 = MPPForm()
+                mpps_index = [mpp.index for mpp in mpps_in_conf]
+                for mpp_index in range(1, 4):
+                    if mpp_index not in mpps_index:
+                        configs[
+                            "config"
+                            + str(config_index)
+                            + "_mpp"
+                            + str(mpp_index)
+                        ] = MPPForm(initial={"index": mpp_index,})
 
         project = ProjectForm(
             initial={
@@ -233,18 +134,16 @@ def index(request, project_name=""):
         project = ProjectForm()
         roof = RoofForm()
         implantation = ImplantationForm()
-        config1 = ConfigForm(initial={"index": 1,})
-        config2 = ConfigForm(initial={"index": 2,})
-        config3 = ConfigForm(initial={"index": 3,})
-        mpp11 = MPPForm(initial={"index": 1,})
-        mpp12 = MPPForm(initial={"index": 2,})
-        mpp13 = MPPForm(initial={"index": 3,})
-        mpp21 = MPPForm(initial={"index": 1,})
-        mpp22 = MPPForm(initial={"index": 2,})
-        mpp23 = MPPForm(initial={"index": 3,})
-        mpp31 = MPPForm(initial={"index": 1,})
-        mpp32 = MPPForm(initial={"index": 2,})
-        mpp33 = MPPForm(initial={"index": 3,})
+
+        for config_index in range(1, 4):
+            for mpp_index in range(1, 4):
+                configs["config" + str(config_index)] = ConfigForm(
+                    initial={"index": config_index,}
+                )
+                for mpp_index in range(1, 4):
+                    configs[
+                        "config" + str(config_index) + "_mpp" + str(mpp_index)
+                    ] = MPPForm(initial={"index": mpp_index,})
 
     city = CityForm()
     panel = PanelForm()
@@ -260,18 +159,7 @@ def index(request, project_name=""):
             "form_inverter": inverter,
             "form_roof": roof,
             "form_implantation": implantation,
-            "form_config1": config1,
-            "form_config2": config2,
-            "form_config3": config3,
-            "form_mpp11": mpp11,
-            "form_mpp12": mpp12,
-            "form_mpp13": mpp13,
-            "form_mpp21": mpp21,
-            "form_mpp22": mpp22,
-            "form_mpp23": mpp23,
-            "form_mpp31": mpp31,
-            "form_mpp32": mpp32,
-            "form_mpp33": mpp33,
+            "forms_config": configs,
         },
     )
 

@@ -314,7 +314,7 @@ class RoofForm(ModelForm):
                     or top_length == ""
                     or top_length <= 0
                 ):
-                    if bottom_length < top_length:
+                    if bottom_length <= top_length:
                         self._errors["bottom_length"] = self.error_class(
                             ["Veuillez vérifier la valeur"]
                         )

@@ -1,6 +1,7 @@
 {% extends 'layouts/default.html' %}
 {% load static %}
 {% load widget_tweaks %}
+{% load dic %}
 {% block body %}
 
 <div class="container design_template">
@@ -577,28 +578,36 @@
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-Configuration1" role="tabpanel"
-                        aria-labelledby="nav-Configuration1-tab">
+                    {% for i in '123'|make_list %}
+                    {% with config_counter=forloop.counter|stringformat:'s' %}
+                    {% with config_form_name="config"|add:config_counter %}
+                    <div class="tab-pane fade {% if config_counter == '1' %}show active{% endif %}"
+                        id="nav-Configuration{{ config_counter}}" role="tabpanel"
+                        aria-labelledby="nav-Configuration{{ config_counter }}-tab">
                         <div class="row">
                             <div class="form-style-10 mb-0 pb-0">
-                                <h1>Configuration onduleur 1<span></span></h1>
+                                <h1>Configuration onduleur {{ config_counter }}<span></span></h1>
                                 <div class="px-4 section"><span>1</span>Choix de l'onduleur</div>
                                 <div class="inner-wrap">
                                     <div class="row cn">
                                         <div class="col-lg-6 col-sm-12 mx-0">
-                                            <form id="config_1" class="form_config config_1" method="POST" action="">
+                                            <form id="config_{{ config_counter }}"
+                                                class="form_config config_{{ config_counter }}" method="POST" action="">
                                                 {% csrf_token %}
-                                                <div class="index1" style="display: none;">{{ form_config1.index }}
+                                                <div class="index{{ config_counter }}" style="display: none;">
+                                                    {{ forms_config|inverter_index_value:config_form_name }}
                                                 </div>
                                                 <div class="row w-100 tag_error">
-                                                    <label class="w-100">{{ form_config1.inverter_id.label_tag }}
+                                                    <label
+                                                        class="w-100">{{ forms_config|inverter_id_labeltag:config_form_name }}
                                                         <div class="row cn">
-                                                            <div class="col-6 px-0">{{ form_config1.inverter_id }}
+                                                            <div class="col-6 px-0">
+                                                                {{ forms_config|inverter_id_value:config_form_name }}
                                                             </div>
                                                             <div class="col-5 pr-0">
-                                                                <button id="add_inverter_button1" type="button"
-                                                                    class="btn btn-primary" data-toggle="modal"
-                                                                    data-target="#InverterModal">
+                                                                <button id="add_inverter_button{{ config_counter}}"
+                                                                    type="button" class="btn btn-primary"
+                                                                    data-toggle="modal" data-target="#InverterModal">
                                                                     Ajouter
                                                                 </button>
                                                             </div>
@@ -608,10 +617,11 @@
                                                 <div class=" row form_errors">
                                                 </div>
                                                 <div class="row w-100 tag_error">
-                                                    <label class="w-100">{{ form_config1.inverter_quantity.label_tag }}
+                                                    <label
+                                                        class="w-100">{{ forms_config|inverter_quantity_labeltag:config_form_name }}
                                                         <div class="row cn">
                                                             <div class="col-6 px-0">
-                                                                {{ form_config1.inverter_quantity }}
+                                                                {{ forms_config|inverter_quantity_value:config_form_name }}
                                                             </div>
                                                             <div class="col-5 pr-0">
                                                                 <p></p>
@@ -680,27 +690,38 @@
                                 <div class="px-4 section"><span>2</span>Connections</div>
                                 <div class="inner-wrap mb-0">
                                     <div class="row">
-                                        <div class="col-lg-4 col-sm-12 inverter1_mpp1 cn">
+                                        {% for j in '123'|make_list %}
+                                        {% with mpp_counter=forloop.counter|stringformat:'s' %}
+                                        <div
+                                            class="col-lg-4 col-sm-12 inverter{{ config_counter }}_mpp{{ mpp_counter }} cn">
                                             <div class="form-style-10 h-100">
-                                                <h1 class="cn">MPP 1<span></span></h1>
+                                                <h1 class="cn">MPP{{ mpp_counter }}<span></span></h1>
                                                 <div class="section"><span>1</span>Branchements</div>
                                                 <div class="inner-wrap">
-                                                    <form id="mpp1" class="form_mpp" method="POST" action="">
+                                                    <form id="mpp{{ mpp_counter }}" class="form_mpp" method="POST"
+                                                        action="">
                                                         {% csrf_token %}
+                                                        {% with mpp_form_name=config_form_name|add:"_mpp"|add:mpp_counter %}
+                                                        <div style="display: none;">
+                                                            {{ forms_config|mpp_index_value:mpp_form_name }}
+                                                        </div>
                                                         <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp11.serial.label_tag }}
-                                                                {{ form_mpp11.serial }}
+                                                            <label class="w-100">
+                                                                {{ forms_config|mpp_serial_labeltag:mpp_form_name }}
+                                                                {{ forms_config|mpp_serial_value:mpp_form_name }}
                                                             </label>
                                                         </div>
                                                         <div class=" row form_errors">
                                                         </div>
                                                         <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp11.parallel.label_tag }}
-                                                                {{ form_mpp11.parallel }}
+                                                            <label class="w-100">
+                                                                {{ forms_config|mpp_parallel_labeltag:mpp_form_name }}
+                                                                {{ forms_config|mpp_parallel_value:mpp_form_name }}
                                                             </label>
                                                         </div>
                                                         <div class=" row form_errors">
                                                         </div>
+                                                        {% endwith %}
                                                     </form>
                                                 </div>
                                                 <div class="section"><span>2</span>Informations</div>
@@ -766,174 +787,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-sm-12 inverter1_mpp2 cn">
-                                            <div class="form-style-10 h-100">
-                                                <h1 class="cn">MPP 2<span></span></h1>
-                                                <div class="section"><span>1</span>Branchements</div>
-                                                <div class="inner-wrap">
-                                                    <form id="mpp2" class="form_mpp" method="POST" action="">
-                                                        {% csrf_token %}
-                                                        <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp12.serial.label_tag }}
-                                                                {{ form_mpp12.serial }}
-                                                            </label>
-                                                        </div>
-                                                        <div class=" row form_errors">
-                                                        </div>
-                                                        <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp12.parallel.label_tag }}
-                                                                {{ form_mpp12.parallel }}
-                                                            </label>
-                                                        </div>
-                                                        <div class=" row form_errors">
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="section"><span>2</span>Informations</div>
-                                                <div class="inner-wrap">
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Température :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <p>-10 - 70</p>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>°C</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Vmpp :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="mpp_voltage_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="mpp_voltage_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>V</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Vco :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="vco_voltage_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="vco_voltage_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>V</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>I :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="i_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="i_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>A</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-12 inverter1_mpp3 cn">
-                                            <div class="form-style-10 h-100">
-                                                <h1 class="cn">MPP 3<span></span></h1>
-                                                <div class="section"><span>1</span>Branchements</div>
-                                                <div class="inner-wrap">
-                                                    <form id="mpp3" class="form_mpp" method="POST" action="">
-                                                        {% csrf_token %}
-                                                        <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp13.serial.label_tag }}
-                                                                {{ form_mpp13.serial }}
-                                                            </label>
-                                                        </div>
-                                                        <div class=" row form_errors">
-                                                        </div>
-                                                        <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp13.parallel.label_tag }}
-                                                                {{ form_mpp13.parallel }}
-                                                            </label>
-                                                        </div>
-                                                        <div class=" row form_errors">
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="section"><span>2</span>Informations</div>
-                                                <div class="inner-wrap">
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Température :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <p>-10 - 70</p>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>°C</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Vmpp :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="mpp_voltage_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="mpp_voltage_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>V</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Vco :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="vco_voltage_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="vco_voltage_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>V</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>I :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="i_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="i_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>A</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        {% endwith %}
+                                        {% endfor %}
                                     </div>
                                 </div>
                                 <div class="px-4 section"><span>3</span>Vérifications</div>
@@ -946,9 +801,11 @@
                                                 </div>
                                                 <div class="col-4 mx-auto">
                                                     <div class="row">
-                                                        <p class="i_tot_min_value1"></p>
+                                                        <p class="i_tot_min_value{{config_counter}}">
+                                                        </p>
                                                         <p>&nbsp; - &nbsp;</p>
-                                                        <p class="i_tot_max_value1"></p>
+                                                        <p class="i_tot_max_value{{config_counter}}">
+                                                        </p>
                                                     </div>
                                                 </div>
                                                 <div class="col-2">
@@ -962,7 +819,7 @@
                                                     <p>Pdc/Pac :</p>
                                                 </div>
                                                 <div class="col-4 mx-auto">
-                                                    <p class="ratio_pn_value1"></p>
+                                                    <p class="ratio_pn_value{{config_counter}}"></p>
                                                 </div>
                                                 <div class="col-2">
                                                     <p>%</p>
@@ -975,801 +832,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="nav-Configuration2" role="tabpanel"
-                        aria-labelledby="nav-Configuration2-tab">
-                        <div class="row">
-                            <div class="form-style-10 mb-0 pb-0">
-                                <h1>Configuration onduleur 2<span></span></h1>
-                                <div class="px-4 section"><span>1</span>Choix de l'onduleur</div>
-                                <div class="inner-wrap">
-                                    <div class="row cn">
-                                        <div class="col-lg-6 col-sm-12 mx-0">
-                                            <form id="config_2" class="form_config config_2" method="POST" action="">
-                                                {% csrf_token %}
-                                                <div class="index2" style="display: none;">{{ form_config2.index }}
-                                                </div>
-                                                <div class="row w-100 tag_error">
-                                                    <label class="w-100">{{ form_config2.inverter_id.label_tag }}
-                                                        <div class="row cn">
-                                                            <div class="col-6 px-0">{{ form_config2.inverter_id }}
-                                                            </div>
-                                                            <div class="col-5 pr-0">
-                                                                <button id="add_inverter_button2" type="button"
-                                                                    class="btn btn-primary" data-toggle="modal"
-                                                                    data-target="#InverterModal">
-                                                                    Ajouter
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                                <div class=" row form_errors">
-                                                </div>
-                                                <div class="row w-100 tag_error">
-                                                    <label class="w-100">{{ form_config2.inverter_quantity.label_tag }}
-                                                        <div class="row cn">
-                                                            <div class="col-6 px-0">
-                                                                {{ form_config2.inverter_quantity }}
-                                                            </div>
-                                                            <div class="col-5 pr-0">
-                                                                <p></p>
-                                                            </div>
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                                <div class=" row form_errors">
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="col-lg-6 col-sm-12 mx-0">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <p>Puissance :</p>
-                                                </div>
-                                                <div class="col-4">
-                                                    <p class="inverter_power_value"></p>
-                                                </div>
-                                                <div class="col-2">
-                                                    <p>kW</p>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <p>Tension DC max :</p>
-                                                </div>
-                                                <div class="col-4">
-                                                    <p class="max_dc_voltage_value"></p>
-                                                </div>
-                                                <div class="col-2">
-                                                    <p>V</p>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <p>Plage de Tension MPP :</p>
-                                                </div>
-                                                <div class="col-4">
-                                                    <div class="row">
-                                                        <p>
-                                                            <p class="mpp_min_value"></p>&nbsp; - &nbsp;<p
-                                                                class="mpp_max_value">
-                                                            </p>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-2">
-                                                    <p>V</p>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <p>Courant DC max :</p>
-                                                </div>
-                                                <div class="col-4">
-                                                    <p class="current_value"></p>
-                                                </div>
-                                                <div class="col-2">
-                                                    <p>kW</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="px-4 section"><span>2</span>Connections</div>
-                                <div class="inner-wrap mb-0">
-                                    <div class="row">
-                                        <div class="col-lg-4 col-sm-12 inverter2_mpp1 cn">
-                                            <div class="form-style-10 h-100">
-                                                <h1 class="cn">MPP 1<span></span></h1>
-                                                <div class="section"><span>1</span>Branchements</div>
-                                                <div class="inner-wrap">
-                                                    <form id="mpp1" class="form_mpp" method="POST" action="">
-                                                        {% csrf_token %}
-                                                        <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp21.serial.label_tag }}
-                                                                {{ form_mpp21.serial }}
-                                                            </label>
-                                                        </div>
-                                                        <div class=" row form_errors">
-                                                        </div>
-                                                        <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp21.parallel.label_tag }}
-                                                                {{ form_mpp21.parallel }}
-                                                            </label>
-                                                        </div>
-                                                        <div class=" row form_errors">
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="section"><span>2</span>Informations</div>
-                                                <div class="inner-wrap">
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Température :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <p>-10 - 70</p>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>°C</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Vmpp :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p>
-                                                                    <p class="mpp_voltage_min_value"></p>&nbsp; -
-                                                                    &nbsp;
-                                                                    <p class="mpp_voltage_max_value"></p>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>V</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Vco :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p>
-                                                                    <p class="vco_voltage_min_value"></p>&nbsp; -
-                                                                    &nbsp;
-                                                                    <p class="vco_voltage_max_value"></p>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>V</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>I :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p>
-                                                                    <p class="i_min_value"></p>&nbsp; - &nbsp;<p
-                                                                        class="i_max_value"></p>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>A</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-12 inverter2_mpp2 cn">
-                                            <div class="form-style-10 h-100">
-                                                <h1 class="cn">MPP 2<span></span></h1>
-                                                <div class="section"><span>1</span>Branchements</div>
-                                                <div class="inner-wrap">
-                                                    <form id="mpp2" class="form_mpp" method="POST" action="">
-                                                        {% csrf_token %}
-                                                        <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp22.serial.label_tag }}
-                                                                {{ form_mpp22.serial }}
-                                                            </label>
-                                                        </div>
-                                                        <div class=" row form_errors">
-                                                        </div>
-                                                        <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp22.parallel.label_tag }}
-                                                                {{ form_mpp22.parallel }}
-                                                            </label>
-                                                        </div>
-                                                        <div class=" row form_errors">
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="section"><span>2</span>Informations</div>
-                                                <div class="inner-wrap">
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Température :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <p>-10 - 70</p>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>°C</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Vmpp :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="mpp_voltage_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="mpp_voltage_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>V</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Vco :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="vco_voltage_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="vco_voltage_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>V</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>I :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="i_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="i_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>A</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-12 inverter2_mpp3 cn">
-                                            <div class="form-style-10 h-100">
-                                                <h1 class="cn">MPP 3<span></span></h1>
-                                                <div class="section"><span>1</span>Branchements</div>
-                                                <div class="inner-wrap">
-                                                    <form id="mpp3" class="form_mpp" method="POST" action="">
-                                                        {% csrf_token %}
-                                                        <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp23.serial.label_tag }}
-                                                                {{ form_mpp23.serial }}
-                                                            </label>
-                                                        </div>
-                                                        <div class=" row form_errors">
-                                                        </div>
-                                                        <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp23.parallel.label_tag }}
-                                                                {{ form_mpp23.parallel }}
-                                                            </label>
-                                                        </div>
-                                                        <div class=" row form_errors">
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="section"><span>2</span>Informations</div>
-                                                <div class="inner-wrap">
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Température :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <p>-10 - 70</p>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>°C</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Vmpp :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="mpp_voltage_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="mpp_voltage_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>V</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Vco :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="vco_voltage_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="vco_voltage_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>V</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>I :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="i_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="i_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>A</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="px-4 section"><span>3</span>Vérifications</div>
-                                <div class="inner-wrap mb-2 py-1">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <p>Itot :</p>
-                                                </div>
-                                                <div class="col-4 mx-auto">
-                                                    <div class="row">
-                                                        <p class="i_tot_min_value2"></p>
-                                                        <p>&nbsp; - &nbsp;</p>
-                                                        <p class="i_tot_max_value2"></p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-2">
-                                                    <p>A</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <p>Pdc/Pac :</p>
-                                                </div>
-                                                <div class="col-4 mx-auto">
-                                                    <p class="ratio_pn_value2"></p>
-                                                </div>
-                                                <div class="col-2">
-                                                    <p>%</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <br>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="nav-Configuration3" role="tabpanel"
-                        aria-labelledby="nav-Configuration3-tab">
-                        <div class="row">
-                            <div class="form-style-10 mb-0 pb-0">
-                                <h1>Configuration onduleur 3<span></span></h1>
-                                <div class="px-4 section"><span>1</span>Choix de l'onduleur</div>
-                                <div class="inner-wrap">
-                                    <div class="row cn">
-                                        <div class="col-lg-6 col-sm-12 mx-0">
-                                            <form id="config_3" class="form_config config_3" method="POST" action="">
-                                                {% csrf_token %}
-                                                <div class="index3" style="display: none;">{{ form_config3.index }}
-                                                </div>
-                                                <div class="row w-100 tag_error">
-                                                    <label class="w-100">{{ form_config3.inverter_id.label_tag }}
-                                                        <div class="row cn">
-                                                            <div class="col-6 px-0">{{ form_config3.inverter_id }}
-                                                            </div>
-                                                            <div class="col-5 pr-0">
-                                                                <button id="add_inverter_button3" type="button"
-                                                                    class="btn btn-primary" data-toggle="modal"
-                                                                    data-target="#InverterModal">
-                                                                    Ajouter
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                                <div class=" row form_errors">
-                                                </div>
-                                                <div class="row w-100 tag_error">
-                                                    <label class="w-100">{{ form_config3.inverter_quantity.label_tag }}
-                                                        <div class="row cn">
-                                                            <div class="col-6 px-0">
-                                                                {{ form_config3.inverter_quantity }}
-                                                            </div>
-                                                            <div class="col-5 pr-0">
-                                                                <p></p>
-                                                            </div>
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                                <div class=" row form_errors">
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="col-lg-6 col-sm-12 mx-0">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <p>Puissance :</p>
-                                                </div>
-                                                <div class="col-4">
-                                                    <p class="inverter_power_value"></p>
-                                                </div>
-                                                <div class="col-2">
-                                                    <p>kW</p>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <p>Tension DC max :</p>
-                                                </div>
-                                                <div class="col-4">
-                                                    <p class="max_dc_voltage_value"></p>
-                                                </div>
-                                                <div class="col-2">
-                                                    <p>V</p>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <p>Plage de Tension MPP :</p>
-                                                </div>
-                                                <div class="col-4">
-                                                    <div class="row">
-                                                        <p class="mpp_min_value"></p>&nbsp; - &nbsp;<p
-                                                            class="mpp_max_value">
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-2">
-                                                    <p>V</p>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <p>Courant DC max :</p>
-                                                </div>
-                                                <div class="col-4">
-                                                    <p class="current_value"></p>
-                                                </div>
-                                                <div class="col-2">
-                                                    <p>kW</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="px-4 section"><span>2</span>Connections</div>
-                                <div class="inner-wrap mb-0">
-                                    <div class="row">
-                                        <div class="col-lg-4 col-sm-12 inverter3_mpp1 cn">
-                                            <div class="form-style-10 h-100">
-                                                <h1 class="cn">MPP 1<span></span></h1>
-                                                <div class="section"><span>1</span>Branchements</div>
-                                                <div class="inner-wrap">
-                                                    <form id="mpp1" class="form_mpp" method="POST" action="">
-                                                        {% csrf_token %}
-                                                        <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp31.serial.label_tag }}
-                                                                {{ form_mpp31.serial }}
-                                                            </label>
-                                                        </div>
-                                                        <div class=" row form_errors">
-                                                        </div>
-                                                        <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp31.parallel.label_tag }}
-                                                                {{ form_mpp31.parallel }}
-                                                            </label>
-                                                        </div>
-                                                        <div class=" row form_errors">
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="section"><span>2</span>Informations</div>
-                                                <div class="inner-wrap">
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Température :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <p>-10 - 70</p>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>°C</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Vmpp :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="mpp_voltage_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="mpp_voltage_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>V</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Vco :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="vco_voltage_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="vco_voltage_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>V</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>I :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="i_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="i_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>A</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-12 inverter3_mpp2 cn">
-                                            <div class="form-style-10 h-100">
-                                                <h1 class="cn">MPP 2<span></span></h1>
-                                                <div class="section"><span>1</span>Branchements</div>
-                                                <div class="inner-wrap">
-                                                    <form id="mpp2" class="form_mpp" method="POST" action="">
-                                                        {% csrf_token %}
-                                                        <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp32.serial.label_tag }}
-                                                                {{ form_mpp32.serial }}
-                                                            </label>
-                                                        </div>
-                                                        <div class=" row form_errors">
-                                                        </div>
-                                                        <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp32.parallel.label_tag }}
-                                                                {{ form_mpp32.parallel }}
-                                                            </label>
-                                                        </div>
-                                                        <div class=" row form_errors">
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="section"><span>2</span>Informations</div>
-                                                <div class="inner-wrap">
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Température :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <p>-10 - 70</p>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>°C</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Vmpp :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="mpp_voltage_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="mpp_voltage_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>V</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Vco :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="vco_voltage_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="vco_voltage_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>V</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>I :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="i_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="i_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>A</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-12 inverter3_mpp3 cn">
-                                            <div class="form-style-10 h-100">
-                                                <h1 class="cn">MPP 3<span></span></h1>
-                                                <div class="section"><span>1</span>Branchements</div>
-                                                <div class="inner-wrap">
-                                                    <form id="mpp3" class="form_mpp" method="POST" action="">
-                                                        {% csrf_token %}
-                                                        <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp33.serial.label_tag }}
-                                                                {{ form_mpp33.serial }}
-                                                            </label>
-                                                        </div>
-                                                        <div class=" row form_errors">
-                                                        </div>
-                                                        <div class="row w-100 tag_error">
-                                                            <label class="w-100">{{ form_mpp33.parallel.label_tag }}
-                                                                {{ form_mpp33.parallel }}
-                                                            </label>
-                                                        </div>
-                                                        <div class=" row form_errors">
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="section"><span>2</span>Informations</div>
-                                                <div class="inner-wrap">
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Température :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <p>-10 - 70</p>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>°C</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Vmpp :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="mpp_voltage_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="mpp_voltage_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>V</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>Vco :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="vco_voltage_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="vco_voltage_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>V</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <p>I :</p>
-                                                        </div>
-                                                        <div class="col-4 mx-auto">
-                                                            <div class="row">
-                                                                <p class="i_min_value"></p>
-                                                                <p>&nbsp; - &nbsp;</p>
-                                                                <p class="i_max_value"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <p>A</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="px-4 section"><span>3</span>Vérifications</div>
-                                <div class="inner-wrap mb-2 py-1">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <p>Itot :</p>
-                                                </div>
-                                                <div class="col-4 mx-auto">
-                                                    <div class="row">
-                                                        <p class="i_tot_min_value3"></p>
-                                                        <p>&nbsp; - &nbsp;</p>
-                                                        <p class="i_tot_max_value3"></p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-2">
-                                                    <p>A</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <p>Pdc/Pac :</p>
-                                                </div>
-                                                <div class="col-4 mx-auto">
-                                                    <p class="ratio_pn_value3"></p>
-                                                </div>
-                                                <div class="col-2">
-                                                    <p>%</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <br>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% endwith %}
+                    {% endwith %}
+                    {% endfor %}
                 </div>
                 <div class="form-style-10 mb-0 pb-1">
                     <h1 class="cn">Vérifications<span></span></h1>
