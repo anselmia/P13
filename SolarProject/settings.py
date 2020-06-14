@@ -151,6 +151,8 @@ STATICFILES_DIRS = [
 
 INTERNAL_IPS = ["127.0.0.1"]
 DEBUG = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 if os.environ.get("ENV") == "PRODUCTION":  # pragma: no cover
     import dj_database_url
 
