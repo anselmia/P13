@@ -150,13 +150,11 @@ STATICFILES_DIRS = [
 ]
 
 INTERNAL_IPS = ["127.0.0.1"]
-
+DEBUG = True
 if os.environ.get("ENV") == "PRODUCTION":  # pragma: no cover
     import dj_database_url
 
     SECRET_KEY = os.environ.get("SECRET_KEY")
-
-    DEBUG = False
     # Static files settings
     PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -176,7 +174,6 @@ if os.environ.get("ENV") == "PRODUCTION":  # pragma: no cover
     GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
     OPEN_CAGE_DATA_API_KEY = os.environ["OPEN_CAGE_DATA_API_KEY"]
 else:
-    DEBUG = True
     from SolarProject.local_settings import (
         METEOSTAT_API_KEY,
         NREL_API_KEY,
