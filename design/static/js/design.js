@@ -1028,7 +1028,6 @@
     return datas;
   }
 
-
   function init_infos_prod() {
     var datas = {
       "panel_id": id_panel,

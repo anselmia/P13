@@ -7,7 +7,9 @@ from django.conf import settings
 class City(models.Model):
     """ Projects """
 
-    name = models.CharField(max_length=100, unique=True, verbose_name="Nom")
+    name = models.CharField(
+        max_length=100, unique=True, verbose_name="Nom"
+    )
     lat = models.DecimalField(
         max_digits=9, decimal_places=7, verbose_name="Latitude"
     )
@@ -26,7 +28,9 @@ class City(models.Model):
 class Manufacturer(models.Model):
     """ Manufacturer """
 
-    name = models.CharField(max_length=100, unique=True, verbose_name="Nom")
+    name = models.CharField(
+        max_length=100, unique=True, verbose_name="Nom"
+    )
 
     class Meta:
         verbose_name = "Fabricant"
@@ -39,7 +43,9 @@ class Manufacturer(models.Model):
 class Technology(models.Model):
     """ Technology """
 
-    name = models.CharField(max_length=100, unique=True, verbose_name="Nom")
+    name = models.CharField(
+        max_length=100, unique=True, verbose_name="Nom"
+    )
 
     class Meta:
         verbose_name = "Technologie"
@@ -80,7 +86,9 @@ class Orientation(models.Model):
 class Pose(models.Model):
     """ Pose Type """
 
-    value = models.CharField(max_length=30, unique=True, verbose_name="Pose")
+    value = models.CharField(
+        max_length=30, unique=True, verbose_name="Pose"
+    )
 
     class Meta:
         verbose_name = " Pose"
@@ -308,7 +316,10 @@ class Roof(models.Model):
         max_digits=5, decimal_places=2, verbose_name="Longueur faîtage (d)"
     )
     width = models.DecimalField(
-        max_digits=5, decimal_places=2, null=True, verbose_name="Rampant (a)"
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        verbose_name="Rampant (a)",
     )
     height = models.DecimalField(
         max_digits=4, decimal_places=2, verbose_name="Hauteur (z)"
@@ -328,31 +339,6 @@ class Roof(models.Model):
         return self.project_id.name
 
 
-class Element(models.Model):
-    """ Element """
-
-    name = models.CharField(max_length=100, unique=True, verbose_name="Nom")
-    roof_id = models.ForeignKey(
-        Roof, related_name="roof", on_delete=models.CASCADE
-    )
-
-    left_distance = models.DecimalField(
-        max_digits=5, decimal_places=2, null=True
-    )
-    bottom_distance = models.DecimalField(
-        max_digits=5, decimal_places=2, null=True
-    )
-    length = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    width = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-
-    class Meta:
-        verbose_name = "Element"
-        verbose_name_plural = "Elements"
-
-    def __str__(self):
-        return self.project_id.name
-
-
 class Implantation(models.Model):
     """ Implementation """
 
@@ -361,7 +347,9 @@ class Implantation(models.Model):
     )
 
     panel_orientation = models.ForeignKey(
-        Orientation, related_name="panel_orientation", on_delete=models.CASCADE
+        Orientation,
+        related_name="panel_orientation",
+        on_delete=models.CASCADE,
     )
     panel_implantation = models.ForeignKey(
         Pose, related_name="panel_implantation", on_delete=models.CASCADE
@@ -429,7 +417,9 @@ class Config(models.Model):
         blank=True, verbose_name="Nombre d'onduleurs"
     )
 
-    index = models.IntegerField(blank=True, verbose_name="Index configuration")
+    index = models.IntegerField(
+        blank=True, verbose_name="Index configuration"
+    )
 
     class Meta:
         verbose_name = "Configuration"

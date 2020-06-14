@@ -50,7 +50,9 @@ class LoginTests(TestCase):
             username=self.credentials["username"],
             password=self.credentials["password"],
         )
-        self.client.post(reverse("user:login"), self.credentials, follow=True)
+        self.client.post(
+            reverse("user:login"), self.credentials, follow=True
+        )
         self.assertTemplateUsed("home.html")
 
 

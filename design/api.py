@@ -1,6 +1,5 @@
 import requests
 from django.conf import settings
-from decimal import Decimal
 import json
 
 
@@ -38,7 +37,7 @@ class Localisation:
                             "lon": city["geometry"]["lng"],
                         }
                     return datas
-        except Exception as inst:
+        except:
             return []
 
 
@@ -53,8 +52,9 @@ class EnergyData:
             request PVGis Api to retrieve monthly average irradiation of the
             given site and monthly average photovoltaic production.
 
-            When ok return list of monthly and yearly pv production and solar irradiation,
-            ratio of system energy production by installed power (kWh/kWc).
+            When ok return list of monthly and yearly pv production and
+            solar irradiation, ratio of system energy production by
+            installed power (kWh/kWc).
             else empty list
         """
         self.parameters = {

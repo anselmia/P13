@@ -18,45 +18,53 @@ class Implantation_calculation:
 
     def __init__(self, datas):
         """Init function of Implantation_calculation"""
+        try:
+            # Replace empty values by 0
+            datas = {k: (0 if v == "" else v) for (k, v) in datas.items()}
 
-        # Replace empty values by 0
-        datas = {k: (0 if v == "" else v) for (k, v) in datas.items()}
+            # Project Data
+            panel_id = datas["panel_id"]
+            self.panel = Panel.objects.get(id=panel_id)
 
-        # Project Data
-        panel_id = datas["panel_id"]
-        self.panel = Panel.objects.get(id=panel_id)
+            # Roof Data
+            roof_type = Roof_type.objects.get(id=datas["roof_type_id"])
+            self.roof = Roof(
+                roof_type_id=roof_type,
+                bottom_length=float(datas["bottom_length"]),
+                top_length=float(datas["top_length"]),
+                width=float(datas["width"]),
+                height=float(datas["height"]),
+            )
 
-        # Roof Data
-        roof_type = Roof_type.objects.get(id=datas["roof_type_id"])
-        self.roof = Roof(
-            roof_type_id=roof_type,
-            bottom_length=float(datas["bottom_length"]),
-            top_length=float(datas["top_length"]),
-            width=float(datas["width"]),
-            height=float(datas["height"]),
-        )
-
-        # Implantation Data
-        orientation = Orientation.objects.get(id=datas["panel_orientation"])
-        pose = Pose.objects.get(id=datas["panel_implantation"])
-        self.data_implantation = Implantation(
-            panel_orientation=orientation,
-            panel_implantation=pose,
-            vertical_overlapping=int(datas["vertical_overlapping"]) / 1000,
-            horizontal_overlapping=int(datas["horizontal_overlapping"]) / 1000,
-            vertical_spacing=int(datas["vertical_spacing"]) / 1000,
-            horizontal_spacing=int(datas["horizontal_spacing"]) / 1000,
-            distance_top=int(datas["distance_top"]) / 1000,
-            distance_bottom=int(datas["distance_bottom"]) / 1000,
-            distance_left=int(datas["distance_left"]) / 1000,
-            distance_right=int(datas["distance_right"]) / 1000,
-            abergement_top=int(datas["abergement_top"]) / 1000,
-            abergement_bottom=int(datas["abergement_bottom"]) / 1000,
-            abergement_left=int(datas["abergement_left"]) / 1000,
-            abergement_right=int(datas["abergement_right"]) / 1000,
-        )
-
-        self.data = self.init_roof_data()
+            # Implantation Data
+            orientation = Orientation.objects.get(
+                id=datas["panel_orientation"]
+            )
+            pose = Pose.objects.get(id=datas["panel_implantation"])
+            self.data_implantation = Implantation(
+                panel_orientation=orientation,
+                panel_implantation=pose,
+                vertical_overlapping=int(datas["vertical_overlapping"])
+                / 1000,
+                horizontal_overlapping=int(datas["horizontal_overlapping"])
+                / 1000,
+                vertical_spacing=int(datas["vertical_spacing"]) / 1000,
+                horizontal_spacing=int(datas["horizontal_spacing"]) / 1000,
+                distance_top=int(datas["distance_top"]) / 1000,
+                distance_bottom=int(datas["distance_bottom"]) / 1000,
+                distance_left=int(datas["distance_left"]) / 1000,
+                distance_right=int(datas["distance_right"]) / 1000,
+                abergement_top=int(datas["abergement_top"]) / 1000,
+                abergement_bottom=int(datas["abergement_bottom"]) / 1000,
+                abergement_left=int(datas["abergement_left"]) / 1000,
+                abergement_right=int(datas["abergement_right"]) / 1000,
+            )
+        except Exception as E:
+            self.data = E
+        try:
+            self.data = self.init_roof_data()
+        except Exception as E:
+            self.data = E
 
     def init_roof_data(self):
         """
@@ -65,7 +73,7 @@ class Implantation_calculation:
             Calculate coordonate to plot the system in the canva.
             Calculate information to be shown to the user regarding the installation.
         """
-        if self.roof.roof_type_id_id == 3:
+        if self.roof.roof_type_id.value == "triangle":
             self.roof.height = math.sqrt(
                 (self.roof.width * self.roof.width)
                 - (
@@ -77,12 +85,12 @@ class Implantation_calculation:
             self.panel, self.roof, self.data_implantation
         )
 
-        if self.roof.roof_type_id_id == 1:
+        if self.roof.roof_type_id.value == "rectangle":
             implantation.modif_width(self.data_implantation)
             implantation.pan_in_width(self.roof)
             implantation.modif_length(self.data_implantation)
             implantation.pan_in_length(self.roof)
-        elif self.roof.roof_type_id_id == 2:
+        elif self.roof.roof_type_id.value == "trapèze":
             implantation.modif_top_length(self.data_implantation)
             implantation.modif_height(self.data_implantation)
             implantation.pan_in_width(self.roof)
@@ -93,7 +101,7 @@ class Implantation_calculation:
             ) / 2
             implantation.lateral_space(self.data_implantation)
             implantation.Centering(self.data_implantation)
-        elif self.roof.roof_type_id_id == 3:
+        elif self.roof.roof_type_id.value == "triangle":
             implantation.bottom_rest = (
                 self.data_implantation.distance_bottom
                 + self.data_implantation.abergement_bottom
@@ -124,15 +132,18 @@ class Implantation_calculation:
             ]
 
         # region Reste
-        if self.roof.roof_type_id_id == 1:
+        if self.roof.roof_type_id.value == "rectangle":
             implantation.set_rest()
-        elif self.roof.roof_type_id_id == 2:
+        elif self.roof.roof_type_id.value == "trapèze":
             implantation.top_rest = (
                 implantation.distance_top
                 + implantation.abergement_top
                 + (
                     implantation.height
-                    - (implantation.nb_panel_width * implantation.panel_width)
+                    - (
+                        implantation.nb_panel_width
+                        * implantation.panel_width
+                    )
                     - implantation.vertical_pose
                     * (implantation.nb_panel_width - 1)
                 )
@@ -143,13 +154,16 @@ class Implantation_calculation:
                 + implantation.abergement_bottom
                 + (
                     implantation.height
-                    - (implantation.nb_panel_width * implantation.panel_width)
+                    - (
+                        implantation.nb_panel_width
+                        * implantation.panel_width
+                    )
                     - implantation.vertical_pose
                     * (implantation.nb_panel_width - 1)
                 )
                 / 2
             )
-        elif self.roof.roof_type_id_id == 3:
+        elif self.roof.roof_type_id.value == "triangle":
             implantation.top_rest = (
                 self.roof.height
                 - implantation.panel_left_triangle[
@@ -212,27 +226,34 @@ class Implantation_calculation:
             implantation.nb_panel_width = 0
             implantation
 
-        if self.roof.roof_type_id_id == 1:
-            implantation.surface = self.roof.bottom_length * self.roof.width
+        if self.roof.roof_type_id.value == "rectangle":
+            implantation.surface = (
+                self.roof.bottom_length * self.roof.width
+            )
             implantation.height = implantation.width
-        elif self.roof.roof_type_id_id == 2:
-            implantation.surface = self.roof.top_length * self.roof.height + (
-                (self.roof.bottom_length - self.roof.top_length)
-                * self.roof.height
+        elif self.roof.roof_type_id.value == "trapèze":
+            implantation.surface = (
+                self.roof.top_length * self.roof.height
+                + (
+                    (self.roof.bottom_length - self.roof.top_length)
+                    * self.roof.height
+                )
             )
         else:
             implantation.surface = (
                 self.roof.bottom_length * self.roof.height
             ) / 2
 
-        implantation.power = (implantation.total_pan * self.panel.power) / 1000
+        implantation.power = (
+            implantation.total_pan * self.panel.power
+        ) / 1000
 
         return implantation.toJSON()
 
 
 class Roof_implantation_Calculation:
     def __init__(self, panel, roof, implantation):
-        if implantation.panel_orientation_id == 1:
+        if implantation.panel_orientation.value == "Paysage":
             self.panel_width = panel.width / 1000
             self.panel_length = panel.length / 1000
         else:
@@ -253,10 +274,12 @@ class Roof_implantation_Calculation:
         self.side_angle = 0
         self.nb_panel_width = 0
         self.nb_panel_length = 0
-        if roof.roof_type_id_id == 1:
+        if roof.roof_type_id.value == "rectangle":
             self.nb_panel_width = int(self.width / self.panel_width)
-            self.nb_panel_length = int(self.bottom_length / self.panel_length)
-        elif roof.roof_type_id_id == 2:  # Paralepiped
+            self.nb_panel_length = int(
+                self.bottom_length / self.panel_length
+            )
+        elif roof.roof_type_id.value == "trapèze":  # Paralepiped
             self.top_length = (
                 roof.top_length
                 - implantation.abergement_left
@@ -266,7 +289,7 @@ class Roof_implantation_Calculation:
             self.nb_panel_length = int(self.top_length / self.panel_length)
             self.side_rest = (roof.bottom_length - roof.top_length) / 2
             self.side_angle = math.atan(self.height / self.side_rest)
-        elif roof.roof_type_id_id == 3:  # Triangle
+        elif roof.roof_type_id.value == "triangle":  # Triangle
             self.side_rest = roof.bottom_length / 2
             self.height = roof.height
             self.side_angle = math.atan(self.height / self.side_rest)
@@ -305,9 +328,9 @@ class Roof_implantation_Calculation:
 
     def modif_width(self, implantation):
         """ Update roof width removing unavailable space """
-        if ((self.width - (self.nb_panel_width * self.panel_width)) / 2) < (
-            implantation.distance_top + implantation.abergement_top
-        ):
+        if (
+            (self.width - (self.nb_panel_width * self.panel_width)) / 2
+        ) < (implantation.distance_top + implantation.abergement_top):
             self.width = (
                 self.width
                 - implantation.distance_top
@@ -317,7 +340,9 @@ class Roof_implantation_Calculation:
             self.distance_top = 0
             self.abergement_top = 0
 
-        if ((self.width - (self.nb_panel_width * self.panel_width)) / 2) < (
+        if (
+            (self.width - (self.nb_panel_width * self.panel_width)) / 2
+        ) < (
             implantation.distance_bottom + implantation.abergement_bottom
         ):
             self.width = (
@@ -332,7 +357,10 @@ class Roof_implantation_Calculation:
     def modif_length(self, implantation):
         """ Update roof bottom length removing unavailable space """
         if (
-            (self.bottom_length - (self.nb_panel_length * self.panel_length))
+            (
+                self.bottom_length
+                - (self.nb_panel_length * self.panel_length)
+            )
             / 2
         ) < (implantation.distance_left + implantation.abergement_left):
             self.bottom_length = (
@@ -345,7 +373,10 @@ class Roof_implantation_Calculation:
             self.abergement_left = 0
 
         if (
-            (self.bottom_length - (self.nb_panel_length * self.panel_length))
+            (
+                self.bottom_length
+                - (self.nb_panel_length * self.panel_length)
+            )
             / 2
         ) < (implantation.distance_right + implantation.abergement_right):
             self.bottom_length = (
@@ -381,7 +412,9 @@ class Roof_implantation_Calculation:
             self.nb_pan_right_triangle = 0
         else:
             self.right_rest = (
-                self.side_rest - self.distance_right - self.abergement_right
+                self.side_rest
+                - self.distance_right
+                - self.abergement_right
             )
 
     def modif_height(self, implantation):
@@ -389,9 +422,9 @@ class Roof_implantation_Calculation:
             Calculate vertical centering remaining space after filing
             with panel.
         """
-        if ((self.height - (self.nb_panel_width * self.panel_width)) / 2) < (
-            implantation.distance_top + implantation.abergement_top
-        ):
+        if (
+            (self.height - (self.nb_panel_width * self.panel_width)) / 2
+        ) < (implantation.distance_top + implantation.abergement_top):
             self.height = (
                 self.height
                 - implantation.distance_top
@@ -400,7 +433,9 @@ class Roof_implantation_Calculation:
         else:
             self.distance_top = 0
             self.abergement_top = 0
-        if ((self.height - (self.nb_panel_width * self.panel_width)) / 2) < (
+        if (
+            (self.height - (self.nb_panel_width * self.panel_width)) / 2
+        ) < (
             implantation.distance_bottom + implantation.abergement_bottom
         ):
             self.height = (
@@ -467,7 +502,9 @@ class Roof_implantation_Calculation:
                 >= self.min_dist_right
             ):
                 self.right_space = (
-                    self.right_rest + self.hor_centering - self.horizontal_pose
+                    self.right_rest
+                    + self.hor_centering
+                    - self.horizontal_pose
                 )
             else:
                 self.right_space = (
@@ -486,7 +523,7 @@ class Roof_implantation_Calculation:
             )
 
     def Centering(self, implantation):
-        """ Caalculate horizontale centering value to center the system on the roof """
+        """ Calculate horizontale centering value to center the system on the roof """
         if self.left_rest > 0:
             self.centering = (
                 self.left_rest
@@ -520,7 +557,10 @@ class Roof_implantation_Calculation:
         if (
             (self.distance_left >= self.side_rest)
             or (self.abergement_left >= self.side_rest)
-            or ((self.abergement_left + self.distance_left) >= self.side_rest)
+            or (
+                (self.abergement_left + self.distance_left)
+                >= self.side_rest
+            )
         ):
             self.left_rest = 0
             self.nb_pan_lentgh_left_triangle = 0
@@ -532,18 +572,24 @@ class Roof_implantation_Calculation:
             (self.distance_right >= self.side_rest)
             or (self.abergement_right >= self.side_rest)
             or (
-                (self.abergement_right + self.distance_right) >= self.side_rest
+                (self.abergement_right + self.distance_right)
+                >= self.side_rest
             )
         ):
             self.right_rest = 0
             self.nb_pan_lentgh_right_triangle = 0
         else:
             self.right_rest = (
-                self.side_rest - self.distance_right - self.abergement_right
+                self.side_rest
+                - self.distance_right
+                - self.abergement_right
             )
 
         if self.left_rest > 0:
-            if self.distance_left + self.abergement_left >= self.min_dist_left:
+            if (
+                self.distance_left + self.abergement_left
+                >= self.min_dist_left
+            ):
                 self.left_space = self.left_rest
             else:
                 self.left_space = self.left_rest - (
@@ -596,7 +642,7 @@ class Roof_implantation_Calculation:
         self.panel_left_triangle = [
             0 for x in range(self.nb_pan_lentgh_left_triangle + 2)
         ]
-        if roof.roof_type_id_id == 2:
+        if roof.roof_type_id.value == "trapèze":
             for i in range(1, self.nb_pan_lentgh_left_triangle + 1):
                 self.panel_left_triangle[i] = int(
                     (
@@ -645,7 +691,7 @@ class Roof_implantation_Calculation:
                 if self.panel_right_triangle[i] > self.nb_panel_width:
                     self.panel_right_triangle[i] = self.nb_panel_width
 
-        if roof.roof_type_id_id == 3:
+        if roof.roof_type_id.value == "triangle":
             for i in range(1, self.nb_pan_lentgh_left_triangle + 1):
                 self.vert_centering = (
                     (
@@ -746,7 +792,7 @@ class Roof_implantation_Calculation:
         Update panel in each triangle column taking care of the
             pose conditions.
         """
-        if roof.roof_type_id_id == 2:
+        if roof.roof_type_id.value == "trapèze":
             self.vert_centering = (
                 self.height
                 - (self.nb_panel_width * self.panel_width)
@@ -765,9 +811,10 @@ class Roof_implantation_Calculation:
                 self.nb_pan_lentgh_left_triangle = self.update_tempnbpan(
                     implantation, temp_nb_pan, temp_left_space,
                 )
-                if implantation.panel_implantation_id == 2:
+                if implantation.panel_implantation.value == "Espacés":
                     while (
-                        self.nb_pan_lentgh_left_triangle * self.panel_length
+                        self.nb_pan_lentgh_left_triangle
+                        * self.panel_length
                         + self.horizontal_pose
                         * (self.nb_pan_lentgh_left_triangle - 1)
                     ) < self.left_space:
@@ -775,7 +822,8 @@ class Roof_implantation_Calculation:
                             self.nb_pan_lentgh_left_triangle + 1
                         )
                     while (
-                        self.nb_pan_lentgh_left_triangle * self.panel_length
+                        self.nb_pan_lentgh_left_triangle
+                        * self.panel_length
                         + self.horizontal_pose
                         * (self.nb_pan_lentgh_left_triangle - 1)
                     ) > self.left_space:
@@ -783,9 +831,9 @@ class Roof_implantation_Calculation:
                         self.nb_pan_lentgh_left_triangle = (
                             self.nb_pan_lentgh_left_triangle - 1
                         )
-                        self.panel_left_triangle[i] = self.panel_left_triangle[
-                            i + 1
-                        ]
+                        self.panel_left_triangle[
+                            i
+                        ] = self.panel_left_triangle[i + 1]
                         i += 1
 
             if self.nb_pan_lentgh_right_triangle != 0:
@@ -794,9 +842,10 @@ class Roof_implantation_Calculation:
                 self.nb_pan_lentgh_right_triangle = self.update_tempnbpan(
                     implantation, temp_nb_pan, temp_left_space
                 )
-                if implantation.panel_implantation_id == 2:
+                if implantation.panel_implantation.value == "Espacés":
                     while (
-                        self.nb_pan_lentgh_right_triangle * self.panel_length
+                        self.nb_pan_lentgh_right_triangle
+                        * self.panel_length
                         + self.horizontal_pose
                         * (self.nb_pan_lentgh_right_triangle - 1)
                     ) < self.right_space + self.horizontal_pose:
@@ -804,7 +853,8 @@ class Roof_implantation_Calculation:
                             self.nb_pan_lentgh_right_triangle + 1
                         )
                     while (
-                        self.nb_pan_lentgh_right_triangle * self.panel_length
+                        self.nb_pan_lentgh_right_triangle
+                        * self.panel_length
                         + self.horizontal_pose
                         * (self.nb_pan_lentgh_right_triangle - 1)
                     ) > self.right_space + self.horizontal_pose:
@@ -839,8 +889,8 @@ class Roof_implantation_Calculation:
             if self.nb_pan_lentgh_right_triangle < 0:
                 self.nb_pan_lentgh_right_triangle = 0
 
-        if roof.roof_type_id_id == 3:
-            if implantation.panel_implantation_id == 2:
+        if roof.roof_type_id.value == "triangle":
+            if implantation.panel_implantation.value == "Espacés":
                 if self.left_rest > 0:
                     self.min_dist_left = (
                         (
@@ -871,7 +921,8 @@ class Roof_implantation_Calculation:
                         )
 
                     while (
-                        self.nb_pan_lentgh_left_triangle * self.panel_length
+                        self.nb_pan_lentgh_left_triangle
+                        * self.panel_length
                         + self.horizontal_pose
                         * (self.nb_pan_lentgh_left_triangle - 1)
                     ) > self.left_space:
@@ -879,9 +930,9 @@ class Roof_implantation_Calculation:
                         self.nb_pan_lentgh_left_triangle = (
                             self.nb_pan_lentgh_left_triangle - 1
                         )
-                        self.panel_left_triangle[i] = self.panel_left_triangle[
-                            i + 1
-                        ]
+                        self.panel_left_triangle[
+                            i
+                        ] = self.panel_left_triangle[i + 1]
                         i += 1
                     self.centering = (
                         self.side_rest
@@ -939,7 +990,8 @@ class Roof_implantation_Calculation:
                         )
 
                     while (
-                        self.nb_pan_lentgh_right_triangle * self.panel_length
+                        self.nb_pan_lentgh_right_triangle
+                        * self.panel_length
                         + self.horizontal_pose
                         * (self.nb_pan_lentgh_right_triangle - 1)
                     ) < self.right_space:
@@ -947,7 +999,8 @@ class Roof_implantation_Calculation:
                             self.nb_pan_lentgh_right_triangle + 1
                         )
                     while (
-                        self.nb_pan_lentgh_right_triangle * self.panel_length
+                        self.nb_pan_lentgh_right_triangle
+                        * self.panel_length
                         + self.horizontal_pose
                         * (self.nb_pan_lentgh_right_triangle - 1)
                     ) > self.right_space:
@@ -957,7 +1010,7 @@ class Roof_implantation_Calculation:
 
                 if self.nb_pan_lentgh_right_triangle < 0:
                     self.nb_pan_lentgh_right_triangle = 0
-            if implantation.panel_implantation_id == 3:
+            if implantation.panel_implantation.value == "Recouverts":
                 if self.left_rest > 0:
                     self.min_dist_left = (
                         (
@@ -982,7 +1035,8 @@ class Roof_implantation_Calculation:
                         )
 
                     while (
-                        self.nb_pan_lentgh_left_triangle * self.panel_length
+                        self.nb_pan_lentgh_left_triangle
+                        * self.panel_length
                         - self.horizontal_pose
                         * (self.nb_pan_lentgh_left_triangle - 1)
                     ) > self.left_space:
@@ -990,7 +1044,8 @@ class Roof_implantation_Calculation:
                             self.nb_pan_lentgh_left_triangle - 1
                         )
                     while (
-                        self.nb_pan_lentgh_left_triangle * self.panel_length
+                        self.nb_pan_lentgh_left_triangle
+                        * self.panel_length
                         - self.horizontal_pose
                         * (self.nb_pan_lentgh_left_triangle - 1)
                     ) < self.left_space:
@@ -1056,7 +1111,8 @@ class Roof_implantation_Calculation:
                         )
 
                     while (
-                        self.nb_pan_lentgh_right_triangle * self.panel_length
+                        self.nb_pan_lentgh_right_triangle
+                        * self.panel_length
                         - self.horizontal_pose
                         * (self.nb_pan_lentgh_right_triangle - 1)
                     ) > self.right_space + self.horizontal_pose:
@@ -1064,7 +1120,8 @@ class Roof_implantation_Calculation:
                             self.nb_pan_lentgh_right_triangle - 1
                         )
                     while (
-                        self.nb_pan_lentgh_right_triangle * self.panel_length
+                        self.nb_pan_lentgh_right_triangle
+                        * self.panel_length
                         - self.horizontal_pose
                         * (self.nb_pan_lentgh_right_triangle - 1)
                     ) < self.right_space + self.horizontal_pose:
@@ -1079,8 +1136,10 @@ class Roof_implantation_Calculation:
                     self.nb_pan_lentgh_right_triangle = 0
 
     def update_tempnbpan(self, implantation, temp_nb_pan, temp_left_space):
-        """ update panel quantity that match available space in triangle width """
-        if implantation.panel_implantation_id == 3:
+        """
+            update panel quantity that match available space in triangle width
+        """
+        if implantation.panel_implantation.value == "Recouverts":
             while (
                 temp_nb_pan * self.panel_length
                 + self.horizontal_pose * (temp_nb_pan - 1)
@@ -1134,13 +1193,13 @@ class Roof_implantation_Calculation:
 
     def reset_pan_in_col(self, roof, implantation):
         """
-            Update amount of panel in each column of panel in each 
+            Update amount of panel in each column of panel in each
             triangle zone.
         """
         A = 0
         i = 0
-        if roof.roof_type_id_id == 2:
-            if implantation.panel_implantation_id == 2:
+        if roof.roof_type_id.value == "trapèze":
+            if implantation.panel_implantation.value == "Espacés":
                 for i in range(1, self.nb_pan_lentgh_left_triangle + 1):
                     while (
                         self.panel_left_triangle[i] * self.panel_width
@@ -1152,7 +1211,10 @@ class Roof_implantation_Calculation:
                                 self.centering
                                 - implantation.abergement_left
                                 + (
-                                    (self.panel_length + self.horizontal_pose)
+                                    (
+                                        self.panel_length
+                                        + self.horizontal_pose
+                                    )
                                     * (i - 1)
                                 )
                             )
@@ -1176,7 +1238,10 @@ class Roof_implantation_Calculation:
                                 self.centering
                                 - implantation.abergement_left
                                 + (
-                                    (self.panel_length + self.horizontal_pose)
+                                    (
+                                        self.panel_length
+                                        + self.horizontal_pose
+                                    )
                                     * (i - 1)
                                 )
                             )
@@ -1198,9 +1263,9 @@ class Roof_implantation_Calculation:
 
                 for i in range(0, A):
                     for i in range(1, self.panel_left_triangle.Length - 1):
-                        self.panel_left_triangle[i] = self.panel_left_triangle[
-                            i + 1
-                        ]
+                        self.panel_left_triangle[
+                            i
+                        ] = self.panel_left_triangle[i + 1]
                 A = 0
 
                 self.right_rest = (
@@ -1226,7 +1291,10 @@ class Roof_implantation_Calculation:
                                 self.right_rest
                                 - implantation.abergement_right
                                 - (
-                                    (self.panel_length + self.horizontal_pose)
+                                    (
+                                        self.panel_length
+                                        + self.horizontal_pose
+                                    )
                                     * (i - 1)
                                 )
                                 - self.panel_length
@@ -1251,7 +1319,10 @@ class Roof_implantation_Calculation:
                                 self.right_rest
                                 - implantation.abergement_right
                                 - (
-                                    (self.panel_length + self.horizontal_pose)
+                                    (
+                                        self.panel_length
+                                        + self.horizontal_pose
+                                    )
                                     * (i - 1)
                                 )
                                 - self.panel_length
@@ -1273,7 +1344,7 @@ class Roof_implantation_Calculation:
 
                 self.panel_right_triangle[i] = 0
 
-            if implantation.panel_implantation_id == 3:
+            if implantation.panel_implantation.value == "Recouverts":
                 for i in range(1, self.nb_pan_lentgh_left_triangle + 1):
                     while (
                         self.panel_left_triangle[i] * self.panel_width
@@ -1285,7 +1356,10 @@ class Roof_implantation_Calculation:
                                 self.centering
                                 - implantation.abergement_left
                                 + (
-                                    (self.panel_length + self.horizontal_pose)
+                                    (
+                                        self.panel_length
+                                        + self.horizontal_pose
+                                    )
                                     * (i - 1)
                                 )
                             )
@@ -1309,7 +1383,10 @@ class Roof_implantation_Calculation:
                                 self.centering
                                 - implantation.abergement_left
                                 + (
-                                    (self.panel_length + self.horizontal_pose)
+                                    (
+                                        self.panel_length
+                                        + self.horizontal_pose
+                                    )
                                     * (i - 1)
                                 )
                             )
@@ -1356,7 +1433,10 @@ class Roof_implantation_Calculation:
                                 self.right_rest
                                 - implantation.abergement_right
                                 - (
-                                    (self.panel_length + self.horizontal_pose)
+                                    (
+                                        self.panel_length
+                                        + self.horizontal_pose
+                                    )
                                     * (i - 1)
                                 )
                                 - self.panel_length
@@ -1381,7 +1461,10 @@ class Roof_implantation_Calculation:
                                 self.right_rest
                                 - implantation.abergement_right
                                 - (
-                                    (self.panel_length + self.horizontal_pose)
+                                    (
+                                        self.panel_length
+                                        + self.horizontal_pose
+                                    )
                                     * (i - 1)
                                 )
                                 - self.panel_length
@@ -1410,8 +1493,8 @@ class Roof_implantation_Calculation:
                 self.nb_pan_lentgh_right_triangle = 0
                 self.nb_pan_lentgh_left_triangle = 0
 
-        if roof.roof_type_id_id == 3:
-            if implantation.panel_implantation_id == 2:
+        if roof.roof_type_id.value == "triangle":
+            if implantation.panel_implantation.value == "Espacés":
                 for i in range(1, self.nb_pan_lentgh_left_triangle + 1):
                     self.vert_centering = (
                         (
@@ -1419,7 +1502,10 @@ class Roof_implantation_Calculation:
                                 self.centering
                                 - implantation.abergement_left
                                 + (
-                                    (self.panel_length + self.horizontal_pose)
+                                    (
+                                        self.panel_length
+                                        + self.horizontal_pose
+                                    )
                                     * (i - 1)
                                 )
                             )
@@ -1490,9 +1576,9 @@ class Roof_implantation_Calculation:
 
                 for i in range(0, A):
                     for i in range(1, self.panel_left_triangle.Length - 1):
-                        self.panel_left_triangle[i] = self.panel_left_triangle[
-                            i + 1
-                        ]
+                        self.panel_left_triangle[
+                            i
+                        ] = self.panel_left_triangle[i + 1]
 
                 for i in range(1, self.nb_pan_lentgh_right_triangle + 1):
                     self.vert_centering = (
@@ -1575,7 +1661,7 @@ class Roof_implantation_Calculation:
                 i += 1
                 self.panel_right_triangle[i] = 0
 
-            if implantation.panel_implantation_id == 3:
+            if implantation.panel_implantation.value == "Recouverts":
                 for i in range(1, self.nb_pan_lentgh_left_triangle + 1):
                     self.vert_centering = (
                         (
@@ -1583,7 +1669,10 @@ class Roof_implantation_Calculation:
                                 self.centering
                                 - implantation.abergement_left
                                 + (
-                                    (self.panel_length + self.horizontal_pose)
+                                    (
+                                        self.panel_length
+                                        + self.horizontal_pose
+                                    )
                                     * (i - 1)
                                 )
                             )
@@ -1626,7 +1715,8 @@ class Roof_implantation_Calculation:
                     else:
                         while (
                             (
-                                self.panel_left_triangle[i] * self.panel_width
+                                self.panel_left_triangle[i]
+                                * self.panel_width
                                 + self.vertical_pose
                                 * (self.panel_left_triangle[i] - 1)
                             )
@@ -1641,7 +1731,8 @@ class Roof_implantation_Calculation:
                             )
                         while (
                             (
-                                self.panel_left_triangle[i] * self.panel_width
+                                self.panel_left_triangle[i]
+                                * self.panel_width
                                 + self.vertical_pose
                                 * (self.panel_left_triangle[i] - 1)
                             )
@@ -1664,9 +1755,9 @@ class Roof_implantation_Calculation:
 
                 for i in range(0, A):
                     for i in range(1, self.panel_left_triangle.Length - 1):
-                        self.panel_left_triangle[i] = self.panel_left_triangle[
-                            i + 1
-                        ]
+                        self.panel_left_triangle[
+                            i
+                        ] = self.panel_left_triangle[i + 1]
 
                 for i in range(1, self.nb_pan_lentgh_right_triangle + 1):
                     self.vert_centering = (
@@ -1759,22 +1850,24 @@ class Roof_implantation_Calculation:
 
     def set_pose(self, implantation):
         """ Set pose values from implantation """
-        if implantation.panel_implantation_id == 1:
+        if implantation.panel_implantation.value == "Côte à côtes":
             self.horizontal_pose = 0
             self.vertical_pose = 0
-        if implantation.panel_implantation_id == 2:
+        if implantation.panel_implantation.value == "Espacés":
             self.vertical_pose = implantation.vertical_spacing
             self.horizontal_pose = implantation.horizontal_spacing
-        if implantation.panel_implantation_id == 3:
+        if implantation.panel_implantation.value == "Recouverts":
             self.vertical_pose = 0 - implantation.vertical_overlapping
             self.horizontal_pose = 0 - implantation.horizontal_overlapping
 
     def update_roof_available_size(self, roof, implantation):
         """ Set used space by amount of panel in width and length """
-        if (implantation.panel_implantation_id == 2) or (
-            implantation.panel_implantation_id == 3
+        if (implantation.panel_implantation.value == "Espacés") or (
+            implantation.panel_implantation.value == "Recouverts"
         ):
-            if (roof.roof_type_id_id == 1) or (roof.roof_type_id_id == 2):
+            if (roof.roof_type_id.value == "rectangle") or (
+                roof.roof_type_id.value == "trapèze"
+            ):
                 self.temp_pan_width = (
                     self.nb_panel_width * self.panel_width
                     + self.vertical_pose * (self.nb_panel_width - 1)
@@ -1786,26 +1879,28 @@ class Roof_implantation_Calculation:
 
     def pan_in_width(self, roof):
         """ Calculate maximum quantity of panel in th roof width"""
-        if roof.roof_type_id_id == 1:
+        if roof.roof_type_id.value == "rectangle":
             self.nb_panel_width = int(self.width / self.panel_width)
-        elif roof.roof_type_id_id == 2:
+        elif roof.roof_type_id.value == "trapèze":
             self.nb_panel_width = int(self.height / self.panel_width)
 
     def pan_in_length(self, roof):
         """ Calculate maximum quantity of panel in th roof length """
-        if roof.roof_type_id_id == 1:
-            self.nb_panel_length = int(self.bottom_length / self.panel_length)
-        elif roof.roof_type_id_id == 2:
+        if roof.roof_type_id.value == "rectangle":
+            self.nb_panel_length = int(
+                self.bottom_length / self.panel_length
+            )
+        elif roof.roof_type_id.value == "trapèze":
             self.nb_panel_length = int(self.top_length / self.panel_length)
 
     def set_pan_in_width(self, roof, implantation):
         """ Update maximum quantity of panel in th roof width"""
-        if implantation.panel_implantation_id == 2:
-            if roof.roof_type_id_id == 1:
+        if implantation.panel_implantation.value == "Espacés":
+            if roof.roof_type_id.value == "rectangle":
                 while self.temp_pan_width > self.width:
                     self.nb_panel_width = self.nb_panel_width - 1
                     self.update_roof_available_size(roof, implantation)
-            if roof.roof_type_id_id == 2:
+            if roof.roof_type_id.value == "trapèze":
                 while self.temp_pan_width < self.height:
                     self.nb_panel_width = self.nb_panel_width + 1
                     self.update_roof_available_size(roof, implantation)
@@ -1813,13 +1908,13 @@ class Roof_implantation_Calculation:
                     self.nb_panel_width = self.nb_panel_width - 1
                     self.update_roof_available_size(roof, implantation)
 
-        if implantation.panel_implantation_id == 3:
-            if roof.roof_type_id_id == 1:
+        if implantation.panel_implantation.value == "Recouverts":
+            if roof.roof_type_id.value == "rectangle":
                 while self.temp_pan_width < self.width:
                     self.nb_panel_width = self.nb_panel_width + 1
                     self.update_roof_available_size(roof, implantation)
                 self.nb_panel_width = self.nb_panel_width - 1
-            if roof.roof_type_id_id == 2:
+            if roof.roof_type_id.value == "trapèze":
                 while self.temp_pan_width > self.height:
                     self.nb_panel_width = self.nb_panel_width - 1
                     self.update_roof_available_size(roof, implantation)
@@ -1830,12 +1925,12 @@ class Roof_implantation_Calculation:
 
     def set_pan_in_length(self, roof, implantation):
         """ Update maximum quantity of panel in th roof length"""
-        if implantation.panel_implantation_id == 2:
-            if roof.roof_type_id_id == 1:
+        if implantation.panel_implantation.value == "Espacés":
+            if roof.roof_type_id.value == "rectangle":
                 while self.temp_pan_length > self.bottom_length:
                     self.nb_panel_length = self.nb_panel_length - 1
                     self.update_roof_available_size(roof, implantation)
-            if roof.roof_type_id_id == 2:
+            if roof.roof_type_id.value == "trapèze":
                 while self.temp_pan_length < self.top_length:
                     self.nb_panel_length = self.nb_panel_length + 1
                     self.update_roof_available_size(roof, implantation)
@@ -1843,13 +1938,13 @@ class Roof_implantation_Calculation:
                     self.nb_panel_length = self.nb_panel_length - 1
                     self.update_roof_available_size(roof, implantation)
 
-        if implantation.panel_implantation_id == 3:
-            if roof.roof_type_id_id == 1:
+        if implantation.panel_implantation.value == "Recouverts":
+            if roof.roof_type_id.value == "rectangle":
                 while self.temp_pan_length < self.bottom_length:
                     self.nb_panel_length = self.nb_panel_length + 1
                     self.update_roof_available_size(roof, implantation)
                 self.nb_panel_length = self.nb_panel_length - 1
-            if roof.roof_type_id_id == 2:
+            if roof.roof_type_id.value == "trapèze":
                 while self.temp_pan_length > self.top_length:
                     self.nb_panel_length = self.nb_panel_length - 1
                     self.update_roof_available_size(roof, implantation)
@@ -1875,7 +1970,7 @@ class Roof_implantation_Calculation:
         abergement_length = 0
         abergement_height = 0
 
-        if roof.roof_type_id_id == 1:
+        if roof.roof_type_id.value == "rectangle":
             for column in range(0, self.nb_panel_length):
                 for ligne in range(0, self.nb_panel_width):
                     self.set_abergement(column, ligne)
@@ -1885,7 +1980,8 @@ class Roof_implantation_Calculation:
                             + column
                             * (self.panel_length + self.horizontal_pose),
                             self.top_rest
-                            + ligne * (self.panel_width + self.vertical_pose),
+                            + ligne
+                            * (self.panel_width + self.vertical_pose),
                             self.panel_length,
                             self.panel_width,
                         ]
@@ -1896,7 +1992,10 @@ class Roof_implantation_Calculation:
         # endregion
 
         # region toit 2 & 3
-        if roof.roof_type_id_id == 2 or roof.roof_type_id_id == 3:
+        if (
+            roof.roof_type_id.value == "trapèze"
+            or roof.roof_type_id.value == "triangle"
+        ):
             for column in range(
                 0,
                 self.nb_panel_length
@@ -1929,7 +2028,9 @@ class Roof_implantation_Calculation:
                             self.panel_length + self.horizontal_pose
                         )
                         if column == 0:
-                            abergement_length += implantation.abergement_left
+                            abergement_length += (
+                                implantation.abergement_left
+                            )
                         elif (
                             column
                             == self.nb_panel_length
@@ -1937,7 +2038,9 @@ class Roof_implantation_Calculation:
                             + self.nb_pan_lentgh_left_triangle
                             - 1
                         ):
-                            abergement_length += implantation.abergement_right
+                            abergement_length += (
+                                implantation.abergement_right
+                            )
                         self.abergement.append(
                             [
                                 x,
@@ -1973,7 +2076,10 @@ class Roof_implantation_Calculation:
                             x = (
                                 self.centering
                                 + column
-                                * (self.panel_length + self.horizontal_pose)
+                                * (
+                                    self.panel_length
+                                    + self.horizontal_pose
+                                )
                                 - self.abergement_left
                             )
                             y = roof.height - (
@@ -2013,11 +2119,17 @@ class Roof_implantation_Calculation:
                         column == self.nb_pan_lentgh_left_triangle
                         and self.nb_pan_lentgh_left_triangle != 0
                     ):
-                        if ligne >= j[self.nb_pan_lentgh_left_triangle - 1]:
+                        if (
+                            ligne
+                            >= j[self.nb_pan_lentgh_left_triangle - 1]
+                        ):
                             x = (
                                 self.centering
                                 + column
-                                * (self.panel_length + self.horizontal_pose)
+                                * (
+                                    self.panel_length
+                                    + self.horizontal_pose
+                                )
                                 - self.abergement_left
                             )
                             y = roof.height - (
@@ -2044,7 +2156,10 @@ class Roof_implantation_Calculation:
                             x = (
                                 self.centering
                                 + (column - 1)
-                                * (self.panel_length + self.horizontal_pose)
+                                * (
+                                    self.panel_length
+                                    + self.horizontal_pose
+                                )
                                 + self.panel_length
                             )
                             y = roof.height - (
@@ -2069,7 +2184,10 @@ class Roof_implantation_Calculation:
                                 self.centering
                                 - self.abergement_left
                                 + column
-                                * (self.panel_length + self.horizontal_pose)
+                                * (
+                                    self.panel_length
+                                    + self.horizontal_pose
+                                )
                             )
                             y = roof.height - (
                                 self.panel_width
@@ -2122,14 +2240,18 @@ class Roof_implantation_Calculation:
                                     self.panel_width
                                     + self.bottom_rest
                                     + ligne
-                                    * (self.panel_width + self.vertical_pose)
+                                    * (
+                                        self.panel_width
+                                        + self.vertical_pose
+                                    )
                                 )
                                 self.abergement.append(
                                     [
                                         x,
                                         y,
                                         self.abergement_right,
-                                        self.panel_width + self.vertical_pose,
+                                        self.panel_width
+                                        + self.vertical_pose,
                                     ]
                                 )
 
@@ -2225,7 +2347,9 @@ class Roof_implantation_Calculation:
 
         if column == 0:
             x = self.left_rest - self.abergement_left
-            y = self.top_rest + ligne * (self.panel_width + self.vertical_pose)
+            y = self.top_rest + ligne * (
+                self.panel_width + self.vertical_pose
+            )
             abergement_height = self.panel_width + self.vertical_pose
             if ligne == self.nb_panel_width - 1:
                 abergement_height = self.panel_width
@@ -2239,7 +2363,9 @@ class Roof_implantation_Calculation:
                 + column * (self.panel_length + self.horizontal_pose)
                 + self.panel_length
             )
-            y = self.top_rest + ligne * (self.panel_width + self.vertical_pose)
+            y = self.top_rest + ligne * (
+                self.panel_width + self.vertical_pose
+            )
             abergement_height = self.panel_width + self.vertical_pose
             if ligne == self.nb_panel_width - 1:
                 abergement_height = self.panel_width

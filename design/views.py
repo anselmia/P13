@@ -78,7 +78,10 @@ def index(request, project_name=""):
                 )
                 for mpp_index in range(1, 4):
                     configs[
-                        "config" + str(config_index) + "_mpp" + str(mpp_index)
+                        "config"
+                        + str(config_index)
+                        + "_mpp"
+                        + str(mpp_index)
                     ] = MPPForm(initial={"index": mpp_index,})
             else:
                 mpps_in_conf = MPP.objects.filter(config_id=config.id)
@@ -142,7 +145,10 @@ def index(request, project_name=""):
                 )
                 for mpp_index in range(1, 4):
                     configs[
-                        "config" + str(config_index) + "_mpp" + str(mpp_index)
+                        "config"
+                        + str(config_index)
+                        + "_mpp"
+                        + str(mpp_index)
                     ] = MPPForm(initial={"index": mpp_index,})
 
     city = CityForm()
@@ -172,8 +178,8 @@ def get_localisation_data(request):
         :return JsonResponse with status and localisation if ok:
     """
     if request.method == "POST":
-        search_text = request.POST["search"]
         try:
+            search_text = request.POST["search"]
             loc = Localisation(search_text).data
             return JsonResponse({"status": True, "loc": loc,})
         except:
@@ -189,12 +195,11 @@ def add_city(request):
         :return JsonResponse with status and added city name and id if ok:
     """
     if request.method == "POST":
-        city = CityForm(request.POST)
         try:
+            city = CityForm(request.POST)
             if city.is_valid():
                 city.save()
                 city_added = City.objects.get(name=request.POST["name"])
-                messages.success(request, "La ville a été créée")
                 return JsonResponse(
                     {
                         "success": True,
@@ -207,7 +212,7 @@ def add_city(request):
         except:  # pragma: no cover
             return JsonResponse({"errors": city.errors})
 
-    return HttpResponse()
+    return JsonResponse({"errors": True})
 
 
 @login_required
@@ -222,7 +227,9 @@ def add_panel(request):
         try:
             if panel.is_valid():
                 panel.save()
-                panel_added = Panel.objects.get(model=request.POST["model"])
+                panel_added = Panel.objects.get(
+                    model=request.POST["model"]
+                )
                 return JsonResponse(
                     {
                         "success": True,
@@ -246,8 +253,8 @@ def add_inverter(request):
         :return JsonResponse with status and inverter model and id if ok:
     """
     if request.method == "POST":
-        inverter = InverterForm(request.POST)
         try:
+            inverter = InverterForm(request.POST)
             if inverter.is_valid():
                 inverter.save()
                 inverter_added = Inverter.objects.get(
@@ -261,9 +268,9 @@ def add_inverter(request):
                     }
                 )
             else:
-                return JsonResponse({"errors": inverter_added.errors})
+                return JsonResponse({"errors": inverter.errors})
         except:  # pragma: no cover
-            return JsonResponse({"errors": inverter_added.errors})
+            return JsonResponse({"errors": inverter.errors})
 
     return HttpResponse()
 
@@ -319,8 +326,8 @@ def valid_roof(request):
         :return JsonResponse with status and errors if not ok:
     """
     if request.method == "POST":
-        roof = RoofForm(request.POST)
         try:
+            roof = RoofForm(request.POST)
             if roof.is_valid():
                 return JsonResponse({"success": True})
             else:
@@ -341,7 +348,9 @@ def save_roof(request):
         try:
             if roof.is_valid() and request.session["project_id"]:
                 roof = roof.save(commit=False)
-                project = Project.objects.get(id=request.session["project_id"])
+                project = Project.objects.get(
+                    id=request.session["project_id"]
+                )
                 roof.project_id = project
                 roof.save()
                 saved_roof = Roof.objects.get(project_id=project.id)
@@ -424,7 +433,9 @@ def save_configuration(request):
         try:
             if configuration.is_valid():
                 configuration = configuration.save(commit=False)
-                project = Project.objects.get(id=request.session["project_id"])
+                project = Project.objects.get(
+                    id=request.session["project_id"]
+                )
                 configuration.project_id = project
                 configuration.save()
                 saved_config = Config.objects.get(
@@ -468,7 +479,9 @@ def save_mpp(request):
         try:
             if mpp.is_valid():
                 mpp = mpp.save(commit=False)
-                config = Config.objects.get(id=request.session["config_id"])
+                config = Config.objects.get(
+                    id=request.session["config_id"]
+                )
                 mpp.config_id = config
                 mpp.save()
                 return JsonResponse({"success": True})
@@ -508,7 +521,10 @@ def calcul_configuration(request):
         try:
             configuration = Calculation(data)
             return JsonResponse(
-                {"success": True, "configuration_values": configuration.data}
+                {
+                    "success": True,
+                    "configuration_values": configuration.data,
+                }
             )
         except:
             return JsonResponse({"errors": True})

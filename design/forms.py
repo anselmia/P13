@@ -31,7 +31,9 @@ class ProjectForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProjectForm, self).__init__(*args, **kwargs)
 
-        self.fields["name"].widget.attrs.update({"class": "container_100 cn"})
+        self.fields["name"].widget.attrs.update(
+            {"class": "container_100 cn"}
+        )
         self.fields["name"].required = True
         self.fields["user_id"].required = False
 
@@ -40,7 +42,9 @@ class ProjectForm(ModelForm):
     )
     city_id.widget.attrs["class"] = "round_input container_100 cn"
     panel_id = forms.ModelChoiceField(
-        queryset=Panel.objects.all(), label="Type de panneaux", required=True,
+        queryset=Panel.objects.all(),
+        label="Type de panneaux",
+        required=True,
     )
     panel_id.widget.attrs["class"] = "round_input container_100 cn"
 
@@ -127,27 +131,37 @@ class PanelForm(ModelForm):
         self.fields["cell_surface"].required = False
 
     technology_id = forms.ModelChoiceField(
-        queryset=Technology.objects.all(), label="Technologie", required=True
+        queryset=Technology.objects.all(),
+        label="Technologie",
+        required=True,
     )
     technology_id.widget.attrs["class"] = "round_input container_100"
     manufacturer_id = forms.ModelChoiceField(
-        queryset=Manufacturer.objects.all(), label="Fabricant", required=True
+        queryset=Manufacturer.objects.all(),
+        label="Fabricant",
+        required=True,
     )
     manufacturer_id.widget.attrs["class"] = "round_input container_100"
     temperature_factor_current_type = forms.ModelChoiceField(
-        queryset=Temperature_coefficient.objects.all(), label="", required=True
+        queryset=Temperature_coefficient.objects.all(),
+        label="",
+        required=True,
     )
     temperature_factor_current_type.widget.attrs[
         "class"
     ] = "round_input container_100"
     temperature_factor_voltage_type = forms.ModelChoiceField(
-        queryset=Temperature_coefficient.objects.all(), label="", required=True
+        queryset=Temperature_coefficient.objects.all(),
+        label="",
+        required=True,
     )
     temperature_factor_voltage_type.widget.attrs[
         "class"
     ] = "round_input container_100"
     temperature_factor_power_type = forms.ModelChoiceField(
-        queryset=Temperature_coefficient.objects.all(), label="", required=True
+        queryset=Temperature_coefficient.objects.all(),
+        label="",
+        required=True,
     )
     temperature_factor_power_type.widget.attrs[
         "class"
@@ -205,6 +219,7 @@ class RoofForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(RoofForm, self).__init__(*args, **kwargs)
+        self.fields["roof_type_id"].required = True
         self.fields["bottom_length"].required = True
         self.fields["bottom_length"].widget.attrs.update({"value": 0})
         self.fields["top_length"].required = False
@@ -247,14 +262,17 @@ class RoofForm(ModelForm):
         # data from the form is fetched using super function
         super(RoofForm, self).clean()
 
-        roof_type_id = self.cleaned_data.get("roof_type_id")
+        roof_type = self.cleaned_data.get("roof_type_id")
         bottom_length = self.cleaned_data.get("bottom_length")
         top_length = self.cleaned_data.get("top_length")
         width = self.cleaned_data.get("width")
         height = self.cleaned_data.get("height")
 
-        if roof_type_id is not None:
-            if roof_type_id.id == 1 or roof_type_id.id == 3:
+        if roof_type is not None:
+            if (
+                roof_type.value == "rectangle"
+                or roof_type.value == "triangle"
+            ):
                 if (
                     bottom_length is None
                     or bottom_length == ""
@@ -267,7 +285,7 @@ class RoofForm(ModelForm):
                     self._errors["width"] = self.error_class(
                         ["Veuillez vérifier la valeur"]
                     )
-                if roof_type_id.id == 3:
+                if roof_type.value == "triangle":
                     if not (
                         bottom_length is None
                         or bottom_length == ""
@@ -279,16 +297,21 @@ class RoofForm(ModelForm):
                         try:
                             height = math.sqrt(
                                 (width * width)
-                                - ((bottom_length / 2) * (bottom_length / 2))
+                                - (
+                                    (bottom_length / 2)
+                                    * (bottom_length / 2)
+                                )
                             )
                         except:
-                            self._errors["bottom_length"] = self.error_class(
+                            self._errors[
+                                "bottom_length"
+                            ] = self.error_class(
                                 ["Veuillez vérifier la valeur"]
                             )
                             self._errors["width"] = self.error_class(
                                 ["Veuillez vérifier la valeur"]
                             )
-            elif roof_type_id.id == 2:
+            elif roof_type.value == "trapèze":
                 if (
                     bottom_length is None
                     or bottom_length == ""
@@ -297,7 +320,11 @@ class RoofForm(ModelForm):
                     self._errors["bottom_length"] = self.error_class(
                         ["Veuillez vérifier la valeur"]
                     )
-                if top_length is None or top_length == "" or top_length <= 0:
+                if (
+                    top_length is None
+                    or top_length == ""
+                    or top_length <= 0
+                ):
                     self._errors["top_length"] = self.error_class(
                         ["Veuillez vérifier la valeur"]
                     )
@@ -406,7 +433,9 @@ class ImplantationForm(ModelForm):
         )
 
     panel_orientation = forms.ModelChoiceField(
-        queryset=Orientation.objects.all(), label="Orientation", required=True,
+        queryset=Orientation.objects.all(),
+        label="Orientation",
+        required=True,
     )
     panel_implantation = forms.ModelChoiceField(
         queryset=Pose.objects.all(), label="Pose", required=True,
@@ -416,7 +445,9 @@ class ImplantationForm(ModelForm):
         # data from the form is fetched using super function
         super(ImplantationForm, self).clean()
 
-        vertical_overlapping = self.cleaned_data.get("vertical_overlapping")
+        vertical_overlapping = self.cleaned_data.get(
+            "vertical_overlapping"
+        )
         horizontal_overlapping = self.cleaned_data.get(
             "horizontal_overlapping"
         )
@@ -425,7 +456,7 @@ class ImplantationForm(ModelForm):
         panel_implantation = self.cleaned_data.get("panel_implantation")
 
         if panel_implantation is not None:
-            if panel_implantation.id == 2:
+            if panel_implantation.value == "Espacés":
                 if (
                     vertical_spacing is None
                     or vertical_spacing == ""
@@ -442,23 +473,23 @@ class ImplantationForm(ModelForm):
                     self._errors["horizontal_spacing"] = self.error_class(
                         ["Veuillez vérifier la valeur"]
                     )
-            elif panel_implantation.id == 3:
+            elif panel_implantation.value == "Recouverts":
                 if (
                     vertical_overlapping is None
                     or vertical_overlapping == ""
                     or vertical_overlapping < 0
                 ):
-                    self._errors["vertical_overlapping"] = self.error_class(
-                        ["Veuillez vérifier la valeur"]
-                    )
+                    self._errors[
+                        "vertical_overlapping"
+                    ] = self.error_class(["Veuillez vérifier la valeur"])
                 if (
                     horizontal_overlapping is None
                     or horizontal_overlapping == ""
                     or horizontal_overlapping < 0
                 ):
-                    self._errors["horizontal_overlapping"] = self.error_class(
-                        ["Veuillez vérifier la valeur"]
-                    )
+                    self._errors[
+                        "horizontal_overlapping"
+                    ] = self.error_class(["Veuillez vérifier la valeur"])
         # return any errors if found
         return self.cleaned_data
 
@@ -483,6 +514,7 @@ class ConfigForm(ModelForm):
         self.fields["inverter_id"].widget.attrs.update(
             {"class": "container_100 round_input cn config"}
         )
+        self.fields["index"].required = True
 
     inverter_id = forms.ModelChoiceField(
         queryset=Inverter.objects.all(), label="Onduleur", required=True
@@ -510,3 +542,4 @@ class MPPForm(ModelForm):
         self.fields["parallel"].widget.attrs.update(
             {"value": 0, "class": "cn config"}
         )
+        self.fields["index"].required = True

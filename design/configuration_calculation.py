@@ -5,9 +5,9 @@ import json
 
 class Calculation:
     """
-        Class to realize calculation regarding sizing of PVsystem connected to a given inverter.
+        Class to realize calculation regarding sizing of
+        PVsystem connected to a given inverter.
         User is allowed to build up to 3 differents configurations.
-
     """
 
     def __init__(self, datas):
@@ -23,8 +23,12 @@ class Calculation:
 
         self.calculate_tot_panel()
         self.calculate_tot_ac_nom_power()
-        self.rest_panel = self.tot_installed_panel - self.tot_configured_panel
-        self.tot_power = (self.tot_installed_panel * self.panel.power) / 1000
+        self.rest_panel = (
+            self.tot_installed_panel - self.tot_configured_panel
+        )
+        self.tot_power = (
+            self.tot_installed_panel * self.panel.power
+        ) / 1000
 
         self.panel = None
         for config in self.configs:
@@ -56,11 +60,14 @@ class Calculation:
 
 class Configuration:
     """
-    A configuration represent an amout of inverters and panels connected together.
-    Target is to verify electrical matching of both systems using various calculations at
-    a working temperature between -10 to 70°C
+        A configuration represent an amout of inverters and panels
+        connected together.
+        Target is to verify electrical matching of both systems using
+        various calculations at a working temperature between
+        -10 to 70°C
 
-    Will return a list of errors regarding problematic fields using this configuration.
+        Will return a list of errors regarding problematic fields using
+        this configuration.
     """
 
     def __init__(self, config, panel):
@@ -94,14 +101,20 @@ class Configuration:
             self.inverter.dc_power_max
         )
         self.tot_dc_power = (
-            self.inverter_quantity * self.tot_panel * self.panel.power / 1000
+            self.inverter_quantity
+            * self.tot_panel
+            * self.panel.power
+            / 1000
         )
-        self.power_ratio = (self.tot_dc_power / self.tot_nom_ac_power) * 100
+        self.power_ratio = (
+            self.tot_dc_power / self.tot_nom_ac_power
+        ) * 100
 
         self.errors = []
         for mpp in self.mpps:
             if not (
-                mpp.mpp_string_voltage_at_70 > self.inverter.mpp_voltage_min
+                mpp.mpp_string_voltage_at_70
+                > self.inverter.mpp_voltage_min
                 and mpp.mpp_string_voltage_at_70
                 < self.inverter.mpp_voltage_max
             ):
@@ -115,7 +128,8 @@ class Configuration:
                     ]
                 )
             if not (
-                mpp.mpp_string_voltage_at__10 > self.inverter.mpp_voltage_min
+                mpp.mpp_string_voltage_at__10
+                > self.inverter.mpp_voltage_min
                 and mpp.mpp_string_voltage_at__10
                 < self.inverter.mpp_voltage_max
             ):
@@ -142,7 +156,8 @@ class Configuration:
                     ]
                 )
             if not (
-                mpp.vco_string_voltage_at__10 < self.inverter.dc_voltage_max
+                mpp.vco_string_voltage_at__10
+                < self.inverter.dc_voltage_max
                 and mpp.vco_string_voltage_at__10 < self.panel.voltage_max
             ):
                 self.errors.append(
@@ -188,7 +203,8 @@ class MPP:
     Maximum Power Point tracking
     Related to an individual input of the inverter, this one 
     will track the best power curve to achieve the maximum output power.
-    An mpp instance is a set of serial connected panel and parallel connection quantity.
+    An mpp instance is a set of serial connected panel and parallel
+    connection quantity.
     """
 
     def __init__(self, mpp, panel):

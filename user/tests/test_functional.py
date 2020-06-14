@@ -174,7 +174,9 @@ class RegisterLiveTestCase(StaticLiveServerTestCase):
         submit.send_keys(Keys.RETURN)
 
         wait = WebDriverWait(selenium, 10)
-        wait.until(EC.presence_of_element_located((By.CLASS_NAME, "about2")))
+        wait.until(
+            EC.presence_of_element_located((By.CLASS_NAME, "about2"))
+        )
 
         current_url = selenium.current_url
         if (selenium.current_url[len(selenium.current_url) - 1]) == "/":
