@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .forms import (
+from design.forms import (
     ProjectForm,
     CityForm,
     PanelForm,
@@ -286,10 +286,13 @@ def valid_project(request):
         project = ProjectForm(request.POST)
         try:
             if project.is_valid():
+                request.session["panel_id"] = project.cleaned_data[
+                    "panel_id"
+                ].id
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": project.errors})
-        except:
+        except Exception as e:
             return JsonResponse({"errors": project.errors})
 
 
@@ -327,12 +330,15 @@ def valid_roof(request):
     """
     if request.method == "POST":
         try:
-            roof = RoofForm(request.POST)
+            roof = RoofForm(
+                request.POST,
+                panel=Panel.objects.get(id=request.session["panel_id"]),
+            )
             if roof.is_valid():
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": roof.errors})
-        except:
+        except Exception as e:
             return JsonResponse({"errors": roof.errors})
 
 
@@ -344,7 +350,10 @@ def save_roof(request):
         :return JsonResponse with status and errors if not ok:
     """
     if request.method == "POST":
-        roof = RoofForm(request.POST)
+        roof = RoofForm(
+            request.POST,
+            panel=Panel.objects.get(id=request.session["panel_id"]),
+        )
         try:
             if roof.is_valid() and request.session["project_id"]:
                 roof = roof.save(commit=False)

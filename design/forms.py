@@ -1,5 +1,7 @@
 """ Import """
+import math
 from django import forms
+from django.forms import ModelForm
 from .models import (
     Panel,
     Technology,
@@ -17,14 +19,14 @@ from .models import (
     Project,
     AC_connexion,
 )
-from django.forms import ModelForm
-import math
 
 
 class ProjectForm(ModelForm):
     """ Form related to Project Model """
 
     class Meta:
+        """ Meta """
+
         model = Project
         fields = ("name", "city_id", "panel_id", "user_id")
 
@@ -53,6 +55,8 @@ class CityForm(ModelForm):
     """ Form related to City Model """
 
     class Meta:
+        """ Meta """
+
         model = City
         fields = (
             "name",
@@ -80,6 +84,8 @@ class PanelForm(ModelForm):
     """ Form related to Panel Model """
 
     class Meta:
+        """ Meta """
+
         model = Panel
         fields = (
             "model",
@@ -172,6 +178,8 @@ class InverterForm(ModelForm):
     """ Form related to Inverter Model """
 
     class Meta:
+        """ Meta """
+
         model = Inverter
         fields = (
             "model",
@@ -206,6 +214,8 @@ class RoofForm(ModelForm):
     """ Form related to Roof Model """
 
     class Meta:
+        """ Meta """
+
         model = Roof
         fields = (
             "roof_type_id",
@@ -218,6 +228,7 @@ class RoofForm(ModelForm):
         )
 
     def __init__(self, *args, **kwargs):
+        self.panel = kwargs.pop("panel")
         super(RoofForm, self).__init__(*args, **kwargs)
         self.fields["roof_type_id"].required = True
         self.fields["bottom_length"].required = True
@@ -251,12 +262,12 @@ class RoofForm(ModelForm):
             {"class": "container_100 round_input "}
         )
 
-    roof_type_id = forms.ModelChoiceField(
-        queryset=Roof_type.objects.all(),
-        label="Type de toîture",
-        required=True,
-    )
-    roof_type_id.widget.attrs["class"] = "round_input container_100"
+        roof_type_id = forms.ModelChoiceField(
+            queryset=Roof_type.objects.all(),
+            label="Type de toîture",
+            required=True,
+        )
+        roof_type_id.widget.attrs["class"] = "round_input container_100"
 
     def clean(self):
         # data from the form is fetched using super function
@@ -284,6 +295,18 @@ class RoofForm(ModelForm):
                 if width is None or width == "" or width <= 0:
                     self._errors["width"] = self.error_class(
                         ["Veuillez vérifier la valeur"]
+                    )
+                if bottom_length <= (
+                    self.panel.width / 1000
+                ) and bottom_length <= (self.panel.length / 1000):
+                    self._errors["bottom_length"] = self.error_class(
+                        ["Inférieur à la taille du panneau sélectionné"]
+                    )
+                if width <= (self.panel.width / 1000) and width <= (
+                    self.panel.length / 1000
+                ):
+                    self._errors["width"] = self.error_class(
+                        ["Inférieur à la taille du panneau sélectionné"]
                     )
                 if roof_type.value == "triangle":
                     if not (
@@ -331,6 +354,19 @@ class RoofForm(ModelForm):
                 if height is None or height == "" or height <= 0:
                     self._errors["height"] = self.error_class(
                         ["Veuillez vérifier la valeur"]
+                    )
+
+                if top_length <= (
+                    self.panel.width / 1000
+                ) and top_length <= (self.panel.length / 1000):
+                    self._errors["top_length"] = self.error_class(
+                        ["Inférieur à la taille du panneau sélectionné"]
+                    )
+                if height <= (self.panel.width / 1000) and height <= (
+                    self.panel.length / 1000
+                ):
+                    self._errors["height"] = self.error_class(
+                        ["Inférieur à la taille du panneau sélectionné"]
                     )
 
                 if not (

@@ -8,7 +8,8 @@ body .login {
 }
 
 .login_height {
-  height: 50vh;
+  min-height: 100px;
+  overflow: hidden;
 }
 
 .log {

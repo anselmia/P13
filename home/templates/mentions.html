@@ -1,80 +1,113 @@
 {% extends "layouts/default.html" %}
 {% load static %}
 {% block body %}
-<section class="page-section bg-secondary result h-100">
-    <div class="container-fluid col-8 col-sm-8">
-        <div class="card mentions">
-            <div class="row text-center justify-content-center">
-                <div class="col-auto">
-                    <h1 class="rounded p-1"><strong>Mention légale</strong></h1>
+<div class="container-fluid align-items-center justify-content-center login" style="height: -webkit-fill-available;">
+    <div class="h-100 justify-content-center innerlogin">
+        <div class="col-sm-10 col-md-6 col-lg-4 mx-auto my-5 text-center cn login_height">
+            <div class="form-style-10 mb-0">
+                <h1 class="rounded p-4"><strong>Mention légale</strong></h1>
+                <br>
+                <br>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p>Nom:</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p>ANSELMI</p>
+                    </div>
                 </div>
-            </div>
-            <br>
-            <br>
-            <div class="row">
-                <div class="col-lg-6">
-                    <p>Nom:</p>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p>Prénom:</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p>Arnaud</p>
+                    </div>
                 </div>
-                <div class="col-lg-6">
-                    <p>ANSELMI</p>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p>Adresse:</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p>1 rue des lillas, Nice</p>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <p>Prénom:</p>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p>Téléphone:</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p>06 00 00 00 00</p>
+                    </div>
                 </div>
-                <div class="col-lg-6">
-                    <p>Arnaud</p>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p>Coordonnées de l'hebergeur:</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p>Heroku </br>
+                            50 Fremont St.</br>
+                            Suite 300</br>
+                            San Francisco, CA</br>
+                            94105</p>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <p>Adresse:</p>
+                <br>
+                <hr class="divider my-4">
+                <br>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p>Template utilisé: </p>
+                    </div>
+                    <div class="col-lg-6">
+                        <a href="https://blackrockdigital.github.io/startbootstrap-creative/" title="template"
+                            class="w-100 btn btn-primary mb-2">startbootstrap-creative</a>
+                    </div>
                 </div>
-                <div class="col-lg-6">
-                    <p>1 rue des lillas, Nice</p>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p>Images utilisées:</p>
+                    </div>
+                    <div class="col-lg-6 ">
+                        <a href="https://pixabay.com/fr/" title="images" class="w-100 btn btn-primary mb-2">Photos,
+                            icone,
+                            couleur</a></br>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <p>Téléphone:</p>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p>Icônes utilisés:</p>
+                    </div>
+                    <div class="col-lg-6 ">
+                        <a href="https://fontawesome.com/icons" class="w-100 btn btn-primary" title="Icônes">Icones des
+                            menus</a>
+                    </div>
                 </div>
-                <div class="col-lg-6">
-                    <p>06 00 00 00 00</p>
+                <br>
+                <hr class="divider my-4">
+                <br>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p>API PVGIS :</p>
+                    </div>
+                    <div class="col-lg-6 ">
+                        <a href="https://ec.europa.eu/jrc/en/pvgis" class="w-100 btn btn-primary" title="Pvgis API">Lien
+                            vers
+                            la documentation</a>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <p>Coordonnées de l'hebergeur:</p>
-                </div>
-                <div class="col-lg-6">
-                    <p>Heroku </br>
-                        50 Fremont St.</br>
-                        Suite 300</br>
-                        San Francisco, CA</br>
-                        94105</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <p>Template utilisé: </p>
-                </div>
-                <div class="col-lg-6">
-                    <a href="https://blackrockdigital.github.io/startbootstrap-creative/" title="template"
-                        class="btn btn-primary">startbootstrap-creative</a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <p>Chartes graphique utilisé:</p>
-                </div>
-                <div class="col-lg-6">
-                    <a href="https://company-82435.frontify.com/d/6Yy9WFJdtp8j/pur-beurre-style-guide"
-                        title="Charte Graphique" class="btn btn-primary mb-2">Photos, icone, couleur</a></br>
-                    <a href="https://fontawesome.com/icons" class="btn btn-primary" title="Icônes">Icones des menus</a>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p>API Open Cage Data:</p>
+                    </div>
+                    <div class="col-lg-6 ">
+                        <a href="https://opencagedata.com/" class="w-100 btn btn-primary" title="OpenCageData API">Lien
+                            vers
+                            la documentation</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
 {% endblock body %}

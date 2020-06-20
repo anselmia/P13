@@ -153,3 +153,9 @@
         font-size: 1.5rem;
     }
 }
+
+@media (max-width: 550px) {
+    .about {
+        padding: 1rem;
+    }
+}

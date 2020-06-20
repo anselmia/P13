@@ -95,6 +95,8 @@ section {
   font-weight: 500;
   margin-bottom: 20px;
   padding: 1.2rem;
+  min-height: 10px;
+  overflow: hidden;
 }
 
 .orange_bloc_small {
@@ -6715,6 +6717,7 @@ section.masthead h1 {
 section.masthead h2 {
   color: #1c3b77;
   font-size: 0.8rem;
+  margin-top: 171px;
 }
 
 .masthead .messages li {
