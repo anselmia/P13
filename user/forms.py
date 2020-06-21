@@ -41,14 +41,18 @@ class Project_information(forms.Form):
     name = forms.CharField(
         max_length=150,
         widget=forms.TextInput(
-            attrs={"name": "name", "readonly": True, "label": "Nom du projet",}
+            attrs={
+                "name": "name",
+                "readonly": True,
+                "label": "Nom du projet",
+            }
         ),
     )
 
     site = forms.CharField(
         max_length=150,
         widget=forms.TextInput(
-            attrs={"name": "city", "readonly": True, "label": "Ville",}
+            attrs={"name": "city", "readonly": True, "label": "Ville"}
         ),
     )
 

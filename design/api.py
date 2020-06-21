@@ -37,7 +37,7 @@ class Localisation:
                             "lon": city["geometry"]["lng"],
                         }
                     return datas
-        except:
+        except Exception:
             return []
 
 
@@ -71,7 +71,7 @@ class EnergyData:
 
         try:
             request = requests.get(self.pvgis, params=self.parameters)
-        except:
+        except Exception:
             return []
 
         text = json.loads(request.text)
@@ -96,5 +96,5 @@ class EnergyData:
                     "yearly_irrad": yearly_irrad,
                     "ratio": ratio,
                 }
-            except:
+            except Exception:
                 return []

@@ -7,7 +7,8 @@ class Production:
 
     def __init__(self, datas):
         """
-        init expect : panel's id, site's id, roof orientation and tilt, total installed panel
+        init expect : panel's id, site's id, roof orientation and tilt,
+        total installed panel
         """
         self.monthly_prod = [0] * 12
         self.month = [

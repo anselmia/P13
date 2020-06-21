@@ -32,17 +32,19 @@ def profile(request):
                 form.save()
                 messages.success(
                     request,
-                    "Les modifications de votre profil ont bien été enregistrées",
+                    "Les modifications de votre profil ont bien \
+                    été enregistrées",
                 )
-        except:  # pragma: no cover
+        except Exception:  # pragma: no cover
             messages.error(
                 request,
-                "Erreurs durant l'enregistrement des informations de votre profil",
+                "Erreurs durant l'enregistrement des informations \
+                de votre profil",
             )
     else:
         form = UserUpdateForm(instance=request.user)
 
-    return render(request, "profile.html", {"form": form,})
+    return render(request, "profile.html", {"form": form})
 
 
 def login(request):
@@ -82,16 +84,16 @@ def login(request):
                             return render(
                                 request, "login.html", {"form": form}
                             )
-                    except:  # pragma: no cover
+                    except Exception:  # pragma: no cover
                         redirect(reverse("home:index"))
-            except:  # pragma: no cover
+            except Exception:  # pragma: no cover
                 messages.error(request, "Erreur de login.")
                 return render(request, "login.html", {"form": form})
         else:
             form = ConnexionForm(None)
             request.session["previous"] = request.META.get("HTTP_REFERER")
 
-        return render(request, "login.html", {"form": form,})
+        return render(request, "login.html", {"form": form})
 
 
 def register(request):
@@ -112,16 +114,18 @@ def register(request):
                 form.save()
                 username = form.cleaned_data.get("username")
                 raw_password = form.cleaned_data.get("password1")
-                user = authenticate(username=username, password=raw_password)
+                user = authenticate(
+                    username=username, password=raw_password
+                )
                 auth_login(request, user)
                 return redirect(reverse("home:index"))
 
-        except:
+        except Exception:
             messages.error(request, "Votre compte n'a pas été crée.")
     else:
         form = SignUpForm(None)
 
-    return render(request, "register.html", {"form": form,})
+    return render(request, "register.html", {"form": form})
 
 
 @login_required
@@ -155,7 +159,7 @@ def project(request):
     return render(
         request,
         "projects.html",
-        {"title": "Mes Projets", "projects": formset,},
+        {"title": "Mes Projets", "projects": formset},
     )
 
 

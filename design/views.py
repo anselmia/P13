@@ -12,7 +12,6 @@ from design.forms import (
 from django.contrib.auth.decorators import login_required
 from design.api import Localisation
 from django.http import JsonResponse, HttpResponse
-from django.contrib import messages
 from design.models import (
     Panel,
     Inverter,
@@ -74,7 +73,7 @@ def index(request, project_name=""):
         for config_index in range(1, 4):
             if config_index not in configs_index:
                 configs["config" + str(config_index)] = ConfigForm(
-                    initial={"index": config_index,}
+                    initial={"index": config_index}
                 )
                 for mpp_index in range(1, 4):
                     configs[
@@ -82,7 +81,7 @@ def index(request, project_name=""):
                         + str(config_index)
                         + "_mpp"
                         + str(mpp_index)
-                    ] = MPPForm(initial={"index": mpp_index,})
+                    ] = MPPForm(initial={"index": mpp_index})
             else:
                 mpps_in_conf = MPP.objects.filter(config_id=config.id)
                 mpps_index = [mpp.index for mpp in mpps_in_conf]
@@ -93,7 +92,7 @@ def index(request, project_name=""):
                             + str(config_index)
                             + "_mpp"
                             + str(mpp_index)
-                        ] = MPPForm(initial={"index": mpp_index,})
+                        ] = MPPForm(initial={"index": mpp_index})
 
         project = ProjectForm(
             initial={
@@ -141,7 +140,7 @@ def index(request, project_name=""):
         for config_index in range(1, 4):
             for mpp_index in range(1, 4):
                 configs["config" + str(config_index)] = ConfigForm(
-                    initial={"index": config_index,}
+                    initial={"index": config_index}
                 )
                 for mpp_index in range(1, 4):
                     configs[
@@ -149,7 +148,7 @@ def index(request, project_name=""):
                         + str(config_index)
                         + "_mpp"
                         + str(mpp_index)
-                    ] = MPPForm(initial={"index": mpp_index,})
+                    ] = MPPForm(initial={"index": mpp_index})
 
     city = CityForm()
     panel = PanelForm()
@@ -181,8 +180,8 @@ def get_localisation_data(request):
         try:
             search_text = request.POST["search"]
             loc = Localisation(search_text).data
-            return JsonResponse({"status": True, "loc": loc,})
-        except:
+            return JsonResponse({"status": True, "loc": loc})
+        except Exception:
             return JsonResponse({"status": False})
     return JsonResponse({"status": False})
 
@@ -209,7 +208,7 @@ def add_city(request):
                 )
             else:
                 return JsonResponse({"errors": city.errors})
-        except:  # pragma: no cover
+        except Exception:  # pragma: no cover
             return JsonResponse({"errors": city.errors})
 
     return JsonResponse({"errors": True})
@@ -239,7 +238,7 @@ def add_panel(request):
                 )
             else:
                 return JsonResponse({"errors": panel.errors})
-        except:  # pragma: no cover
+        except Exception:  # pragma: no cover
             return JsonResponse({"errors": panel.errors})
 
     return HttpResponse()
@@ -269,7 +268,7 @@ def add_inverter(request):
                 )
             else:
                 return JsonResponse({"errors": inverter.errors})
-        except:  # pragma: no cover
+        except Exception:  # pragma: no cover
             return JsonResponse({"errors": inverter.errors})
 
     return HttpResponse()
@@ -292,7 +291,7 @@ def valid_project(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": project.errors})
-        except Exception as e:
+        except Exception:
             return JsonResponse({"errors": project.errors})
 
 
@@ -317,7 +316,7 @@ def save_project(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": project.errors})
-        except:
+        except Exception:
             return JsonResponse({"errors": project.errors})
 
 
@@ -338,7 +337,7 @@ def valid_roof(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": roof.errors})
-        except Exception as e:
+        except Exception:
             return JsonResponse({"errors": roof.errors})
 
 
@@ -367,7 +366,7 @@ def save_roof(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": roof.errors})
-        except:
+        except Exception:
             return JsonResponse({"errors": roof.errors})
 
 
@@ -385,7 +384,7 @@ def valid_implantation(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": implantation.errors})
-        except:
+        except Exception:
             return JsonResponse({"errors": implantation.errors})
 
 
@@ -408,7 +407,7 @@ def save_implantation(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": implantation.errors})
-        except:
+        except Exception:
             return JsonResponse({"errors": implantation.errors})
 
 
@@ -426,7 +425,7 @@ def valid_configuration(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": configuration.errors})
-        except:
+        except Exception:
             return JsonResponse({"errors": configuration.errors})
 
 
@@ -454,7 +453,7 @@ def save_configuration(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": configuration.errors})
-        except:
+        except Exception:
             return JsonResponse({"errors": configuration.errors})
 
 
@@ -472,7 +471,7 @@ def valid_mpp(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": mpp.errors})
-        except:
+        except Exception:
             return JsonResponse({"errors": mpp.errors})
 
 
@@ -496,7 +495,7 @@ def save_mpp(request):
                 return JsonResponse({"success": True})
             else:
                 return JsonResponse({"errors": mpp.errors})
-        except:
+        except Exception:
             return JsonResponse({"errors": mpp.errors})
 
 
@@ -514,7 +513,7 @@ def calcul_implantation(request):
             return JsonResponse(
                 {"success": True, "implantation_values": implantation.data}
             )
-        except:
+        except Exception:
             return JsonResponse({"errors": True})
 
 
@@ -535,7 +534,7 @@ def calcul_configuration(request):
                     "configuration_values": configuration.data,
                 }
             )
-        except:
+        except Exception:
             return JsonResponse({"errors": True})
 
 
@@ -553,10 +552,10 @@ def inverter_data(request):
             return JsonResponse(
                 {
                     "success": True,
-                    "data": serializers.serialize("json", [inverter,]),
+                    "data": serializers.serialize("json", [inverter]),
                 }
             )
-        except:
+        except Exception:
             return JsonResponse({"errors": True})
 
 
@@ -573,7 +572,7 @@ def production_data(request):
             information = Informations()
             infos = information.get_production_information(data)
             return JsonResponse({"success": True, "infos": infos})
-        except:
+        except Exception:
             return JsonResponse({"errors": True})
 
 

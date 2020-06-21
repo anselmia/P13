@@ -22,7 +22,11 @@ class Informations:
             panel.model,
             panel.power,
             round(
-                panel.width * panel.length * int(datas["tot_pan"]) / 1000000, 1
+                panel.width
+                * panel.length
+                * int(datas["tot_pan"])
+                / 1000000,
+                1,
             ),
         ]
         site = City.objects.get(id=int(datas["site_id"]))
@@ -84,7 +88,7 @@ class Informations:
                         "yearly_prod": project_prod["yearly_prod"],
                     }
                 )
-            except:
+            except Exception:
                 pass
 
         return datas

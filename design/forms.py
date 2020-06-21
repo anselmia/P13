@@ -228,7 +228,8 @@ class RoofForm(ModelForm):
         )
 
     def __init__(self, *args, **kwargs):
-        self.panel = kwargs.pop("panel")
+        if "panel" in kwargs:
+            self.panel = kwargs.pop("panel")
         super(RoofForm, self).__init__(*args, **kwargs)
         self.fields["roof_type_id"].required = True
         self.fields["bottom_length"].required = True
@@ -325,7 +326,7 @@ class RoofForm(ModelForm):
                                     * (bottom_length / 2)
                                 )
                             )
-                        except:
+                        except Exception:
                             self._errors[
                                 "bottom_length"
                             ] = self.error_class(

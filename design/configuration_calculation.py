@@ -201,14 +201,14 @@ class Configuration:
 class MPP:
     """
     Maximum Power Point tracking
-    Related to an individual input of the inverter, this one 
+    Related to an individual input of the inverter, this one
     will track the best power curve to achieve the maximum output power.
     An mpp instance is a set of serial connected panel and parallel
     connection quantity.
     """
 
     def __init__(self, mpp, panel):
-        """ 
+        """
             Init with mpp : -> List with serial and parallel quantity
                       panel : Instance of Panel used in the mpp connection
         """

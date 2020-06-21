@@ -71,7 +71,8 @@ class Implantation_calculation:
             Initialize roof data
             Calculate amount of panel to be installed in each column and row
             Calculate coordonate to plot the system in the canva.
-            Calculate information to be shown to the user regarding the installation.
+            Calculate information to be shown to the user regarding
+            the installation.
         """
         if self.roof.roof_type_id.value == "triangle":
             self.roof.height = math.sqrt(
@@ -523,7 +524,10 @@ class Roof_implantation_Calculation:
             )
 
     def Centering(self, implantation):
-        """ Calculate horizontale centering value to center the system on the roof """
+        """
+            Calculate horizontale centering value
+            to center the system on the roof
+        """
         if self.left_rest > 0:
             self.centering = (
                 self.left_rest
@@ -1968,7 +1972,6 @@ class Roof_implantation_Calculation:
             + self.nb_pan_lentgh_left_triangle
         )
         abergement_length = 0
-        abergement_height = 0
 
         if roof.roof_type_id.value == "rectangle":
             for column in range(0, self.nb_panel_length):
@@ -2342,7 +2345,7 @@ class Roof_implantation_Calculation:
                 + ligne * (self.panel_width + self.vertical_pose)
             )
             self.abergement.append(
-                [x, y, abergement_length, self.abergement_top,]
+                [x, y, abergement_length, self.abergement_top]
             )
 
         if column == 0:
@@ -2354,7 +2357,7 @@ class Roof_implantation_Calculation:
             if ligne == self.nb_panel_width - 1:
                 abergement_height = self.panel_width
             self.abergement.append(
-                [x, y, self.abergement_left, abergement_height,]
+                [x, y, self.abergement_left, abergement_height]
             )
 
         if column == (self.nb_panel_length - 1):
@@ -2370,5 +2373,5 @@ class Roof_implantation_Calculation:
             if ligne == self.nb_panel_width - 1:
                 abergement_height = self.panel_width
             self.abergement.append(
-                [x, y, self.abergement_right, abergement_height,]
+                [x, y, self.abergement_right, abergement_height]
             )

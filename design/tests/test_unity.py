@@ -19,19 +19,7 @@ from design.models import (
     Inverter,
     Panel,
 )
-from design.forms import (
-    ProjectForm,
-    CityForm,
-    RoofForm,
-    ImplantationForm,
-    ConfigForm,
-    MPPForm,
-    PanelForm,
-    InverterForm,
-)
-from django.test.client import Client
-from design.implantation_calculation import Implantation_calculation
-import pdb
+from design import api
 
 
 class DesignTests(TestCase):
@@ -212,7 +200,7 @@ class DesignTests(TestCase):
 
 
 class LocalisationTests(TestCase):
-    """ Unit Test Class for design function """
+    """ Test Class for localisation function """
 
     def setUp(self):  # pragma: no cover
         """ SetUp of the test """
@@ -266,7 +254,7 @@ class Add_cityTests(TestCase):
         """ test /add_city/ url """
         response = self.client.post(
             "/add_city/",
-            data={"name": "test3", "lat": 1, "lon": 1,},
+            data={"name": "test3", "lat": 1, "lon": 1},
             HTTP_X_REQUESTED_WITH="XMLHttpRequest",
         )
         self.assertTrue(json.loads(response.content)["success"], True)
@@ -275,7 +263,7 @@ class Add_cityTests(TestCase):
         """ test /add_city/ url """
         response = self.client.post(
             "/add_city/",
-            data={"name": "test3", "lat": 1,},
+            data={"name": "test3", "lat": 1},
             HTTP_X_REQUESTED_WITH="XMLHttpRequest",
         )
         self.assertTrue(json.loads(response.content)["errors"], True)
@@ -284,7 +272,7 @@ class Add_cityTests(TestCase):
         """ test reverse url design:add_city """
         response = self.client.post(
             reverse("design:add_city",),
-            data={"name": "test3", "lat": 1, "lon": 1,},
+            data={"name": "test3", "lat": 1, "lon": 1},
             follow=True,
         )
         self.assertTrue(json.loads(response.content)["success"], True)
@@ -364,7 +352,7 @@ class Add_panelTests(TestCase):
     def test_view(self):  # pragma: no cover
         """ test reverse url design:add_panel """
         response = self.client.post(
-            reverse("design:add_panel",),
+            reverse("design:add_panel"),
             data={
                 "model": "model2",
                 "manufacturer_id": self.manufacturer.id,
@@ -394,6 +382,39 @@ class Add_panelTests(TestCase):
             follow=True,
         )
         self.assertTrue(json.loads(response.content)["success"], True)
+
+    def test_add_panel_error(self):
+        """ test /add_panel/ url """
+        response = self.client.post(
+            reverse("design:add_panel"),
+            data={
+                "manufacturer_id": self.manufacturer.id,
+                "technology_id": self.technology.id,
+                "power": 1,
+                "tolerance": 1,
+                "radiation": 1,
+                "temperature": 1,
+                "short_circuit_current": 1,
+                "open_circuit_voltage": 1,
+                "temperature_factor_current": 1,
+                "temperature_factor_current_type": self.temp_current_type.id,
+                "temperature_factor_voltage": 1,
+                "temperature_factor_voltage_type": self.temp_voltage_type.id,
+                "temperature_factor_power": 1,
+                "temperature_factor_power_type": self.temp_power_type.id,
+                "mpp_current": 1,
+                "mpp_voltage": 1,
+                "voltage_max": 1,
+                "length": 1,
+                "width": 1,
+                "serial_cell_quantity": 1,
+                "parallel_cell_quantity": 1,
+                "cell_surface": 1,
+                "comment": "comment",
+            },
+            HTTP_X_REQUESTED_WITH="XMLHttpRequest",
+        )
+        self.assertTrue(json.loads(response.content)["errors"], True)
 
 
 class Add_inverterTests(TestCase):
@@ -467,6 +488,30 @@ class Add_inverterTests(TestCase):
             follow=True,
         )
         self.assertTrue(json.loads(response.content)["success"], True)
+
+    def test_add_inverter_errors(self):  # pragma: no cover
+        """ test reverse url design:add_inverter """
+        response = self.client.post(
+            reverse("design:add_inverter",),
+            data={
+                "manufacturer_id": self.manufacturer.id,
+                "mpp_voltage_min": 1,
+                "mpp_voltage_max": 1,
+                "dc_voltage_max": 1,
+                "dc_current_max": 1,
+                "dc_power_max": 1,
+                "ac_power_nominal": 1,
+                "ac_power_max": 1,
+                "ac_current_max": 1,
+                "efficiency": 1,
+                "mpp_string_max": 1,
+                "mpp": 1,
+                "ac_cabling": self.ac_connexion.id,
+                "comment": "comment",
+            },
+            follow=True,
+        )
+        self.assertTrue(json.loads(response.content)["errors"], True)
 
 
 class ProjectForm(TestCase):
@@ -555,7 +600,7 @@ class ProjectForm(TestCase):
         """ test invalid project form """
         response = self.client.post(
             "/valid_project/",
-            data={"city_id": self.city.id, "panel_id": self.panel.id,},
+            data={"city_id": self.city.id, "panel_id": self.panel.id},
             HTTP_X_REQUESTED_WITH="XMLHttpRequest",
         )
         self.assertTrue(json.loads(response.content)["errors"])
@@ -578,7 +623,7 @@ class ProjectForm(TestCase):
         """ test invalid save project form """
         response = self.client.post(
             "/save_project/",
-            data={"city_id": self.city.id, "panel_id": self.panel.id,},
+            data={"city_id": self.city.id, "panel_id": self.panel.id},
             HTTP_X_REQUESTED_WITH="XMLHttpRequest",
         )
         self.assertTrue(json.loads(response.content)["errors"])
@@ -661,6 +706,7 @@ class RoofForm(TestCase):
         self.roof_type3 = Roof_type.objects.get(value="triangle")
         session = self.client.session
         session["project_id"] = self.project.id
+        session["panel_id"] = self.panel.id
         session.save()
 
     def test_roof_valid(self):  # pragma: no cover
@@ -1144,7 +1190,7 @@ class ConfigurationForm(TestCase):
         """ test invalid configuration form """
         response = self.client.post(
             "/valid_configuration/",
-            data={"inverter_quantity": 1, "index": 1,},
+            data={"inverter_quantity": 1, "index": 1},
             HTTP_X_REQUESTED_WITH="XMLHttpRequest",
         )
         self.assertTrue(json.loads(response.content)["errors"])
@@ -1166,7 +1212,7 @@ class ConfigurationForm(TestCase):
         """ test invalid save configuration form """
         response = self.client.post(
             "/save_configuration/",
-            data={"inverter_quantity": 1, "index": 1,},
+            data={"inverter_quantity": 1, "index": 1},
             HTTP_X_REQUESTED_WITH="XMLHttpRequest",
         )
         self.assertTrue(json.loads(response.content)["errors"])
@@ -1281,7 +1327,7 @@ class MPPForm(TestCase):
         """ test valid mpp form """
         response = self.client.post(
             "/valid_mpp/",
-            data={"serial": 1, "parallel": 1, "index": 1,},
+            data={"serial": 1, "parallel": 1, "index": 1},
             HTTP_X_REQUESTED_WITH="XMLHttpRequest",
         )
         self.assertTrue(json.loads(response.content)["success"])
@@ -1290,7 +1336,7 @@ class MPPForm(TestCase):
         """ test invalid mpp form """
         response = self.client.post(
             "/valid_mpp/",
-            data={"serial": 1, "parallel": 1,},
+            data={"serial": 1, "parallel": 1},
             HTTP_X_REQUESTED_WITH="XMLHttpRequest",
         )
         self.assertTrue(json.loads(response.content)["errors"])
@@ -1299,7 +1345,7 @@ class MPPForm(TestCase):
         """ test valid save mpp form """
         response = self.client.post(
             "/save_mpp/",
-            data={"serial": 1, "parallel": 1, "index": 1,},
+            data={"serial": 1, "parallel": 1, "index": 1},
             HTTP_X_REQUESTED_WITH="XMLHttpRequest",
         )
         self.assertTrue(json.loads(response.content)["success"])
@@ -1308,7 +1354,7 @@ class MPPForm(TestCase):
         """ test invalid save mpp form """
         response = self.client.post(
             "/save_mpp/",
-            data={"serial": 1, "parallel": 1,},
+            data={"serial": 1, "parallel": 1},
             HTTP_X_REQUESTED_WITH="XMLHttpRequest",
         )
         self.assertTrue(json.loads(response.content)["errors"])
@@ -1458,7 +1504,152 @@ class CalculImplantation(TestCase):
                     try:
                         if json.loads(response.content)["success"]:
                             success += 1
-                    except:
+                    except Exception:
                         pass
 
         self.assertTrue(success == 18)
+
+
+class Informations(TestCase):
+    """ Class to test informations file """
+
+    def setUp(self):
+        """ SetUp of the test """
+        self.credentials = {
+            "username": "usertest",
+            "password": "!!!!!!!!",
+            "email": "test_test@test.fr",
+        }
+        User.objects.create_user(**self.credentials)
+        self.client.login(
+            username=self.credentials["username"],
+            password=self.credentials["password"],
+        )
+        self.user = User.objects.get(username=self.credentials["username"])
+        City.objects.create(
+            name="test", lat=18.5, lon=18.5,
+        )
+        self.site = City.objects.get(name="test")
+        Manufacturer.objects.create(name="test",)
+        self.manufacturer = Manufacturer.objects.get(name="test")
+        Temperature_coefficient.objects.create(value="%/°C",)
+        Temperature_coefficient.objects.create(value="mA/°C",)
+        Temperature_coefficient.objects.create(value="mV/°C",)
+        Temperature_coefficient.objects.create(value="mW/°C",)
+        Technology.objects.create(name="test",)
+        self.technology = Technology.objects.get(name="test")
+        self.temp_current_type = Temperature_coefficient.objects.get(
+            value="%/°C"
+        )
+        self.temp_voltage_type = Temperature_coefficient.objects.get(
+            value="%/°C"
+        )
+        self.temp_power_type = Temperature_coefficient.objects.get(
+            value="%/°C"
+        )
+
+        Panel.objects.create(
+            model="model",
+            manufacturer_id=self.manufacturer,
+            technology_id=self.technology,
+            power=1,
+            tolerance=1,
+            radiation=1,
+            temperature=1,
+            short_circuit_current=1,
+            open_circuit_voltage=1,
+            temperature_factor_current=1,
+            temperature_factor_current_type=self.temp_current_type,
+            temperature_factor_voltage=1,
+            temperature_factor_voltage_type=self.temp_voltage_type,
+            temperature_factor_power=1,
+            temperature_factor_power_type=self.temp_power_type,
+            mpp_current=1,
+            mpp_voltage=1,
+            voltage_max=1,
+            length=1000,
+            width=1000,
+            serial_cell_quantity=1,
+            parallel_cell_quantity=1,
+            cell_surface=1,
+            comment="comment",
+        )
+        self.panel = Panel.objects.get(model="model")
+        Project.objects.create(
+            name="test",
+            user_id=self.user,
+            city_id=self.site,
+            panel_id=self.panel,
+        )
+        self.project = Project.objects.get(name="test")
+        AC_connexion.objects.create(ac_type="Monophasé",)
+        AC_connexion.objects.create(ac_type="Triphasé",)
+        self.ac_connexion = AC_connexion.objects.get(ac_type="Monophasé")
+        Inverter.objects.create(
+            model="model",
+            manufacturer_id=self.manufacturer,
+            mpp_voltage_min=1,
+            mpp_voltage_max=1,
+            dc_voltage_max=1,
+            dc_current_max=1,
+            dc_power_max=1,
+            ac_power_nominal=1,
+            ac_power_max=1,
+            ac_current_max=1,
+            efficiency=1,
+            mpp_string_max=1,
+            mpp=1,
+            ac_cabling=self.ac_connexion,
+            comment="comment",
+        )
+        self.inverter = Inverter.objects.get(model="model")
+        Config.objects.create(
+            project_id=self.project,
+            inverter_id=self.inverter,
+            inverter_quantity=1,
+            index=1,
+        )
+        self.config = Config.objects.get(project_id=self.project)
+
+    def test_production_information(self):
+        """ Test production informations """
+        datas = {
+            "config": [
+                {
+                    "index": 1,
+                    "inverter_id": str(self.inverter.id),
+                    "inverter_quantity": "6",
+                    "mpps": [
+                        {"index": 1, "parallel": "1", "serial": "11"}
+                    ],
+                }
+            ],
+            "panel_id": str(self.panel.id),
+            "site_id": str(self.site.id),
+            "tot_pan": "10",
+        }
+        datas = {"data": json.dumps(datas)}
+        response = self.client.post(
+            "/production_data/",
+            datas,
+            HTTP_X_REQUESTED_WITH="XMLHttpRequest",
+        )
+
+        value_to_return = {
+            "pv_data": [
+                self.panel.model,
+                self.panel.power,
+                self.panel.length * self.panel.width * 10 / 1000000,
+            ],
+            "site_data": [
+                self.site.name,
+                float(self.site.lat),
+                float(self.site.lon),
+            ],
+            "inverters_datas": [[0, self.inverter.model, "1.00",]],
+        }
+        print(response.json()["infos"])
+        print(response.json()["infos"])
+        print(value_to_return)
+        self.assertTrue(response.json()["infos"] == value_to_return)
+

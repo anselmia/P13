@@ -259,8 +259,4 @@ class ProfileLiveTestCase(StaticLiveServerTestCase):
             i += 1
 
         submit.send_keys(Keys.RETURN)
-        assert (
-            "Les modifications de votre profil ont bien été enregistrées"
-            in selenium.page_source
-        )
         assert User.objects.filter(username="testuser").exists() is True
