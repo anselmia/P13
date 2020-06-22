@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -175,6 +177,11 @@ if os.environ.get("ENV") == "PRODUCTION":  # pragma: no cover
     NREL_API_KEY = os.environ["NREL_API_KEY"]
     GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
     OPEN_CAGE_DATA_API_KEY = os.environ["OPEN_CAGE_DATA_API_KEY"]
+
+    sentry_sdk.init(
+        dsn="https://de2f68750ba8434780281da7e05115bd@o379406.ingest.sentry.io/5285795",
+        integrations=[DjangoIntegration()],
+    )
 else:
     from SolarProject.local_settings import (
         METEOSTAT_API_KEY,
