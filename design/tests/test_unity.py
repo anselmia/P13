@@ -20,6 +20,7 @@ from design.models import (
     Panel,
 )
 from design import api
+from design.informations import Informations
 
 
 class DesignTests(TestCase):
@@ -43,7 +44,7 @@ class DesignTests(TestCase):
         )
         Manufacturer.objects.create(name="test",)
         Technology.objects.create(name="test",)
-        Roof_type.objects.create(value="rectangle",)
+        Roof_type.objects.create(value="rectangle")
         Roof_type.objects.create(value="trapèze",)
         Roof_type.objects.create(value="triangle",)
         Orientation.objects.create(value="Paysage",)
@@ -1510,7 +1511,7 @@ class CalculImplantation(TestCase):
         self.assertTrue(success == 18)
 
 
-class Informations(TestCase):
+class Informations_Test(TestCase):
     """ Class to test informations file """
 
     def setUp(self):
@@ -1582,6 +1583,18 @@ class Informations(TestCase):
             panel_id=self.panel,
         )
         self.project = Project.objects.get(name="test")
+        Roof_type.objects.create(value="rectangle",)
+        self.roof_type = Roof_type.objects.get(value="rectangle")
+        Roof.objects.create(
+            project_id=self.project,
+            roof_type_id=self.roof_type,
+            bottom_length=1,
+            top_length=1,
+            width=1,
+            height=1,
+            orientation=1,
+            tilt=1,
+        )
         AC_connexion.objects.create(ac_type="Monophasé",)
         AC_connexion.objects.create(ac_type="Triphasé",)
         self.ac_connexion = AC_connexion.objects.get(ac_type="Monophasé")
@@ -1610,6 +1623,9 @@ class Informations(TestCase):
             index=1,
         )
         self.config = Config.objects.get(project_id=self.project)
+        MPP.objects.create(
+            config_id=self.config, serial=10, parallel=1, index=1,
+        )
 
     def test_production_information(self):
         """ Test production informations """
@@ -1648,8 +1664,18 @@ class Informations(TestCase):
             ],
             "inverters_datas": [[0, self.inverter.model, "1.00",]],
         }
-        print(response.json()["infos"])
-        print(response.json()["infos"])
-        print(value_to_return)
+
         self.assertTrue(response.json()["infos"] == value_to_return)
 
+    def test_projects_information(self):
+        """ Test projects informations """
+
+        response = self.client.post(
+            "/project/", HTTP_X_REQUESTED_WITH="XMLHttpRequest",
+        )
+
+        self.assertTemplateUsed(response, "projects.html")
+        self.assertTrue(
+            response.context["projects"][0].initial["name"]
+            == self.project.name
+        )
