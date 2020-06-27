@@ -53,6 +53,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django_session_timeout.middleware.SessionTimeoutMiddleware",
 ]
 
 ROOT_URLCONF = "SolarProject.urls"
@@ -122,8 +124,11 @@ LOGIN_URL = "user:login"
 
 LOGIN_REDIRECT_URL = "home:index"
 
-SESSION_COOKIE_AGE = 600
-# LOGOUT_URL= 'account:logout'
+SESSION_EXPIRE_SECONDS = 3600  # 1 hour
+
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+
+SESSION_TIMEOUT_REDIRECT = "home:index"
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
